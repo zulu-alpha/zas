@@ -15,7 +15,15 @@ nginx:
   volumes:
     - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
 
+dbdata:
+  image: ubuntu
+  volumes:
+    - /data/db
+  command: /usr/bin/tail -f /dev/null
+
 mongo:
   image: mongo
   expose:
     - "27017"
+  volumes_from:
+    - dbdata
