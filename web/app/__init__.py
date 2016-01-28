@@ -3,6 +3,7 @@ import os
 
 from flask import Flask
 from flask.ext.mongoengine import MongoEngine
+from flask_debugtoolbar import DebugToolbarExtension
 
 __author__ = 'Adam Piskorski'
 
@@ -24,3 +25,6 @@ elif __name__ == '__main__':
 db = MongoEngine(app)
 
 from app import views
+
+# Debugging
+toolbar = DebugToolbarExtension(app)
