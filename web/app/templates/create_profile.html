@@ -1,0 +1,69 @@
+    {% extends "base.html" %}
+    {% block title %}Create Profile{% endblock %}
+    <!--This is used to hide the account login/logout button-->
+    {% block account %}{% endblock %}
+    {% block content %}
+      <div class="block">
+        <h2>Create Profile</h2>
+        <p>
+          Your steam login has been recognized! But before you can use our
+          site, you need to provide the following, minimal info about
+          yourself:
+        </p>
+      </div>
+      <div class="block">
+        <form action="" method="post">
+          <dl>
+            <dt>
+              <label for="email">
+                E-Mail address:
+              </label>
+            </dt>
+            <dd>
+              <input type="text" id="email" name="email">
+            </dd>
+            <dt>
+              <label for="arma_name">
+                Arma in game nick name:
+              </label>
+            </dt>
+            <dd>
+              <input type="text" id="arma_name" name="arma_name">
+            </dd>
+            <dt>
+              <label for="ts_id">
+                TeamSpeak 3 Unique ID (You can find it <a href="url_for('home')\static\ts_help.png">here</a>.):
+              </label>
+            </dt>
+            <dd>
+              <input type="text" id="ts_id" name="ts_id">
+            </dd>
+            <dt>
+              <label for="skype_username">
+                Skype Username (Optional):
+              </label>
+            </dt>
+            <dd>
+              <input type="text" id="skype_username" name="skype_username">
+            </dd>
+            <dt>
+              <label for="name">
+                Full Name (Optional):
+              </label>
+            </dt>
+            <dd>
+              <input type="text" id="name" name="name">
+            </dd>
+          </dl>
+          <p>
+            <input type="submit" value="Create profile">
+            <input type="hidden" name="next" value="{{ next }}">
+          </p>
+        </form>
+      </div>
+      <div class="block">
+        <p>
+          If you don't want to proceed, then click <a href="{{ url_for('logout') }}">here</a> to cancel.
+        </p>
+      </div>
+    {% endblock %}

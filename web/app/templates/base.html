@@ -1,0 +1,58 @@
+<!DOCTYPE HTML>
+<html lang='en'>
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="/static/style.css"/>
+    <link rel="icon" type="image/png" href="/static/favicon.ico"/>
+    <title>{% block title %}{% endblock %} - Zulu-Alpha.co.za</title>
+  </head>
+  <body>
+    <div class="block" id="header">
+      <img src="/static/logo_za.png" alt="Welcome to Zulu-Alpha.co.za">
+    </div>
+    {% block account %}
+      <div class="block" id="account">
+        <p>
+          {% if g.user %}
+            Hello {{ g.user.name_arma }}! |
+            <a href="{{ url_for('logout') }}">Logout</a>
+          {% else %}
+            <a href="{{ url_for('login') }}">Login</a>
+          {% endif %}
+        </p>
+      </div>
+    {% endblock %}
+    <div class="block" id="heading">
+      <h1>
+        {% block heading %}
+        {% endblock %}
+      </h1>
+    </div>
+    {% block flash %}
+      <div class="block" id="flash">
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <ul>
+            {% for message in messages %}
+              <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
+      </div>
+    {% endblock %}
+    <div class="block" id="content">
+      {% block content %}
+      {% endblock %}
+    </div>
+    <div class="block" id="footer">
+      {% block footer %}
+        &copy; 2016 by Zulu-Alpha.co.za. This site and it's code is
+        provided under the
+        <a href="https://www.gnu.org/copyleft/gpl.html">GNU General
+        Public License v3.0</a>.
+         <a href="http://steampowered.com">Powered by Steam</a>.
+      {% endblock %}
+    </div>
+  </body>
+</html>

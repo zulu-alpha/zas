@@ -1,0 +1,15 @@
+web:
+  working_dir: /opt/web_dev
+  ports:
+    - "8000:8000"
+  volumes:
+     - /c/Users/adam/Dropbox/Projects/arma/zas/web:/opt/web_dev
+  #command: gunicorn -b :8000 run:app --reload --access-logfile "-" --error-logfile "-" --log-level debug
+  command: python run.py
+
+mongo-express:
+  image: knickers/mongo-express
+  links:
+    - mongo
+  ports:
+    - "8081:8081"

@@ -1,0 +1,21 @@
+web:
+  build: ./web
+  expose:
+    - "8000"
+  links:
+    - mongo
+
+
+nginx:
+  image: nginx
+  ports:
+    - "80:80"
+  links:
+    - web
+  volumes:
+    - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+
+mongo:
+  image: mongo
+  expose:
+    - "27017"
