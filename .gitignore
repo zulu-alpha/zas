@@ -1,5 +1,9 @@
+### OpenID Temp Files ##
+web/db/openid/*
+
 ### Python files ###
 *.pyc
+__pycache__
 
 # Created by https://www.gitignore.io
 
