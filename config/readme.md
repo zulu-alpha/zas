@@ -1,0 +1,1 @@
+Based on an [image by sullof](https://github.com/sullof/docker-sshd)
