@@ -22,6 +22,7 @@ Then run the application.
 """
 
 OPENID_FS_STORE_PATH = 'db/openid/'
+OPENID = 'http://steamcommunity.com/openid'
 
 DEBUG = True
 MONGODB_SETTINGS = {
@@ -40,4 +41,3 @@ DEBUG_TB_PANELS = ('flask_debugtoolbar.panels.versions.VersionDebugPanel',
                    'flask_debugtoolbar.panels.route_list.RouteListDebugPanel',
                    'flask_debugtoolbar.panels.profiler.ProfilerDebugPanel')
 SECRET_KEY = 'Temporary Development Key'
-OPENID = 'http://steamcommunity.com/openid'

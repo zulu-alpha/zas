@@ -6,6 +6,9 @@ web:
     - mongo
   volumes:
     - /opt/web/app/static
+    - /c/Users/adam/zas/config/zas.cfg:/etc/zas/zas.cfg:ro
+  environment:
+    - ZAS_CONFIG=/etc/zas/zas.cfg
 
 nginx:
   image: nginx
@@ -14,7 +17,7 @@ nginx:
   links:
     - web
   volumes:
-    - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    - /c/Users/adam/zas/config/nginx.conf:/etc/nginx/nginx.conf:ro
   volumes_from:
     - web:ro
 
