@@ -101,4 +101,5 @@ def logout():
 def home():
     """Landing Page"""
     example_param = 'Hello!'
+    raise NameError('wee')
     return render_template('home.html', example_param=example_param)

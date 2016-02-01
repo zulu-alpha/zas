@@ -14,12 +14,7 @@ app.config.from_object('config')
 
 # Production Config that overwrites the above.
 if os.getenv('ZAS_CONFIG', None):
-    # This is used to prvent duplicate prints.
-    if __name__ == '__main__':
-        print('Running with production settings...')
     app.config.from_envvar('ZAS_CONFIG')
-elif __name__ == '__main__':
-    print('Running with development (default) settings...')
 
 # initialize DB after configs are handled
 db = MongoEngine(app)
@@ -28,3 +23,11 @@ from app import views
 
 # Debugging
 toolbar = DebugToolbarExtension(app)
+
+# Logging in production
+if not app.debug:
+    import logging
+    from logging import FileHandler
+    file_handler = FileHandler(app.config["LOG_PATH"])
+    file_handler.setLevel(logging.WARNING)
+    app.logger.addHandler(file_handler)
