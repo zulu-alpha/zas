@@ -26,13 +26,6 @@ nginx:
     - web:ro
   restart: always
 
-dbdata:
-  image: ubuntu
-  volumes:
-    - /data/db
-  command: /usr/bin/tail -f /dev/null
-  restart: always
-
 mongo:
   image: mongo
   expose:
@@ -43,4 +36,11 @@ mongo:
   volumes_from:
     - dbdata
   command: -f /etc/zas/mongod.yml
+  restart: always
+
+dbdata:
+  image: ubuntu
+  volumes:
+    - /data/db
+  command: /usr/bin/tail -f /dev/null
   restart: always
