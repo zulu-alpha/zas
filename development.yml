@@ -4,8 +4,8 @@ web:
     - "8000:8000"
   volumes:
      - /c/Users/adam/Dropbox/Projects/arma/zas/web:/opt/web_dev
-  #command: gunicorn -b :8000 run:app --reload --access-logfile "-" --error-logfile "-" --log-level debug
-  command: python run.py
+  #command: --reload --access-logfile "-" --error-logfile "-" --log-level debug
+  entrypoint: python run.py
 
 mongo-express:
   image: knickers/mongo-express

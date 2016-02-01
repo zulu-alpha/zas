@@ -10,7 +10,7 @@ web:
     - /c/Users/adam/zas/logs/web:/var/log/web
   environment:
     - ZAS_CONFIG=/etc/zas/zas.cfg
-  command: gunicorn -b :8000 run:app --access-logfile "/var/log/web/gunicorn_access.log" --error-logfile "/var/log/web/gunicorn_error.log"
+  command: --access-logfile "/var/log/web/gunicorn_access.log" --error-logfile "/var/log/web/gunicorn_error.log"
   restart: always
 
 nginx:

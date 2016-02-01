@@ -11,4 +11,4 @@ WORKDIR /opt/web
 RUN pip install -r requirements.txt
 
 # Run the flask app
-CMD gunicorn -b :8000 run:app
+ENTRYPOINT ["gunicorn", "-b :8000", "run:app"]
