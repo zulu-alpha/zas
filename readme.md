@@ -12,3 +12,6 @@ To start in development, use `docker-compose up` or `docker-compose -f docker-co
 If the development environment is Linux, then you should change the paths to the config and log files in `docker-compose.override.yml` to be something more meaningful.
 Also if developing in linux, change the path in `dev.yml` to point to your *web* project folder.
 Even in windows, if you aren't me, change instances of `adam` to your username, though that may require a lot of editing.
+
+On production, run the `Let's Encrypt` docker image as described [here](http://letsencrypt.readthedocs.org/en/latest/using.html#running-with-docker).
+I haven't setup any mechanism for auto renewal as of yet.
