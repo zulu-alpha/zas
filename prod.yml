@@ -9,7 +9,7 @@ nginx:
   volumes:
     - /etc/zas/nginx.conf:/etc/nginx/nginx.conf:ro
     - /var/zas/log/nginx:/var/log/nginx
-    - /etc/letsencrypt/archive/srv2.zulu-alpha.co.za:/etc/letsencrypt/live/srv2.zulu-alpha.co.za:ro
+    - /etc/letsencrypt:/etc/letsencrypt:ro
 
 backup:
   volumes:
