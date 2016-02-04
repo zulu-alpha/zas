@@ -1,4 +1,4 @@
-# Download and base the container off of a pure Python 3.5 image
+# Download and base the container
 FROM ubuntu
 
 # Copy the backup script and cron jobs over

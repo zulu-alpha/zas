@@ -17,6 +17,7 @@ nginx:
   image: nginx
   ports:
     - "80:80"
+    - "443:443"
   links:
     - web
   volumes:
