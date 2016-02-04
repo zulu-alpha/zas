@@ -1,9 +1,14 @@
 # Installation
-Copy the config and logs folders to ```/c/Users/adam/zas/``` 
-(or something like ```C:\Users\adam\zas\config``` in Windows)
-This funny path is there to improve dev prod similarity and be able to use the same 
-compose file to start the stack (Canonical compose file).
+Copy the files *inside* `./config` to `./etc/zas/` and the folders *inside* `/log` to `/var/log/`.
+In a windows development environment, copy the `./config` and `./log` *folders* to `C:\Users\adam\zas\config`.
 
-Edit them with the appropriate settings (such as secrets).
+Edit the config files appropriately for the environments.
+* For development, not much configuration needs to be done, except to enable debugging.
+* For production, change the secrets where they appear, setup the backup FTP, and configure the nginx Config file.
+..* Add in the domain name for the server and configure it for SSL, with the help of [this guide](https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-14-04).
 
-Use ```docker-compose run```
+To start in production, use `sudo docker-compose -f docker-compose.yml -f prod.yml up`
+To start in development, use `docker-compose up` or `docker-compose -f docker-compose.yml -f docker-compose.override.yml -f dev.yml up` for more debugging in the *web* app.
+If the development environment is Linux, then you should change the paths to the config and log files in `docker-compose.override.yml` to be something more meaningful.
+Also if developing in linux, change the path in `dev.yml` to point to your *web* project folder.
+Even in windows, if you aren't me, change instances of `adam` to your username, though that may require a lot of editing.
