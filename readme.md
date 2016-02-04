@@ -15,3 +15,5 @@ Even in windows, if you aren't me, change instances of `adam` to your username, 
 
 On production, run the `Let's Encrypt` docker image as described [here](http://letsencrypt.readthedocs.org/en/latest/using.html#running-with-docker).
 I haven't setup any mechanism for auto renewal as of yet.
+You may have to set the owner and permissions of `/etc/letsencrypt/` to your user account with `sudo chown -R adam:adam /etc/letsencrypt` and 
+`sudo chmod -R 755 /etc/letsencrypt` for nginx to be able to mount the certificates.
