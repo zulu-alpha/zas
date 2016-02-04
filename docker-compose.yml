@@ -33,7 +33,7 @@ mongo:
     - "27017"
   volumes_from:
     - dbdata
-  command: -f /etc/zas/mongod.yml
+  command: -f /etc/mongod/mongod.yml
   restart: always
 
 dbdata:

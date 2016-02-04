@@ -1,5 +1,5 @@
 # Installation
-Copy the files *inside* `./config` to `./etc/zas/` and the folders *inside* `/log` to `/var/log/`.
+Copy the files *inside* `./config` to `./etc/zas/` and the *folder* `/log` to `/var/zas/`.
 In a windows development environment, copy the `./config` and `./log` *folders* to `C:\Users\adam\zas\config`.
 
 Edit the config files appropriately for the environments.
