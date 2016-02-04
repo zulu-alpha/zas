@@ -15,5 +15,5 @@ backup:
 
 mongo:
   volumes:
-    - /c/Users/adam/zas/config/mongod.yml:/etc/zas/mongod.yml:ro
+    - /c/Users/adam/zas/config/mongod.yml:/etc/mongod/mongod.yml:ro
     - /c/Users/adam/zas/log/mongodb:/var/log/mongodb
