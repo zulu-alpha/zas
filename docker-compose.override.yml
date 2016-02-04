@@ -1,0 +1,19 @@
+web:
+  volumes:
+    - /c/Users/adam/zas/config/zas.cfg:/etc/zas/zas.cfg:ro
+    - /c/Users/adam/zas/log/web:/var/log/web
+
+nginx:
+  volumes:
+    - /c/Users/adam/zas/config/nginx.conf:/etc/nginx/nginx.conf:ro
+    - /c/Users/adam/zas/log/nginx:/var/log/nginx
+
+backup:
+  volumes:
+    - /c/Users/adam/zas/config/backup_config.py:/opt/backup/backup_config.py:ro
+    - /c/Users/adam/zas/log/backup:/var/log/backup
+
+mongo:
+  volumes:
+    - /c/Users/adam/zas/config/mongod.yml:/etc/zas/mongod.yml:ro
+    - /c/Users/adam/zas/log/mongodb:/var/log/mongodb

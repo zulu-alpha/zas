@@ -1,0 +1,22 @@
+web:
+  volumes:
+    - /etc/zas/zas.cfg:/etc/zas/zas.cfg:ro
+    - /var/log/web:/var/log/web
+
+nginx:
+  ports:
+    - "443:443"
+  volumes:
+    - /etc/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    - /var/log/nginx:/var/log/nginx
+    - /etc/letsencrypt/live/srv2.zulu-alpha.co.za:/etc/letsencrypt/live/srv2.zulu-alpha.co.za
+
+backup:
+  volumes:
+    - /opt/backup/backup_config.py:/opt/backup/backup_config.py:ro
+    - /var/log/backup:/var/log/backup
+
+mongo:
+  volumes:
+    - /etc/zas/mongod.yml:/etc/zas/mongod.yml:ro
+    - /var/log/mongodb:/var/log/mongodb
