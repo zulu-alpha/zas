@@ -7,6 +7,7 @@ class ArmaName(db.EmbeddedDocument):
     arma_name = db.StringField(max_length=120, required=True)
     created = db.DateTimeField(default=datetime.utcnow())
 
+
 class TSID(db.EmbeddedDocument):
     """Allows for unique TeamSpeak Unique IDs to be enforced in the Schema"""
     ts_id = db.StringField(max_length=28, unique=True, required=True)
@@ -27,6 +28,14 @@ class User(db.Document):
     #rank = db.ReferenceField(Rank)
     active = db.BooleanField(required=True)
     created = db.DateTimeField(default=datetime.utcnow())
+
+    @property
+    def arma_name(self):
+        """
+        Gets the latest Arma Name
+        :return: String representing Arma Name
+        """
+        return self.arma_names[-1].arma_name
 
     #def __repr__(self):
     #    return '<Arma Nick: %s, steam_id: %s>' %(self.steam_id)

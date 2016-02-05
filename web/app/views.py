@@ -25,13 +25,7 @@ def login():
     """Initiates the login process for steam if not already signed in"""
     if g.user is not None:
         return redirect(oid.get_next_url())
-
-    # If the user clicks the steam logo, go to steam to login.
-    if request.method == 'POST':
-        return oid.try_login(OPENID)
-    # Render the page
-    return render_template('login.html', next=oid.get_next_url(),
-                           error=oid.fetch_error())
+    return oid.try_login(OPENID)
 
 
 @oid.after_login

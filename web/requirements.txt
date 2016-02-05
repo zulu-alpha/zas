@@ -3,3 +3,4 @@ flask-openid
 gunicorn
 flask-mongoengine
 flask-debugtoolbar
+flask-login

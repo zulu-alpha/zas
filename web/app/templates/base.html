@@ -14,10 +14,10 @@
       <div class="block" id="account">
         <p>
           {% if g.user %}
-            Hello {{ g.user.name_arma }}! |
+            Hello {{ g.user.arma_name }}! |
             <a href="{{ url_for('logout') }}">Logout</a>
           {% else %}
-            <a href="{{ url_for('login') }}">Login</a>
+            <a href="{{ url_for('login') }}"><img src="/static/sits_large_border.png" alt="Login with Steam"></a>
           {% endif %}
         </p>
       </div>
