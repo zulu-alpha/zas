@@ -2,6 +2,7 @@
 used in the flask app. This is done in order to abstract the DB
 interactions.
 """
+import re
 from app.models import ArmaName, TSID, User
 
 
@@ -10,7 +11,9 @@ def strip_steam_id(identity_url):
 
     :param identity_url: The Steam URL of the player
     """
-    return identity_url[36:]
+    steam_id_re = re.compile('steamcommunity.com/openid/id/(.*?)$')
+    match = steam_id_re.search(identity_url)
+    return match.group(1)
 
 
 def user_by_steam_id(steam_id):
