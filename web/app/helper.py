@@ -3,7 +3,9 @@ used in the flask app. This is done in order to abstract the DB
 interactions.
 """
 import re
+from app import login_manager
 from app.models import ArmaName, TSID, User
+from app import CONFIG
 
 
 def strip_steam_id(identity_url):
@@ -20,13 +22,35 @@ def user_by_steam_id(steam_id):
     """Returns the user that has the given Steam_ID
 
     :param steam_id: Steam ID associated with the desired User object
+    :return: MongoDB Object
     """
     return User.objects(steam_id=steam_id).first()
 
 
-def create_profile(steam_id, email, arma_name, ts_id, skype_username=None, name=None):
+@login_manager.user_loader
+def user_by_id(user_id):
+    """Returns the user that has the given _id
+
+    :param user_id: String that represents the User id
+    :return: MongoDB Object
     """
-    Creates the initial user account, combining the verified Steam ID and required information that the
+    return User.objects(id=user_id).first()
+
+
+def arma_name_free(arma_name):
+    """Returns True if the Arma Name is free, else false
+
+    :param arma_name: String of desired Arma Name
+    :return: BOOL
+    """
+    if User.objects(arma_names__arma_name=arma_name).first():
+        return False
+    else:
+        return True
+
+
+def create_profile(steam_id, email, arma_name, ts_id, skype_username=None, name=None):
+    """Creates the initial user account, combining the verified Steam ID and required information that the
     user fills in for this site itself.
 
     :param steam_id: Steam ID that is received from the App during OpenID login with Steam.
@@ -39,9 +63,23 @@ def create_profile(steam_id, email, arma_name, ts_id, skype_username=None, name=
     """
     arma_name_ed = ArmaName(arma_name=arma_name)
     ts_id_ed = TSID(ts_id=ts_id)
-    active = True  # Set user as active by default when signing up
+    # Set user as active by default when signing up
+    is_active = True
+    is_authenticated = True
 
     user = User(steam_id=steam_id, email=email, arma_names=[arma_name_ed], ts_ids=[ts_id_ed],
-                skype_username=skype_username, name=name, active=active)
+                skype_username=skype_username, name=name, is_active=is_active,
+                is_authenticated=is_authenticated)
     user.save()
     return user
+
+
+def next_is_valid(next_url):
+    """Takes in the next (redirect) url and checks if it's safe by making sure it has the same root
+    as what is defined in the config file (URL_ROOT) and returns True if its safe
+
+    :param next_url: STRING of url
+    :return: BOOL
+    """
+    url_root = CONFIG['URL_ROOT']
+    return url_root == next_url[:len(url_root)]

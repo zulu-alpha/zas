@@ -1,29 +1,20 @@
-from flask import render_template, g, session, redirect, request, flash, url_for
+from flask import render_template, session, redirect, request, flash, url_for, abort
 
 from flask.ext.openid import OpenID
-from app import app
+from app import app, login_manager, flask_login, CONFIG
 
 from app import helper
 
 
 oid = OpenID(app, safe_roots=[])
-OPENID = app.config['OPENID']
-
-
-@app.before_request
-def lookup_current_user():
-    """Checks to see if the user is signed in and saves to request if so"""
-    g.user = None
-    if 'steam_id' in session:
-        steam_id = session['steam_id']
-        g.user = helper.user_by_steam_id(steam_id)
+OPENID = CONFIG['OPENID']
 
 
 @app.route('/login', methods=['GET', 'POST'])
 @oid.loginhandler
 def login():
     """Initiates the login process for steam if not already signed in"""
-    if g.user is not None:
+    if flask_login.current_user.is_authenticated:
         return redirect(oid.get_next_url())
     return oid.try_login(OPENID)
 
@@ -36,29 +27,45 @@ def create_or_login(resp):
 
     :param resp: Response object sent by steam that is used to get the user's Steam ID
     """
-    # Handle response from Steam
+    # Get steamID from Steam
     steam_id = helper.strip_steam_id(resp.identity_url)
     session['steam_id'] = steam_id
+
+    # Validate next URL
+    next_url = oid.get_next_url()
+    if not helper.next_is_valid(oid.get_next_url()):
+        return abort(400)
 
     # If already registered.
     user = helper.user_by_steam_id(steam_id=steam_id)
     if user is not None:
         flash('Successfully signed in')
-        g.user = user
-        return redirect(oid.get_next_url())
+        flask_login.login_user(user)
+        return redirect(next_url)
 
     # If not registered.
-    return redirect(url_for('create_profile', next=oid.get_next_url(),
-                            steam_id=session['steam_id']))
+    return redirect(url_for('create_profile', next=next_url))
 
 
 @app.route('/create-profile', methods=['GET', 'POST'])
 def create_profile():
     """Create a new profile for a user that already authenticated through steam."""
-    if g.user is not None or 'steam_id' not in session:
+    # Redirect to home if already registered or the steam ID cant be found.
+    if flask_login.current_user.is_authenticated:
+        flash('You already have a profile!')
         return redirect(url_for('home'))
+    if 'steam_id' not in session:
+        flash('Error: Steam ID not found in session!')
+        return redirect(url_for('home'))
+
+    # Validate next URL
+    next_url = oid.get_next_url()
+    if not helper.next_is_valid(oid.get_next_url()):
+        return abort(400)
+
     if request.method == 'POST':
-        steam_id = request.values['steam_id']
+        steam_id = session['steam_id']
+        session.pop('steam_id', None)  # Remove now redundant session steam id
         email = request.form['email']
         arma_name = request.form['arma_name']
         ts_id = request.form['ts_id']
@@ -75,18 +82,22 @@ def create_profile():
         if not ts_id:
             flash('Error: You need to Teamspeak Unique ID')
             error = True
+        if not helper.arma_name_free(arma_name):
+            flash('Error: Arma name already taken.')
+            error = True
         if not error:
             flash('Profile successfully created!')
-            helper.create_profile(steam_id, email, arma_name, ts_id, skype_username, name)
+            user = helper.create_profile(steam_id, email, arma_name, ts_id, skype_username, name)
+            flask_login.login_user(user)
             return redirect(oid.get_next_url())
 
-    return render_template('create_profile.html', next=oid.get_next_url())
+    return render_template('create_profile.html', next=next_url)
 
 
 @app.route('/logout')
 def logout():
     """Logs the user out"""
-    session.pop('steam_id', None)
+    flask_login.logout_user()
     flash('You were signed out')
     return redirect(oid.get_next_url())
 
@@ -96,3 +107,9 @@ def home():
     """Landing Page"""
     example_param = 'Hello!'
     return render_template('home.html', example_param=example_param)
+
+
+@app.route('/debug')
+def debug():
+    """In order to get debug screen"""
+    assert 1 == 2

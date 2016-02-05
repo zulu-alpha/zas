@@ -26,8 +26,17 @@ class User(db.Document):
     arma_names = db.ListField(db.EmbeddedDocumentField(ArmaName), required=True)
     ts_ids = db.ListField(db.EmbeddedDocumentField(TSID), required=True)
     #rank = db.ReferenceField(Rank)
-    active = db.BooleanField(required=True)
+    is_active = db.BooleanField(required=True)
+    is_authenticated = db.BooleanField(required=True)
+    is_anonymous = db.BooleanField(default=False, required=True)
     created = db.DateTimeField(default=datetime.utcnow())
+
+    def get_id(self):
+        """Returns the ID of the given user
+
+        :return: String
+        """
+        return str(self.id)
 
     @property
     def arma_name(self):

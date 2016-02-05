@@ -2,6 +2,7 @@ from __future__ import print_function
 import os
 
 from flask import Flask
+import flask.ext.login as flask_login
 from flask.ext.mongoengine import MongoEngine
 from flask_debugtoolbar import DebugToolbarExtension
 
@@ -16,8 +17,15 @@ app.config.from_object('config')
 if os.getenv('ZAS_CONFIG', None):
     app.config.from_envvar('ZAS_CONFIG')
 
+# Save config to global var to make it easy to import
+CONFIG = app.config
+
 # initialize DB after configs are handled
 db = MongoEngine(app)
+
+# Session management
+login_manager = flask_login.LoginManager()
+login_manager.init_app(app)
 
 from app import views
 

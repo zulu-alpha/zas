@@ -42,3 +42,4 @@ DEBUG_TB_PANELS = ('flask_debugtoolbar.panels.versions.VersionDebugPanel',
                    'flask_debugtoolbar.panels.profiler.ProfilerDebugPanel')
 SECRET_KEY = 'Temporary Development Key'
 LOG_PATH = '/var/log/web/flask.log'
+URL_ROOT = 'http://192.168.99.100/'
