@@ -6,17 +6,8 @@ from app import app, login_manager, flask_login, CONFIG
 from app import helper
 
 
-oid = OpenID(app, safe_roots=[])
+oid = OpenID(app, CONFIG['OPENID_FS_STORE_PATH'], safe_roots=[CONFIG['URL_ROOT']])
 OPENID = CONFIG['OPENID']
-
-
-@app.route('/login', methods=['GET', 'POST'])
-@oid.loginhandler
-def login():
-    """Initiates the login process for steam if not already signed in"""
-    if flask_login.current_user.is_authenticated:
-        return redirect(oid.get_next_url())
-    return oid.try_login(OPENID)
 
 
 @oid.after_login
@@ -31,20 +22,33 @@ def create_or_login(resp):
     steam_id = helper.strip_steam_id(resp.identity_url)
     session['steam_id'] = steam_id
 
-    # Validate next URL
-    next_url = oid.get_next_url()
-    if not helper.next_is_valid(oid.get_next_url()):
-        return abort(400)
-
     # If already registered.
     user = helper.user_by_steam_id(steam_id=steam_id)
     if user is not None:
         flash('Successfully signed in')
         flask_login.login_user(user)
-        return redirect(next_url)
+        return redirect(oid.get_next_url())
 
     # If not registered.
-    return redirect(url_for('create_profile', next=next_url))
+    return redirect(url_for('create_profile', next=oid.get_next_url()))
+
+
+@oid.errorhandler
+def on_error(message):
+    """Handles OpenID errors
+
+    :param message: The error message from OpenID that is stored in the session
+    """
+    flash(u'OpenID Error: ' + message)
+
+
+@app.route('/login', methods=['GET', 'POST'])
+@oid.loginhandler
+def login():
+    """Initiates the login process for steam if not already signed in"""
+    if flask_login.current_user.is_authenticated:
+        return redirect(oid.get_next_url())
+    return oid.try_login(OPENID)
 
 
 @app.route('/create-profile', methods=['GET', 'POST'])
@@ -57,11 +61,6 @@ def create_profile():
     if 'steam_id' not in session:
         flash('Error: Steam ID not found in session!')
         return redirect(url_for('home'))
-
-    # Validate next URL
-    next_url = oid.get_next_url()
-    if not helper.next_is_valid(oid.get_next_url()):
-        return abort(400)
 
     if request.method == 'POST':
         steam_id = session['steam_id']
@@ -91,7 +90,7 @@ def create_profile():
             flask_login.login_user(user)
             return redirect(oid.get_next_url())
 
-    return render_template('create_profile.html', next=next_url)
+    return render_template('create_profile.html', next=oid.get_next_url())
 
 
 @app.route('/logout')

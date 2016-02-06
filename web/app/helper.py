@@ -72,14 +72,3 @@ def create_profile(steam_id, email, arma_name, ts_id, skype_username=None, name=
                 is_authenticated=is_authenticated)
     user.save()
     return user
-
-
-def next_is_valid(next_url):
-    """Takes in the next (redirect) url and checks if it's safe by making sure it has the same root
-    as what is defined in the config file (URL_ROOT) and returns True if its safe
-
-    :param next_url: STRING of url
-    :return: BOOL
-    """
-    url_root = CONFIG['URL_ROOT']
-    return url_root == next_url[:len(url_root)]
