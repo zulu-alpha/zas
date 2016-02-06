@@ -2,8 +2,8 @@ from flask import render_template, session, redirect, request, flash, url_for, a
 
 from flask.ext.openid import OpenID
 from app import app, login_manager, flask_login, CONFIG
-
 from app import helper
+from app.forms import RegistrationForm
 
 
 oid = OpenID(app, CONFIG['OPENID_FS_STORE_PATH'], safe_roots=[CONFIG['URL_ROOT']])
@@ -62,35 +62,22 @@ def create_profile():
         flash('Error: Steam ID not found in session!')
         return redirect(url_for('home'))
 
-    if request.method == 'POST':
-        steam_id = session['steam_id']
+    form = RegistrationForm()
+
+    if form.validate_on_submit():
+        user = helper.create_profile(
+                session['steam_id'],
+                form.email.data,
+                form.arma_name.data,
+                form.ts_id.data,
+                form.skype_username.data,
+                form.name.data)
+        flash('Profile successfully created!')
+        flask_login.login_user(user)
         session.pop('steam_id', None)  # Remove now redundant session steam id
-        email = request.form['email']
-        arma_name = request.form['arma_name']
-        ts_id = request.form['ts_id']
-        skype_username = request.form['skype_username']
-        name = request.form['name']
-        error = False
+        return redirect(oid.get_next_url())
 
-        if '@' not in email:
-            flash('Error: You need to provide your email address!')
-            error = True
-        if not arma_name:
-            flash('Error: You need to provide your Arma 3 in game nick name!')
-            error = True
-        if not ts_id:
-            flash('Error: You need to Teamspeak Unique ID')
-            error = True
-        if not helper.arma_name_free(arma_name):
-            flash('Error: Arma name already taken.')
-            error = True
-        if not error:
-            flash('Profile successfully created!')
-            user = helper.create_profile(steam_id, email, arma_name, ts_id, skype_username, name)
-            flask_login.login_user(user)
-            return redirect(oid.get_next_url())
-
-    return render_template('create_profile.html', next=oid.get_next_url())
+    return render_template('create_profile.html', form=form, next=oid.get_next_url())
 
 
 @app.route('/logout')

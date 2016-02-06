@@ -4,7 +4,7 @@ from datetime import datetime
 
 class ArmaName(db.EmbeddedDocument):
     """Allows to store a history of Arma nicks used"""
-    arma_name = db.StringField(max_length=120, required=True)
+    arma_name = db.StringField(max_length=120, unique=True, required=True)
     created = db.DateTimeField(default=datetime.utcnow())
 
 

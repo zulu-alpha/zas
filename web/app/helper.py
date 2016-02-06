@@ -5,7 +5,6 @@ interactions.
 import re
 from app import login_manager
 from app.models import ArmaName, TSID, User
-from app import CONFIG
 
 
 def strip_steam_id(identity_url):
@@ -35,18 +34,6 @@ def user_by_id(user_id):
     :return: MongoDB Object
     """
     return User.objects(id=user_id).first()
-
-
-def arma_name_free(arma_name):
-    """Returns True if the Arma Name is free, else false
-
-    :param arma_name: String of desired Arma Name
-    :return: BOOL
-    """
-    if User.objects(arma_names__arma_name=arma_name).first():
-        return False
-    else:
-        return True
 
 
 def create_profile(steam_id, email, arma_name, ts_id, skype_username=None, name=None):

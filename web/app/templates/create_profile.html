@@ -32,7 +32,7 @@
             </dd>
             <dt>
               <label for="ts_id">
-                TeamSpeak 3 Unique ID (You can find it <a href="url_for('home')\static\ts_help.png">here</a>.):
+                TeamSpeak 3 Unique ID (You can find it <a href="{{ url_for('home') }}\static\ts_help.png">here</a>.):
               </label>
             </dt>
             <dd>
@@ -62,6 +62,17 @@
         </form>
       </div>
       <div class="block">
+      <div class="block">
+        <form action="{{ url_for('create_profile') }}" method="post">
+          {{ form.hidden_tag() }}
+          {{ form.email }}
+          {{ form.arma_name }}
+          {{ form.ts_id }}
+          {{ form.skype_username }}
+          {{ form.name }}
+          <input type="submit" value="Create profile">
+        </form>
+      </div>
         <p>
           If you don't want to proceed, then click <a href="{{ url_for('logout') }}">here</a> to cancel.
         </p>
