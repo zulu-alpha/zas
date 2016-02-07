@@ -64,8 +64,9 @@ def create_profile():
 
     form = RegistrationForm()
     # Inject an image into it the TS Label
-    form.ts_id.label.text = '<a href="{0}" target="_blank">TeamSpeak 3 Unique ID</a>'\
-                            .format(url_for('static', filename='img/ts_help.png'))
+    form.ts_id.label.text = ('TeamSpeak 3 Unique ID (<a href="{0}" '
+                             'target="_blank">found here</a>)')\
+        .format(url_for('static', filename='img/ts_help.png'))
     form.next.data = oid.get_next_url()
 
     if form.validate_on_submit():
