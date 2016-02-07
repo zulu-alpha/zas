@@ -1,6 +1,6 @@
 from flask.ext.wtf import Form
-from wtforms.fields import StringField
-from wtforms.validators import InputRequired, Email, Length, Optional
+from app.lib.wtformsparsleyjs import StringField, HiddenField
+from wtforms.validators import InputRequired, Email, Length, Optional, URL
 
 from app.validators import Unique
 from app.models import ArmaName, TSID, User
@@ -41,4 +41,9 @@ class RegistrationForm(Form):
                 Optional(),
                 Length(max=60),
                 Unique(User, 'name', message='That name is already registered with us!')
+            ])
+    next = HiddenField(
+            '',
+            [
+                URL()
             ])

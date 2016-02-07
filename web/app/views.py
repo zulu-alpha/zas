@@ -63,6 +63,10 @@ def create_profile():
         return redirect(url_for('home'))
 
     form = RegistrationForm()
+    # Inject an image into it the TS Label
+    form.ts_id.label.text = '<a href="{0}" target="_blank">TeamSpeak 3 Unique ID</a>'\
+                            .format(url_for('static', filename='img/ts_help.png'))
+    form.next.data = oid.get_next_url()
 
     if form.validate_on_submit():
         user = helper.create_profile(
@@ -77,7 +81,7 @@ def create_profile():
         session.pop('steam_id', None)  # Remove now redundant session steam id
         return redirect(oid.get_next_url())
 
-    return render_template('create_profile.html', form=form, next=oid.get_next_url())
+    return render_template('create_profile.html', form=form)
 
 
 @app.route('/logout')

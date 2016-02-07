@@ -2,13 +2,13 @@
 <html lang='en'>
   <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="/static/style.css"/>
-    <link rel="icon" type="image/png" href="/static/favicon.ico"/>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}"/>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon.ico') }}"/>
     <title>{% block title %}{% endblock %} - Zulu-Alpha.co.za</title>
   </head>
   <body>
     <div class="block" id="header">
-      <img src="/static/logo_za.png" alt="Welcome to Zulu-Alpha.co.za">
+      <img src="{{ url_for('static', filename='img/logo_za.png') }}"  alt="Welcome to Zulu-Alpha.co.za">
     </div>
     {% block account %}
       <div class="block" id="account">
@@ -17,7 +17,9 @@
             Hello {{ current_user.arma_name }}! |
             <a href="{{ url_for('logout') }}">Logout</a>
           {% else %}
-            <a href="{{ url_for('login') }}"><img src="/static/sits_large_border.png" alt="Login with Steam"></a>
+            <a href="{{ url_for('login') }}">
+              <img src="{{ url_for('static', filename='img/sits_large_border.png') }}" alt="Login with Steam">
+            </a>
           {% endif %}
         </p>
       </div>
@@ -45,6 +47,7 @@
       {% block content %}
       {% endblock %}
     </div>
+    </br>
     <div class="block" id="footer">
       {% block footer %}
         &copy; 2016 by Zulu-Alpha.co.za. This site and it's code is
@@ -54,5 +57,9 @@
          <a href="http://steampowered.com">Powered by Steam</a>.
       {% endblock %}
     </div>
+  {% block scripts %}
+    <script src="{{ url_for('static', filename='js/lib/jquery-2.2.0.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/lib/parsley.min.js') }}"></script>
+  {% endblock scripts %}
   </body>
 </html>

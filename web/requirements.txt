@@ -4,3 +4,4 @@ gunicorn
 flask-mongoengine
 flask-debugtoolbar
 flask-login
+flask-wtf
