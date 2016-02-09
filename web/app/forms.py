@@ -28,13 +28,6 @@ class RegistrationForm(Form):
                 Length(min=28, max=28),
                 Unique(User, 'ts_ids.ts_id', message='That ID is already in use!')
             ])
-    skype_username = StringField(
-            'Skype Username (Optional)',
-            [
-                Optional(),
-                Length(max=30),
-                Unique(User, 'skype_username')
-            ])
     name = StringField(
             'Full Name (Optional)',
             [

@@ -36,7 +36,7 @@ def user_by_id(user_id):
     return User.objects(id=user_id).first()
 
 
-def create_profile(steam_id, email, arma_name, ts_id, skype_username=None, name=None):
+def create_profile(steam_id, email, arma_name, ts_id, name=None):
     """Creates the initial user account, combining the verified Steam ID and required information that the
     user fills in for this site itself.
 
@@ -44,7 +44,6 @@ def create_profile(steam_id, email, arma_name, ts_id, skype_username=None, name=
     :param email: Email Address
     :param arma_name: In game Arma 3 Nick Name
     :param ts_id: Teamspeak Unique ID
-    :param skype_username: Skype Username (Optional)
     :param name: Real Name (Optional)
     :return: The User Object added to the DB
     """
@@ -55,7 +54,6 @@ def create_profile(steam_id, email, arma_name, ts_id, skype_username=None, name=
     is_authenticated = True
 
     user = User(steam_id=steam_id, email=email, arma_names=[arma_name_ed], ts_ids=[ts_id_ed],
-                skype_username=skype_username, name=name, is_active=is_active,
-                is_authenticated=is_authenticated)
+                name=name, is_active=is_active, is_authenticated=is_authenticated)
     user.save()
     return user

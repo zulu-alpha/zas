@@ -20,7 +20,6 @@ class User(db.Document):
     """
     steam_id = db.StringField(max_length=17, unique=True, required=True)
     email = db.EmailField(unique=True, required=True)
-    skype_username = db.StringField(unique=True)
     slack_id = db.StringField(unique=True)
     name = db.StringField(max_length=120, unique=True)  # Real name
     arma_names = db.ListField(db.EmbeddedDocumentField(ArmaName), required=True)

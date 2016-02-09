@@ -79,7 +79,6 @@ def create_profile():
                 form.email.data,
                 form.arma_name.data,
                 form.ts_id.data,
-                form.skype_username.data,
                 form.name.data)
         flash('Profile successfully created!', 'success')
         flask_login.login_user(user)
