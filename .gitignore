@@ -1,7 +1,7 @@
 ## Flask-Assets Generated Files ###
 web/app/static/gen/min.css
 web/app/static/gen/min.js
-web/app/static/.webassets-cache
+
 
 ### OpenID Temp Files ##
 web/db/openid/*
