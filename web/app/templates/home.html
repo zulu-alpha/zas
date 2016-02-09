@@ -1,8 +1,16 @@
-    {% extends "base.html" %}
-    {% block title %}Home{% endblock %}
-    {% block content %}
-      <div class="block">
-        <p>{{ example_param }}</p>
-        <a href="{{ url_for('debug') }}">Debug</a>
-      </div>
-    {% endblock %}
+{% extends "layout.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block heading %}{{ super() }}{% endblock %}
+
+{% block sub_heading %}{{ super() }}{% endblock %}
+
+{% block main %}
+  <section class="row">
+    <article class="col-lg-12">
+      <p>{{ example_param }}</p>
+      <a href="{{ url_for('debug') }}">Debug</a>
+    </article>
+  </section>
+{% endblock %}

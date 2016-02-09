@@ -2,7 +2,9 @@
 <html lang='en'>
   <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}"/>
+    {% assets "css" %}
+      <link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}"/>
+    {% endassets %}
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon.ico') }}"/>
     <title>{% block title %}{% endblock %} - Zulu-Alpha.co.za</title>
   </head>
@@ -58,8 +60,11 @@
       {% endblock %}
     </div>
   {% block scripts %}
-    <script src="{{ url_for('static', filename='js/lib/jquery-2.2.0.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/lib/parsley.min.js') }}"></script>
+    <script type="text/javascript" src="//code.jquery.com/jquery-2.2.0.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/parsley.js/2.2.0/parsley.min.js"></script>
+    {% assets "js" %}
+      <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+    {% endassets %}
   {% endblock scripts %}
   </body>
 </html>

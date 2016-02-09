@@ -5,7 +5,7 @@ web:
   links:
     - mongo
   volumes:
-    - /opt/web/app/static
+    - /opt/web/app/static/img
   environment:
     - ZAS_CONFIG=/etc/zas/zas.cfg
   command: --access-logfile "/var/log/web/gunicorn_access.log" --error-logfile "/var/log/web/gunicorn_error.log"

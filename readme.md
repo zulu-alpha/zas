@@ -19,3 +19,6 @@ Make sure to set it up for the site and for a different subdomain for Mongo-Expr
 I haven't setup any mechanism for auto renewal as of yet.
 You may have to set the owner and permissions of `/etc/letsencrypt/` to your user account with `sudo chown -R adam:adam /etc/letsencrypt` and 
 `sudo chmod -R 755 /etc/letsencrypt` for nginx to be able to mount the certificates.
+
+### Flask alerts and boot strap:
+Use either  `success`, `info`, `warning`, `danger` for the category in `flash('message', 'category')`

@@ -1,0 +1,89 @@
+<!DOCTYPE HTML>
+<html lang='en'>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>{% block title %}{% endblock %} - Zulu-Alpha.co.za</title>
+
+    <!-- Icons -->
+    <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='img/favicon.png') }}"/>
+
+    <!-- CSS -->
+    {% assets "css" %}
+      <link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}"/>
+    {% endassets %}
+  </head>
+
+  <body>
+
+    <header class="container">
+      <div class="row">
+        <figure class="col-sm-4">
+          <img src="{{ url_for('static', filename='img/logo_314x350.png') }}" class="img-responsive center-block" alt="ZA Logo">
+        </figure>
+        <div class="col-sm-8">
+          <div class="row">
+            <div class="col-sm-12">
+              <h1 class="text-center">{% block heading %}Zulu-Alpha{% endblock %}</h1>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <p class="lead text-center">
+                {% block sub_heading %}
+                  We are a serious South African Arma community that makes our own content
+                  and use real world military tactics. We mainly play CO-OP with some
+                  occasional FvF against other international communities.
+                {% endblock %}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <aside class="container" id="drawer">
+
+    </aside>
+
+    <!-- Flashes in <section> element -->
+    {% from "/util/_formhelpers.html" import render_flashes %}
+    {{ render_flashes() }}
+
+    <main class="container separator">
+      {% block main %}
+      {% endblock %}
+    </main>
+
+    <footer class="container separator">
+      <div class="row">
+        <div class="col-lg-12">
+          {% block footer %}
+            <p>
+              &copy; 2016 by Zulu-Alpha.co.za. This site and it's code is provided under
+              the <a href="https://www.gnu.org/copyleft/gpl.html">GNU General Public
+              License v3.0</a>.
+            </p>
+            <p>
+              <a href="http://steampowered.com">Powered by Steam</a>.
+            </p>
+          {% endblock %}
+        </div>
+      </div>
+    </footer>
+
+    <!-- JS -->
+    {% block scripts %}
+      <script type="text/javascript" src="//code.jquery.com/jquery-2.2.0.min.js"></script>
+      {% assets "js" %}
+        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+      {% endassets %}
+      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/parsley.js/2.2.0/parsley.min.js"></script>
+    {% endblock scripts %}
+
+  </body>
+
+</html>
+

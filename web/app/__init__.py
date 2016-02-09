@@ -20,6 +20,9 @@ if os.getenv('ZAS_CONFIG', None):
 # Save config to global var to make it easy to import
 CONFIG = app.config
 
+# Manage Assets
+from app import assets
+
 # initialize DB after configs are handled
 db = MongoEngine(app)
 

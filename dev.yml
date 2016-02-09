@@ -11,3 +11,7 @@ mongo-express:
     - mongo
   ports:
     - "8081:8081"
+
+nginx:
+  volumes:
+    - /c/Users/adam/Dropbox/Projects/arma/zas/web/app/static/img:/opt/web/app/static/img

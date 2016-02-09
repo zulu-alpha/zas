@@ -25,7 +25,7 @@ def create_or_login(resp):
     # If already registered.
     user = helper.user_by_steam_id(steam_id=steam_id)
     if user is not None:
-        flash('Successfully signed in')
+        flash('Successfully signed in', 'success')
         flask_login.login_user(user)
         return redirect(oid.get_next_url())
 
@@ -39,7 +39,7 @@ def on_error(message):
 
     :param message: The error message from OpenID that is stored in the session
     """
-    flash(u'OpenID Error: ' + message)
+    flash(u'OpenID Error: ' + message, 'danger')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -56,10 +56,11 @@ def create_profile():
     """Create a new profile for a user that already authenticated through steam."""
     # Redirect to home if already registered or the steam ID cant be found.
     if flask_login.current_user.is_authenticated:
-        flash('You already have a profile!')
+        flash('You already have a profile!', 'warning')
         return redirect(url_for('home'))
     if 'steam_id' not in session:
-        flash('Error: Steam ID not found in session!')
+        flash(('Steam ID not found in session! Please first sign in with steam by'
+               ' using the steam button on this site.'), 'danger')
         return redirect(url_for('home'))
 
     form = RegistrationForm()
@@ -77,7 +78,7 @@ def create_profile():
                 form.ts_id.data,
                 form.skype_username.data,
                 form.name.data)
-        flash('Profile successfully created!')
+        flash('Profile successfully created!', 'success')
         flask_login.login_user(user)
         session.pop('steam_id', None)  # Remove now redundant session steam id
         return redirect(oid.get_next_url())

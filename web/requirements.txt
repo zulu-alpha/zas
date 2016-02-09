@@ -5,3 +5,6 @@ flask-mongoengine
 flask-debugtoolbar
 flask-login
 flask-wtf
+jsmin
+cssmin
+flask-assets
