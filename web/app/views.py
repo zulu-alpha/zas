@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from flask import render_template, session, redirect, request, flash, url_for, abort
 
 from flask.ext.openid import OpenID
@@ -8,6 +10,15 @@ from app.forms import RegistrationForm
 
 oid = OpenID(app, CONFIG['OPENID_FS_STORE_PATH'], safe_roots=[CONFIG['URL_ROOT']])
 OPENID = CONFIG['OPENID']
+
+
+@app.route('/login', methods=['GET', 'POST'])
+@oid.loginhandler
+def login():
+    """Initiates the login process for steam if not already signed in"""
+    if flask_login.current_user.is_authenticated:
+        return redirect(oid.get_next_url())
+    return oid.try_login(OPENID)
 
 
 @oid.after_login
@@ -27,6 +38,7 @@ def create_or_login(resp):
     if user is not None:
         flash('Successfully signed in', 'success')
         flask_login.login_user(user)
+        session.pop('steam_id', None)  # Remove now redundant session steam id
         return redirect(oid.get_next_url())
 
     # If not registered.
@@ -40,15 +52,6 @@ def on_error(message):
     :param message: The error message from OpenID that is stored in the session
     """
     flash(u'OpenID Error: ' + message, 'danger')
-
-
-@app.route('/login', methods=['GET', 'POST'])
-@oid.loginhandler
-def login():
-    """Initiates the login process for steam if not already signed in"""
-    if flask_login.current_user.is_authenticated:
-        return redirect(oid.get_next_url())
-    return oid.try_login(OPENID)
 
 
 @app.route('/create-profile', methods=['GET', 'POST'])
@@ -97,8 +100,14 @@ def logout():
 @app.route('/')
 def home():
     """Landing Page"""
-    example_param = 'Hello!'
+    example_param = "test param"
     return render_template('home.html', example_param=example_param)
+
+
+@app.route('/other')
+def other():
+    """Example page"""
+    return render_template('other.html')
 
 
 @app.route('/debug')

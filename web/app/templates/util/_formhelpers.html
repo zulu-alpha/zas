@@ -31,7 +31,7 @@
 {% macro render_flashes() %}
   {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
-      <section class="container separator">
+      <section class="separator">
         {% for category, message in messages %}
           <div class="row">
             <div class="col-lg-12">

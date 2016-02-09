@@ -19,6 +19,7 @@ bundles = {
     'js': Bundle(
         'js/lib/bootstrap.js',
         'js/parsleyjs_config.js',
+        'js/main.js',
         output='gen/min.js',
         filters='jsmin'
     )
