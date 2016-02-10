@@ -1,0 +1,9 @@
+migrate:
+  volumes:
+    - /c/Users/adam/zas/config/migrate_config.py:/opt/migrate/migrate_config.py:ro
+    - /c/Users/adam/zas/log/migrate:/var/log/migrate
+
+mongo:
+  volumes:
+    - /c/Users/adam/zas/config/mongod.yml:/etc/mongod/mongod.yml:ro
+    - /c/Users/adam/zas/log/mongodb:/var/log/mongodb

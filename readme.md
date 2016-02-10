@@ -28,3 +28,9 @@ Backups are handled automatically at 4AM, however you can manually backup at any
 * `docker-compose -f backup.yml -f ./backup/prod.yml up`
   * or substitute `prod.yml` for `dev.yml` for a development environment
 then once the backup container closes, stop the whole compose.
+
+### Migrate
+If any migrations need to be done, then modify the `migrate/migrate.py` file with your migration script and run it with:
+* `docker-compose -f migrate.yml -f ./migrate/prod.yml up`
+  * or substitute `prod.yml` for `dev.yml` for a development environment
+then once the migration container closes, stop the whole compose.

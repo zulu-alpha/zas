@@ -1,0 +1,18 @@
+migrate:
+  build: ./migrate
+  links:
+    - mongo
+
+mongo:
+  image: mongo
+  expose:
+    - "27017"
+  volumes_from:
+    - dbdata
+  command: -f /etc/mongod/mongod.yml
+
+dbdata:
+  image: ubuntu
+  volumes:
+    - /data/db
+  command: /usr/bin/tail -f /dev/null
