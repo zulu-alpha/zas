@@ -28,5 +28,6 @@ logging.info('Using DB {0} - {1}'.format(DB, db))
 collection = db.user
 logging.info('{0}'.format(collection))
 collection.drop_indexes()
+logging.info('{0}'.format(collection.index_information()))
 logging.info('Dropped user indexes')
 logging.info('{0}'.format(collection.index_information()))
