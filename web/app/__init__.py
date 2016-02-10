@@ -30,6 +30,7 @@ db = MongoEngine(app)
 login_manager = flask_login.LoginManager()
 login_manager.init_app(app)
 
+# View handlers
 from app import views
 
 # Debugging
