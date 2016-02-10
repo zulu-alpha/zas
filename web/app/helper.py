@@ -49,6 +49,7 @@ def create_profile(steam_id, email, arma_name, ts_id, name=None):
     """
     arma_name_ed = ArmaName(arma_name=arma_name)
     ts_id_ed = TSID(ts_id=ts_id)
+    name = name or None
     # Set user as active by default when signing up
     is_active = True
     is_authenticated = True
