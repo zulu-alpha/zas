@@ -22,3 +22,9 @@ You may have to set the owner and permissions of `/etc/letsencrypt/` to your use
 
 ### Flask alerts and boot strap:
 Use either  `success`, `info`, `warning`, `danger` for the category in `flash('message', 'category')`
+
+### Backups
+Backups are handled automatically at 4AM, however you can manually backup at any tome without interrupting the schedule with the following command:
+* `docker-compose -f backup.yml -f ./backup/prod.yml up`
+  * or substitute `prod.yml` for `dev.yml` for a development environment
+then once the backup container closes, stop the whole compose.
