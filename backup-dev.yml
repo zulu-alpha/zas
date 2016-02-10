@@ -1,0 +1,4 @@
+backup:
+  volumes:
+    - /c/Users/adam/zas/config/backup_config.py:/opt/backup/backup_config.py:ro
+    - /c/Users/adam/zas/log/backup:/var/log/backup
