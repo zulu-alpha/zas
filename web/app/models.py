@@ -21,7 +21,7 @@ class User(db.Document):
     steam_id = db.StringField(max_length=17, unique=True, required=True)
     email = db.EmailField(unique=True, required=True)
     slack_id = db.StringField(unique=True, sparse=True)
-    name = db.StringField(max_length=120, unique=True)  # Real name
+    name = db.StringField(max_length=120, unique=True, sparse=True)  # Real name
     arma_names = db.ListField(db.EmbeddedDocumentField(ArmaName), required=True)
     ts_ids = db.ListField(db.EmbeddedDocumentField(TSID), required=True)
     #rank = db.ReferenceField(Rank)
