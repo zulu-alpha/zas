@@ -9,8 +9,8 @@ Edit the config files appropriately for the environments.
   * Do the same for Mongo-Express and have it use a subdomain that goes to port 8081
 
 To start in production, use `sudo docker-compose -f docker-compose.yml -f prod.yml up`
-To start in development, use `docker-compose up` or `docker-compose -f docker-compose.yml -f docker-compose.override.yml -f dev.yml up` for more debugging in the *web* app.
-If the development environment is Linux, then you should change the paths to the config and log files in `docker-compose.override.yml` to be something more meaningful.
+To start in development, use `docker-compose -f docker-compose.yml -f dev.yml up` for more debugging in the *web* app.
+If the development environment is Linux, then you should change the paths to the config and log files in `dev.yml` to be something more meaningful.
 Also if developing in linux, change the path in `dev.yml` to point to your *web* project folder.
 Even in windows, if you aren't me, change instances of `adam` to your username, though that may require a lot of editing.
 

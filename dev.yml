@@ -1,17 +1,28 @@
 web:
   working_dir: /opt/web_dev
   volumes:
+     - /c/Users/adam/zas/config/zas.cfg:/etc/zas/zas.cfg:ro
+     - /c/Users/adam/zas/log/web:/var/log/web
      - /c/Users/adam/Dropbox/Projects/arma/zas/web:/opt/web_dev
   #command: --reload --access-logfile "-" --error-logfile "-" --log-level debug
   entrypoint: python run.py
 
 mongo-express:
-  image: knickers/mongo-express
-  links:
-    - mongo
   ports:
     - "8081:8081"
 
 nginx:
   volumes:
+    - /c/Users/adam/zas/config/nginx.conf:/etc/nginx/nginx.conf:ro
+    - /c/Users/adam/zas/log/nginx:/var/log/nginx
     - /c/Users/adam/Dropbox/Projects/arma/zas/web/app/static/img:/opt/web/app/static/img
+
+backup:
+  volumes:
+    - /c/Users/adam/zas/config/backup_config.py:/opt/backup/backup_config.py:ro
+    - /c/Users/adam/zas/log/backup:/var/log/backup
+
+mongo:
+  volumes:
+    - /c/Users/adam/zas/config/mongod.yml:/etc/mongod/mongod.yml:ro
+    - /c/Users/adam/zas/log/mongodb:/var/log/mongodb
