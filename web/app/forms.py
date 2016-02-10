@@ -18,7 +18,7 @@ class RegistrationForm(Form):
             'Arma in game nick name',
             [
                 InputRequired(),
-                Length(max=60),
+                Length(min=4, max=60),
                 Unique(User, 'arma_names.arma_name', message='Arma name already taken!')
             ])
     ts_id = StringField(
@@ -32,7 +32,7 @@ class RegistrationForm(Form):
             'Full Name (Optional)',
             [
                 Optional(),
-                Length(max=60),
+                Length(min=8, max=60),
                 Unique(User, 'name', message='That name is already registered with us!')
             ])
     next = HiddenField(
