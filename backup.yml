@@ -1,5 +1,5 @@
 backup:
-  build: .
+  build: ./backup
   volumes_from:
     - dbdata:ro
   entrypoint:
