@@ -1,5 +1,3 @@
-from datetime import timedelta
-
 from flask import render_template, session, redirect, request, flash, url_for, abort
 
 from flask.ext.openid import OpenID
@@ -85,7 +83,7 @@ def create_profile():
         session.pop('steam_id', None)  # Remove now redundant session steam id
         return redirect(oid.get_next_url())
 
-    return render_template('create_profile.html', form=form)
+    return render_template('profile/create_profile.html', form=form)
 
 
 @app.route('/logout')
@@ -94,22 +92,3 @@ def logout():
     flask_login.logout_user()
     flash('You were signed out')
     return redirect(oid.get_next_url())
-
-
-@app.route('/')
-def home():
-    """Landing Page"""
-    example_param = "test param"
-    return render_template('home.html', example_param=example_param)
-
-
-@app.route('/other')
-def other():
-    """Example page"""
-    return render_template('other.html')
-
-
-@app.route('/debug')
-def debug():
-    """In order to get debug screen"""
-    assert 1 == 2

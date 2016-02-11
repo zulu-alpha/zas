@@ -31,7 +31,7 @@ login_manager = flask_login.LoginManager()
 login_manager.init_app(app)
 
 # View handlers
-from app.views import views
+from app.views import login, home
 
 # Debugging
 toolbar = DebugToolbarExtension(app)
