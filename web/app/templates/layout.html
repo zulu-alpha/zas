@@ -20,6 +20,7 @@
   <body>
 
 
+    <!-- Off canvas drawer (Nav menu) -->
     <aside id="drawer">
       <nav class="list-group">
         {% if current_user.is_authenticated %}
@@ -32,12 +33,14 @@
               </figure>
             </a>
           {% endif %}
+        <!-- Actual Nav menu -->
         {% block nav_home %}<a href="{{ url_for('home') }}" class="list-group-item">Home</a>{% endblock %}
         {% block nav_other %}<a href="{{ url_for('other') }}" class="list-group-item">Some other page</a>{% endblock %}
       </nav>
     </aside>
 
 
+    <!-- Hamburger menu for drawer -->
     <a role="button" id="ham-menu">
       <svg class="svg-button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
         <path d="M2 6h20v3H2zm0 5h20v3H2zm0 5h20v3H2z"></path>
@@ -45,9 +48,11 @@
     </a>
 
 
+    <!-- Main page container -->
     <div class="container-fluid" id="content">
 
 
+      <!-- Header -->
       <header class="row">
         <div class="col-lg-4">
           <figure>
@@ -75,17 +80,19 @@
       </header>
 
 
-      <!-- Flashes in <section> element -->
+      <!-- Flashing -->
       {% from "/util/_formhelpers.html" import render_flashes %}
       {{ render_flashes() }}
 
 
+      <!-- Page specific content -->
       <main class="separator">
         {% block main %}
         {% endblock %}
       </main>
 
 
+      <!-- Footer -->
       <footer class="row separator">
         <div class="col-lg-12">
           {% block footer %}
