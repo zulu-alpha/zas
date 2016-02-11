@@ -24,7 +24,7 @@ class User(db.Document):
     name = db.StringField(max_length=120, unique=True, sparse=True)  # Real name
     arma_names = db.ListField(db.EmbeddedDocumentField(ArmaName), required=True)
     ts_ids = db.ListField(db.EmbeddedDocumentField(TSID), required=True)
-    #rank = db.ReferenceField(Rank)
+    # rank = db.ReferenceField(Rank)
     is_active = db.BooleanField(required=True)
     is_authenticated = db.BooleanField(required=True)
     is_anonymous = db.BooleanField(default=False, required=True)
@@ -39,11 +39,28 @@ class User(db.Document):
 
     @property
     def arma_name(self):
-        """
-        Gets the latest Arma Name
+        """Gets the latest Arma Name
+
         :return: String representing Arma Name
         """
         return self.arma_names[-1].arma_name
 
-    #def __repr__(self):
-    #    return '<Arma Nick: %s, steam_id: %s>' %(self.steam_id)
+    def __repr__(self):
+        return '<User Document - Arma Nick: {0}, steam_id: {1}>'.format(
+                self.arma_name, self.steam_id)
+
+
+class Office(db.Document):
+    """Offices primarily describe user roles and permissions."""
+    name = db.StringField(max_length=20, unique=True, required=True)
+    # description
+    # heads
+    # gd_folder
+    # members =
+    # responsibilities
+    # sop
+    # member_responsibilities
+    # ts_group
+    # image
+    # image_squad
+    # image_ts
