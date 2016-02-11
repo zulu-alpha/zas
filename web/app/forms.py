@@ -2,7 +2,7 @@ from flask.ext.wtf import Form
 from app.lib.wtformsparsleyjs import StringField, HiddenField
 from wtforms.validators import InputRequired, Email, Length, Optional, URL
 
-from app.validators import Unique
+from app.util.validators import Unique
 from app.models import ArmaName, TSID, User
 
 

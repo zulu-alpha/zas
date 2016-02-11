@@ -4,7 +4,7 @@ from flask import render_template, session, redirect, request, flash, url_for, a
 
 from flask.ext.openid import OpenID
 from app import app, login_manager, flask_login, CONFIG
-from app import helper
+from app.util import helper
 from app.forms import RegistrationForm
 
 
