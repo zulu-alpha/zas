@@ -37,8 +37,8 @@ def user_by_id(user_id):
 
 
 def create_profile(steam_id, email, arma_name, ts_id, name=None):
-    """Creates the initial user account, combining the verified Steam ID and required information that the
-    user fills in for this site itself.
+    """Creates the initial user account, combining the verified Steam ID and required information
+    that the user fills in for this site itself.
 
     :param steam_id: Steam ID that is received from the App during OpenID login with Steam.
     :param email: Email Address
