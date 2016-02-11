@@ -37,7 +37,7 @@ then once the migration container closes, stop the whole compose.
 
 ### Restore 
 To restore from backup, execute the following:
-*  `docker-compose -f restore.yml -f ./restore/dev.yml run -d restore FILE_NAME`
+*  `docker-compose -f restore.yml -f ./restore/prod.yml run restore FILE_NAME`
   *  Where FILE_NAME is the name of the file on the FTP server.
   *  Substitute `prod` for `dev` when in development.
-  *  You can omit `-d` in linux, but is required for windows.
+  *  If you are running on Windows, `-d` is required.
