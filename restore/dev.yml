@@ -1,0 +1,4 @@
+restore:
+  volumes:
+    - /c/Users/adam/zas/config/restore_config.py:/opt/restore/restore_config.py:ro
+    - /c/Users/adam/zas/log/restore:/var/log/restore

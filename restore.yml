@@ -1,0 +1,10 @@
+restore:
+  build: ./restore
+  volumes_from:
+    - dbdata
+
+dbdata:
+  image: ubuntu
+  volumes:
+    - /data/db
+  command: /usr/bin/tail -f /dev/null

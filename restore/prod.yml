@@ -1,0 +1,4 @@
+restore:
+  volumes:
+    - /etc/zas/restore_config.py:/opt/restore/restore_config.py:ro
+    - /var/zas/log/restore:/var/log/restore
