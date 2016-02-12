@@ -1,9 +1,10 @@
 from flask import render_template, session, redirect, request, flash, url_for, abort
-
 from flask.ext.openid import OpenID
+
 from app import app, login_manager, flask_login, CONFIG
 from app.util import helper
 from app.forms import RegistrationForm
+from app.models import User
 
 
 oid = OpenID(app, CONFIG['OPENID_FS_STORE_PATH'], safe_roots=[CONFIG['URL_ROOT']])
@@ -32,7 +33,7 @@ def create_or_login(resp):
     session['steam_id'] = steam_id
 
     # If already registered.
-    user = helper.user_by_steam_id(steam_id=steam_id)
+    user = User.by_steam_id(steam_id=steam_id)
     if user is not None:
         flash('Successfully signed in', 'success')
         flask_login.login_user(user)
@@ -72,7 +73,7 @@ def create_profile():
     form.next.data = oid.get_next_url()
 
     if form.validate_on_submit():
-        user = helper.create_profile(
+        user = User.create_profile(
                 session['steam_id'],
                 form.email.data,
                 form.arma_name.data,

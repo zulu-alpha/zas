@@ -4,7 +4,7 @@ interactions.
 """
 import re
 from app import login_manager
-from app.models import ArmaName, TSID, User
+from app.models import User
 
 
 def strip_steam_id(identity_url):
@@ -17,44 +17,11 @@ def strip_steam_id(identity_url):
     return match.group(1)
 
 
-def user_by_steam_id(steam_id):
-    """Returns the user that has the given Steam_ID
-
-    :param steam_id: Steam ID associated with the desired User object
-    :return: MongoDB Object
-    """
-    return User.objects(steam_id=steam_id).first()
-
-
 @login_manager.user_loader
 def user_by_id(user_id):
-    """Returns the user that has the given _id
+    """Returns the user that has the given _id. Required by flask-login
 
     :param user_id: String that represents the User id
     :return: MongoDB Object
     """
-    return User.objects(id=user_id).first()
-
-
-def create_profile(steam_id, email, arma_name, ts_id, name=None):
-    """Creates the initial user account, combining the verified Steam ID and required information
-    that the user fills in for this site itself.
-
-    :param steam_id: Steam ID that is received from the App during OpenID login with Steam.
-    :param email: Email Address
-    :param arma_name: In game Arma 3 Nick Name
-    :param ts_id: Teamspeak Unique ID
-    :param name: Real Name (Optional)
-    :return: The User Object added to the DB
-    """
-    arma_name_ed = ArmaName(arma_name=arma_name)
-    ts_id_ed = TSID(ts_id=ts_id)
-    name = name or None
-    # Set user as active by default when signing up
-    is_active = True
-    is_authenticated = True
-
-    user = User(steam_id=steam_id, email=email, arma_names=[arma_name_ed], ts_ids=[ts_id_ed],
-                name=name, is_active=is_active, is_authenticated=is_authenticated)
-    user.save()
-    return user
+    return User.by_id(user_id)

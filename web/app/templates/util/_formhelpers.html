@@ -1,5 +1,5 @@
 {% macro render_field(field) %}
-  {% if field.type not in ['CSRFTokenField','HiddenField'] %}
+  {% if field.type not in ['CSRFTokenField','HiddenField'] and not field.skip|default(false) %}
     {% if field.errors %}
       <div class="form-group has-error">
         {{ field.label(class_="control-label")|safe }}
