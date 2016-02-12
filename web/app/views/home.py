@@ -1,4 +1,4 @@
-from flask import render_template
+from flask import render_template, g
 
 from app import app, flask_login
 
@@ -6,15 +6,8 @@ from app import app, flask_login
 @app.route('/')
 def home():
     """Landing Page"""
-    example_param = "test param"
+    example_param = 'Test Param'
     return render_template('public/home.html', example_param=example_param)
-
-
-@app.route('/other')
-@flask_login.login_required
-def other():
-    """Example page"""
-    return render_template('other.html')
 
 
 @app.route('/debug')

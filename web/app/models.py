@@ -74,9 +74,9 @@ class User(db.Document):
         This is useful for selecting members for an office.
         """
         return [
-            (u.steam_id, u.arma_name) for u in cls.objects.only('steam_id','arma_names')\
-                .order_by('arma_names.arma_name').all()
-            ]  # Still need to add ranks
+            (u.steam_id, u.arma_name) for u in cls.objects.only('steam_id', 'arma_names')
+            .order_by('arma_names.arma_name').all()
+        ]  # Still need to add ranks
 
     @classmethod
     def create_profile(cls, steam_id, email, arma_name, ts_id, name=None):
@@ -108,9 +108,9 @@ class Office(db.Document):
     name = db.StringField(min_length=4, max_length=25, unique=True, required=True)
     name_short = db.StringField(min_length=2, max_length=15, unique=True, required=True)
     # description
-    # heads
+    # head
     # gd_folder
-    members = db.ListField(db.ReferenceField(User, reverse_delete_rule=4), required=True)
+    members = db.ListField(db.ReferenceField(User, reverse_delete_rule=4))
     # responsibilities
     # sop
     # member_responsibilities
@@ -118,6 +118,12 @@ class Office(db.Document):
     # image
     # image_squad
     # image_ts
+    created = db.DateTimeField(default=datetime.utcnow())
+
+    @classmethod
+    def all(cls):
+        """Returns all offices in the order in which they where created."""
+        return cls.objects.order_by('created').all()
 
     @classmethod
     def create_office(cls, name, name_short, members):
@@ -128,7 +134,33 @@ class Office(db.Document):
         :param members: A list of members to add to the office
         :return: The Office object added to the DB
         """
-        members = [User.by_steam_id(id) for id in members]
+        members = [User.by_steam_id(uid) for uid in members]
         office = cls(name=name, name_short=name_short, members=members)
         office.save()
         return office
+
+    @classmethod
+    def by_name_short(cls, name_short):
+        """Returns the Office object that has the given short name
+
+        :param name_short: String representing name_short attribute of an office
+        :return: Office object
+        """
+        return cls.objects(name_short=name_short).first()
+
+    @classmethod
+    def is_member(cls, user, office):
+        """Returns true if the given user object is a member of the given office
+        (office is referred to by name_short)
+
+        :param user: User object
+        :param office: String representing name_short attribute of an office
+        :return: BOOL
+        """
+        office_obj = Office.by_name_short(office)
+        if not office_obj:
+            return False
+        if user in office_obj.members:
+            return True
+        else:
+            return False

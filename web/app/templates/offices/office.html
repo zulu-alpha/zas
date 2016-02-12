@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block title %}{{ office.name_short }}{% endblock %}
+
+{% block heading %}{{ office.name }}{% endblock %}
+
+{% block sub_heading %}Temporary sub heading{% endblock %}
+
+{% block nav_home %}{{ super() }}{% endblock %}
+
+{% block main %}
+  <section class="row">
+    <article class="col-lg-12">
+      <h3>Members:</h3>
+      <ul>
+        {% for member in office.members %}
+          <li>{{ member.arma_name }}</li>
+        {% endfor %}
+      </ul>
+    </article>
+  </section>
+{% endblock %}

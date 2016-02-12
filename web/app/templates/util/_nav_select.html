@@ -1,0 +1,7 @@
+{% macro nav_active(url, name) %}
+  {% if g.request_path == url %}
+    <a class="list-group-item active">{{ name }}</a>
+  {% else %}
+    <a href="{{ url }}" class="list-group-item">{{ name }}</a>
+  {% endif %}
+{% endmacro %}

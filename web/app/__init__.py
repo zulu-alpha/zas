@@ -29,9 +29,10 @@ db = MongoEngine(app)
 # Session management
 login_manager = flask_login.LoginManager()
 login_manager.init_app(app)
+login_manager.login_view = 'login'
 
 # View handlers
-from app.views import login, home, offices
+from app.views import before_request, login, home, offices
 
 # Debugging
 toolbar = DebugToolbarExtension(app)

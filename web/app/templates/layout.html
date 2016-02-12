@@ -34,8 +34,12 @@
             </a>
           {% endif %}
         <!-- Actual Nav menu -->
-        {% block nav_home %}<a href="{{ url_for('home') }}" class="list-group-item">Home</a>{% endblock %}
-        {% block nav_other %}<a href="{{ url_for('other') }}" class="list-group-item">Some other page</a>{% endblock %}
+        {% from "/util/_nav_select.html" import nav_active %}
+        {{ nav_active(url_for('home'), 'Home') }}
+        <br>
+        {% for office in g.offices %}
+          {{ nav_active(url_for('office', name=office.name_short), office.name + ' Office') }}
+        {% endfor %}
       </nav>
     </aside>
 

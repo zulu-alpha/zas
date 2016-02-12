@@ -1,4 +1,4 @@
-from flask import render_template, session, redirect, request, flash, url_for, abort
+from flask import render_template, session, redirect, flash, url_for, abort
 from flask.ext.openid import OpenID
 
 from app import app, login_manager, flask_login, CONFIG

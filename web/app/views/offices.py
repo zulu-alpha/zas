@@ -1,23 +1,44 @@
-from flask import render_template, flash, redirect, url_for
+from flask import render_template, flash, redirect, url_for, request
+
+from app.util.permission import in_office, in_office_dynamic
 
 from app import app, flask_login
 from app.models import User, Office
 from app.forms import CreateOffice
 
 
-@app.route('/create-office', methods=['GET', 'POST'])
+@app.route('/office/create', methods=['GET', 'POST'])
 @flask_login.login_required
+@in_office('HQ')
 def create_office():
     """Create a new office"""
     form = CreateOffice()
     form.members.choices = User.select_field_ranked()
 
     if form.validate_on_submit():
-        Office.create_office(
+        office = Office.create_office(
             form.name.data,
             form.name_short.data,
             form.members.data)
         flash('Office successfully created!', 'success')
-        return redirect(url_for('home'))
+        return redirect(url_for('office', name=office.name_short))
 
     return render_template('offices/create_office.html', form=form)
+
+
+@app.route('/office/<name>')
+def office(name):
+    if not in_office_dynamic(name):
+        return redirect(url_for('home'))
+
+    office_obj = Office.by_name_short(name)
+    if not office_obj:
+        flash('An office named {0} was not found!'.format(name), 'warning')
+        return redirect(url_for('home'))
+    return render_template('offices/office.html', office=office_obj)
+
+
+@app.route('/office/test')
+@in_office('Org')
+def office_test():
+    return redirect(url_for('home'))
