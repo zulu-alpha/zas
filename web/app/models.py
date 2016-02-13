@@ -57,7 +57,7 @@ class User(db.Document):
         :param steam_id: Steam ID associated with the desired User object
         :return: MongoDB Object
         """
-        return cls.objects(steam_id=steam_id).get()
+        return cls.objects(steam_id=steam_id).first()
 
     @classmethod
     def by_id(cls, user_id):
@@ -66,7 +66,7 @@ class User(db.Document):
         :param user_id: String that represents the User id
         :return: MongoDB Object
         """
-        return cls.objects(id=user_id).get()
+        return cls.objects(id=user_id).first()
 
     @classmethod
     def select_field_ranked(cls):
@@ -108,9 +108,9 @@ class Office(db.Document):
     name = db.StringField(min_length=4, max_length=25, unique=True, required=True)
     name_short = db.StringField(min_length=2, max_length=15, unique=True, required=True)
     # description
-    # head
     # gd_folder
-    members = db.ListField(db.ReferenceField(User, reverse_delete_rule=4))
+    members = db.ListField(db.ReferenceField(User, reverse_delete_rule=4), required=True)
+    head = db.ReferenceField(User, reverse_delete_rule=4, required=True)
     # responsibilities
     # sop
     # member_responsibilities
@@ -126,16 +126,16 @@ class Office(db.Document):
         return cls.objects.order_by('created').all()
 
     @classmethod
-    def create_office(cls, name, name_short, members):
+    def create_office(cls, name, name_short, head):
         """Creates a new office with the given details
 
         :param name: The full name of the office
         :param name_short: A shot name used by the permission system
-        :param members: A list of members to add to the office
+        :param head: The steam ID of the head of the office
         :return: The Office object added to the DB
         """
-        members = [User.by_steam_id(uid) for uid in members]
-        office = cls(name=name, name_short=name_short, members=members)
+        head_obj = User.by_steam_id(head)
+        office = cls(name=name, name_short=name_short, members=[head_obj], head=head_obj)
         office.save()
         return office
 
@@ -162,5 +162,18 @@ class Office(db.Document):
             return False
         if user in office_obj.members:
             return True
-        else:
+
+    @classmethod
+    def is_head(cls, user, office):
+        """Returns true if the given user object is the head of the given office
+        (office is referred to by name_short)
+
+        :param user: User object
+        :param office: String representing name_short attribute of an office
+        :return: BOOL
+        """
+        office_obj = Office.by_name_short(office)
+        if not office_obj:
             return False
+        if user == office_obj.head:
+            return True

@@ -1,0 +1,9 @@
+{% macro edit(has_permission) %}
+  {% if has_permission %}
+    <div class="row">
+      <div class="col-lg-12">
+        <button type="button" class="btn btn-default">Edit</button>
+      </div>
+    </div>
+  {% endif %}
+{% endmacro %}

@@ -1,9 +1,9 @@
 from flask.ext.wtf import Form
-from app.lib.wtformsparsleyjs import StringField, HiddenField
+from app.lib.wtformsparsleyjs import StringField, HiddenField, SelectField
 from wtforms import SelectMultipleField
 from wtforms.validators import InputRequired, Email, Length, Optional, URL
 
-from app.util.validators import Unique, Exists_List
+from app.util.validators import Unique, Exists, Exists_List
 from app.models import ArmaName, TSID, User, Office
 
 
@@ -44,6 +44,29 @@ class RegistrationForm(Form):
 
 
 class CreateOffice(Form):
+    name = StringField(
+            'Name of the office (eg: Headquarters)',
+            [
+                InputRequired(),
+                Length(min=4, max=25),
+                Unique(Office, 'name', message='The name must be unique!')
+            ])
+    name_short = StringField(
+            'Short version of the name (eg: HQ)',
+            [
+                InputRequired(),
+                Length(min=2, max=15),
+                Unique(Office, 'name_short', message='The short name must be unique!')
+            ])
+    head = SelectField(
+            'Select who will be the head of this office',
+            [
+                InputRequired(),
+                Exists(User, 'steam_id', message='This member does not exist!')
+            ])
+
+
+class EditOffice(Form):
     name = StringField(
             'Name of the office (eg: Headquarters)',
             [

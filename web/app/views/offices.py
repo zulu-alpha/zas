@@ -9,17 +9,17 @@ from app.forms import CreateOffice
 
 @app.route('/office/create', methods=['GET', 'POST'])
 @flask_login.login_required
-@in_office('HQ')
+@in_office(['HQ'])
 def create_office():
     """Create a new office"""
     form = CreateOffice()
-    form.members.choices = User.select_field_ranked()
+    form.head.choices = User.select_field_ranked()
 
     if form.validate_on_submit():
         office = Office.create_office(
             form.name.data,
             form.name_short.data,
-            form.members.data)
+            form.head.data)
         flash('Office successfully created!', 'success')
         return redirect(url_for('office', name=office.name_short))
 
@@ -28,17 +28,14 @@ def create_office():
 
 @app.route('/office/<name>')
 def office(name):
-    if not in_office_dynamic(name):
-        return redirect(url_for('home'))
-
     office_obj = Office.by_name_short(name)
+
     if not office_obj:
         flash('An office named {0} was not found!'.format(name), 'warning')
         return redirect(url_for('home'))
-    return render_template('offices/office.html', office=office_obj)
 
-
-@app.route('/office/test')
-@in_office('Org')
-def office_test():
-    return redirect(url_for('home'))
+    return render_template(
+        'offices/office.html',
+        office=office_obj,
+        has_permission=in_office_dynamic(['HQ'], [name])
+    )

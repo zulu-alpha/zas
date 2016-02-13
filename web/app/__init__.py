@@ -30,6 +30,7 @@ db = MongoEngine(app)
 login_manager = flask_login.LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
+login_manager.login_message = 'You need to be logged in to access this page.'
 
 # View handlers
 from app.views import before_request, login, home, offices
