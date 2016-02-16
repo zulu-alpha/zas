@@ -72,6 +72,8 @@ class User(db.Document):
     def select_field_ranked(cls):
         """Returns a list of steam IDs with Arma Name labels who have a ranks.
         This is useful for selecting members for an office.
+
+        :return: Tuple of format (steam_id, arma_name)
         """
         return [
             (u.steam_id, u.arma_name) for u in cls.objects.only('steam_id', 'arma_names')
@@ -117,7 +119,6 @@ class Office(db.Document):
     # ts_group
     # image
     # image_squad
-    # image_ts
     created = db.DateTimeField(default=datetime.utcnow())
 
     @classmethod
@@ -157,7 +158,7 @@ class Office(db.Document):
         :param office: String representing name_short attribute of an office
         :return: BOOL
         """
-        office_obj = Office.by_name_short(office)
+        office_obj = cls.by_name_short(office)
         if not office_obj:
             return False
         if user in office_obj.members:
@@ -172,8 +173,63 @@ class Office(db.Document):
         :param office: String representing name_short attribute of an office
         :return: BOOL
         """
-        office_obj = Office.by_name_short(office)
+        office_obj = cls.by_name_short(office)
         if not office_obj:
             return False
         if user == office_obj.head:
             return True
+
+    @classmethod
+    def select_field_members(cls, office):
+        """Returns a list of steam IDs with Arma Name labels who are members of the given office.
+        This is useful for removing members for an office.
+
+        :param office: Short name of office to get members of
+        :return: Tuple of format (steam_id, arma_name)
+        """
+        office_obj = cls.by_name_short(office)
+        return [(u.steam_id, u.arma_name) for u in office_obj.members]
+
+    @classmethod
+    def add_remove_members(cls, office, add, remove):
+        """Adds and\or removes the given users from\to the given office
+
+        :param office: Short name of office
+        :param add: List of steam_ids representing users to add
+        :param remove: List of steam_ids representing users to remove
+        :return: Nothing
+        """
+        office_obj = cls.by_name_short(office)
+        change = False
+
+        if remove:
+            for steam_id in remove:
+                member = User.by_steam_id(steam_id)
+                if member in office_obj.members:
+                    office_obj.members.remove(member)
+                    change = True
+
+        if add:
+            for steam_id in add:
+                member = User.by_steam_id(steam_id)
+                if member not in office_obj.members:
+                    office_obj.members.append(member)
+                    change = True
+
+        if change:
+            office_obj.save()
+
+    @classmethod
+    def change_head(cls, office, new_head_steam_id):
+        """Change the head of the office to the given head
+
+        :param office: Short name of office
+        :param new_head_steam_id: The steam of the ID of the new head
+        :return: Nothing
+        """
+        office_obj = cls.by_name_short(office)
+
+        new_head = User.by_steam_id(new_head_steam_id)
+        if new_head in office_obj.members:
+            office_obj.head = new_head
+            office_obj.save()

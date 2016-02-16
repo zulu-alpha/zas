@@ -6,14 +6,13 @@
 
 {% block sub_heading %}Temporary sub heading{% endblock %}
 
-{% block nav_home %}{{ super() }}{% endblock %}
 
 {% block main %}
   {% from "/util/_permissions.html" import edit %}
-  {{ edit(has_permission) }}
 
   <section class="row">
     <article class="col-lg-12">
+      <p>{{ edit(has_permission, request.url + "/edit/head", "Change Head") }}</p>
       <h3>Members:</h3>
       <ul>
         {% for member in office.members %}
@@ -25,6 +24,7 @@
           </li>
         {% endfor %}
       </ul>
+      <p>{{ edit(has_permission_hq, request.url + "/edit/members", "Edit Members") }}</p>
     </article>
   </section>
 {% endblock %}

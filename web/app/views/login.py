@@ -84,7 +84,7 @@ def create_profile():
         session.pop('steam_id', None)  # Remove now redundant session steam id
         return redirect(oid.get_next_url())
 
-    return render_template('profile/create_profile.html', form=form)
+    return render_template('profile/create.html', form=form)
 
 
 @app.route('/logout')

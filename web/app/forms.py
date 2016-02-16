@@ -1,9 +1,10 @@
 from flask.ext.wtf import Form
-from app.lib.wtformsparsleyjs import StringField, HiddenField, SelectField
-from wtforms import SelectMultipleField
+from app.lib.wtformsparsleyjs import StringField, HiddenField, SelectField, SelectMultipleField
+from wtforms.fields import HiddenField
 from wtforms.validators import InputRequired, Email, Length, Optional, URL
 
-from app.util.validators import Unique, Exists, Exists_List
+from app.util.validators import Unique, Exists, ExistsList, OfficeIsMemberList, \
+    OfficeIsNotMemberList, OfficeIsMember
 from app.models import ArmaName, TSID, User, Office
 
 
@@ -66,24 +67,26 @@ class CreateOffice(Form):
             ])
 
 
-class EditOffice(Form):
-    name = StringField(
-            'Name of the office (eg: Headquarters)',
+class EditOfficeMembers(Form):
+    office_name = HiddenField()
+    members_add = SelectMultipleField(
+            'Add members to the office',
             [
-                InputRequired(),
-                Length(min=4, max=25),
-                Unique(Office, 'name', message='The name must be unique!')
+                ExistsList(User, 'steam_id', message="One or more of these users don't "
+                                                     "exist or are not qualified!"),
+                OfficeIsNotMemberList()
             ])
-    name_short = StringField(
-            'Short version of the name (eg: HQ)',
+    members_remove = SelectMultipleField(
+            'Remove members from the office',
             [
-                InputRequired(),
-                Length(min=2, max=15),
-                Unique(Office, 'name_short', message='The short name must be unique!')
+                OfficeIsMemberList(),
             ])
-    members = SelectMultipleField(
-            'Select who will be the members of this office',
+
+class EditOfficeHead(Form):
+    office_name = HiddenField()
+    head = SelectField(
+            'Choose the new office head',
             [
                 InputRequired(),
-                Exists_List(User, 'steam_id', message='This member does not exist!')
+                OfficeIsMember(message='This user is not a member of the office!')
             ])

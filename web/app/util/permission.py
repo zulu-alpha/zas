@@ -1,6 +1,6 @@
 from functools import wraps
 
-from flask import request, redirect, url_for, flash
+from flask import request, redirect, url_for, flash, g
 
 from app import CONFIG
 
@@ -25,8 +25,28 @@ def is_bootstraper():
         return True
 
 
+def msg(member=None, head=None):
+    """Create the message to be used in the even of a failed authentication.
+
+    :param member: List of office names that the user needs to be a member of
+    :param head: List of office names that the user needs to be a head of
+    :return: A string message derived from those lists
+    """
+    msg = 'You need to be a'
+    if member:
+        msg = msg + ' member of ' + ' or '.join(member)
+    if member and head:
+        msg = msg + ' or a'
+    if head:
+        msg = msg + 'head of ' + ' or '.join(head)
+    return msg
+
+
 def in_office(member=None, head=None):
-    """Security decorator that checks if the logged in user is a member of the given office
+    """Security decorator that checks if the logged in user is a member of the given office.
+    Note that you can use the magic string 'DYNAMIC' in the member of head parameter lists
+    to refer to the office parameter in the URL, as long as that parameter is named `office_name`.
+    This allows the decorator to become dynamic.
 
     :param member: List of short names of offices the user needs to be a member of at least
     :param head: List of short names of offices the user needs to be a head of at least
@@ -35,7 +55,6 @@ def in_office(member=None, head=None):
     def decorator(f):
         @wraps(f)
         def decorated_function(*args, **kwargs):
-
             # Check to see if permission checking can be skipped due to bootstrapping
             if is_bootstraper():
                 return f(*args, **kwargs)
@@ -45,17 +64,22 @@ def in_office(member=None, head=None):
             # Iterate through each office and return as soon as the user is found to be a member
             if member:
                 for office in member:
+                    if office == 'DYNAMIC':
+                        office = kwargs['office_name']
                     if Office.is_member(user, office):
                         return f(*args, **kwargs)
 
             # Iterate through offices to check if the user is a head of that office
             if head:
                 for office in head:
+                    if office == 'DYNAMIC':
+                        office = kwargs['office_name']
                     if Office.is_head(user, office):
                         return f(*args, **kwargs)
 
             # If no match is found, return a failure
-            flash('You need to be a member of {0} or a head of {1}'.format(member, head), 'warning')
+
+            flash(msg(member, head), 'warning')
             return redirect(url_for('home'))
 
         return decorated_function
@@ -64,9 +88,7 @@ def in_office(member=None, head=None):
 
 def in_office_dynamic(member=None, head=None, do_flash=False):
     """Checks if the logged in user is a member or head of one of the given office. This is
-    used instead of the decorator version as the decorator is harder to use when the exact
-    office is unknown at compile time (Such as generic office pages that can be applied to
-    any office)
+    used instead of the decorator version to allow you to use it in the middle of a function.
 
     :param member: List of short names of offices the user needs to be a member of at least
     :param head: List of short names of offices the user needs to be a head of at least
@@ -93,4 +115,4 @@ def in_office_dynamic(member=None, head=None, do_flash=False):
 
     # If no match is found, return a failure
     if do_flash:
-        flash('You need to be a member of {0} or a head of {1}'.format(member, head), 'warning')
+        flash(msg(member, head), 'warning')

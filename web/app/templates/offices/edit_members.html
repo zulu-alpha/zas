@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block title %}Edit Members of {{ office.name_short }}{% endblock %}
+
+{% block heading %}Edit Members of {{ office.name }}{% endblock %}
+
+{% block sub_heading %}
+  Choose which members to add or remove to the office.
+{% endblock %}
+
+
+{% block main %}
+  <section class="row">
+    <article class="col-lg-12">
+      {% from "/util/_formhelpers.html" import render_form %}
+      <form data-parsley-validate action="{{ url_for("edit_office_members", office_name=office.name_short) }}" method="post">
+        <fieldset>
+          <legend>Edit members:</legend>
+          {{ render_form(form) }}
+          <button type="submit" class="btn btn-default">Add/Remove Members</button>
+        </fieldset>
+      </form>
+    </article>
+  </section>
+{% endblock %}

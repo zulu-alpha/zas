@@ -38,7 +38,7 @@
         {{ nav_active(url_for('home'), 'Home') }}
         <br>
         {% for office in g.offices %}
-          {{ nav_active(url_for('office', name=office.name_short), office.name + ' Office') }}
+          {{ nav_active(url_for('office', office_name=office.name_short), office.name + ' Office') }}
         {% endfor %}
       </nav>
     </aside>

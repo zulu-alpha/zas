@@ -41,3 +41,6 @@ To restore from backup, execute the following:
   *  Where FILE_NAME is the name of the file on the FTP server.
   *  Substitute `prod` for `dev` when in development.
   *  If you are running on Windows, `-d` is required.
+  
+### Offices
+Don't make an office with the short name `DYNAMIC`, as that is reserved by the permission system.
