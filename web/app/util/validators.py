@@ -96,3 +96,20 @@ class OfficeIsNotMemberList:
         for steam_id in field.data:
             if steam_id in members_steam_id:
                 raise ValidationError(self.message)
+
+
+class OfficeUniqueSOPCat:
+    """Office specific validator that checks to see if the given SOP category is unique in that
+    office
+
+    Needs to have a field named 'office_name' in the form that contains the short name of the office
+    in question
+    """
+    def __init__(self, message="This is not a unique category!"):
+        self.message = message
+
+    def __call__(self, form, field):
+        office = Office.by_name_short(form.office_name.data)
+        sop_cats = [sop.category for sop in office.sop]
+        if field.data in sop_cats:
+            raise ValidationError(self.message)

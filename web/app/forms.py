@@ -1,10 +1,11 @@
 from flask.ext.wtf import Form
-from app.lib.wtformsparsleyjs import StringField, HiddenField, SelectField, SelectMultipleField
+from app.lib.wtformsparsleyjs import StringField, HiddenField, SelectField, SelectMultipleField, \
+    URLField
 from wtforms.fields import HiddenField
 from wtforms.validators import InputRequired, Email, Length, Optional, URL
 
 from app.util.validators import Unique, Exists, ExistsList, OfficeIsMemberList, \
-    OfficeIsNotMemberList, OfficeIsMember
+    OfficeIsNotMemberList, OfficeIsMember, OfficeUniqueSOPCat
 from app.models import ArmaName, TSID, User, Office
 
 
@@ -59,6 +60,13 @@ class CreateOffice(Form):
                 Length(min=2, max=15),
                 Unique(Office, 'name_short', message='The short name must be unique!')
             ])
+    description = StringField(
+            'Short description of the office',
+            [
+                InputRequired(),
+                Length(min=2, max=200),
+                Unique(Office, 'description', message='The description must be unique!')
+            ])
     head = SelectField(
             'Select who will be the head of this office',
             [
@@ -82,6 +90,7 @@ class EditOfficeMembers(Form):
                 OfficeIsMemberList(),
             ])
 
+
 class EditOfficeHead(Form):
     office_name = HiddenField()
     head = SelectField(
@@ -90,3 +99,57 @@ class EditOfficeHead(Form):
                 InputRequired(),
                 OfficeIsMember(message='This user is not a member of the office!')
             ])
+
+
+class EditOfficeResp(Form):
+    add_resp = StringField(
+            'Add a responsibility',
+            [
+                Optional(),
+                Length(min=2, max=300),
+                Unique(Office, 'responsibilities', message='That is not a unique responsibility!')
+            ])
+    remove_resp = SelectField('Remove a responsibility')
+
+
+class EditOfficeSOP(Form):
+    office_name = HiddenField()
+    sop_cat = SelectField('Select an SOP category (optional)')
+    add_sop_cat = StringField(
+            'Or make a new SOP category (optional)',
+            [
+                Optional(),
+                Length(min=4, max=25),
+                OfficeUniqueSOPCat()
+            ])
+    add_sop_point = StringField(
+            'Add an SOP point',
+            [
+                Optional(),
+                Length(min=4, max=300)
+            ])
+    remove_sop = SelectMultipleField('Remove an SOP point')
+
+
+class EditOfficeMemberResp(Form):
+    office_name = HiddenField()
+    member = SelectField(
+            'Person to be responsible',
+            [
+                InputRequired(),
+                OfficeIsMember(message='This user is not a member of the office!')
+            ])
+    resp = StringField(
+            'Responsibility',
+            [
+                Optional(),
+                Length(min=2, max=140),
+                Unique(Office, 'sop.resp', message='That is not a unique responsibility!')
+            ])
+    uri = URLField(
+            'Resource (Optional)',
+            [
+                Optional(),
+                URL()
+            ])
+    remove_resp = SelectField('Remove an responsibility')

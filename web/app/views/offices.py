@@ -2,9 +2,8 @@ from flask import render_template, flash, redirect, url_for, request, g
 
 from app.util.permission import in_office, in_office_dynamic
 
-from app import app, flask_login
+from app import app, flask_login, forms
 from app.models import User, Office
-from app.forms import CreateOffice, EditOfficeMembers, EditOfficeHead
 
 
 @app.route('/office/create', methods=['GET', 'POST'])
@@ -12,13 +11,14 @@ from app.forms import CreateOffice, EditOfficeMembers, EditOfficeHead
 @in_office(['HQ'])
 def create_office():
     """Create a new office"""
-    form = CreateOffice()
+    form = forms.CreateOffice()
     form.head.choices = User.select_field_ranked()
 
     if form.validate_on_submit():
         office_obj = Office.create_office(
             form.name.data,
             form.name_short.data,
+            form.description.data,
             form.head.data)
         flash('Office successfully created!', 'success')
         return redirect(url_for('office', office_name=office_obj.name_short))
@@ -58,9 +58,9 @@ def edit_office_members(office_name):
     """
     office_obj = Office.by_name_short(office_name)
 
-    form = EditOfficeMembers(office_name=office_name)
+    form = forms.EditOfficeMembers()
     all_users = User.select_field_ranked()
-    members = Office.select_field_members(office_name)
+    members = office_obj.select_field_members()
 
     form.members_add.choices = [user for user in all_users if user not in members]
     form.members_remove.choices = members
@@ -69,8 +69,7 @@ def edit_office_members(office_name):
     if request.method == 'POST':
         form.office_name.data = office_name
     if form.validate_on_submit():
-        Office.add_remove_members(
-            office_name,
+        office_obj.add_remove_members(
             form.members_add.data,
             form.members_remove.data)
         flash('Members successfully amended!', 'success')
@@ -90,8 +89,8 @@ def new_office_head(office_name):
     """
     office_obj = Office.by_name_short(office_name)
 
-    form = EditOfficeHead(office_name=office_name)
-    members = Office.select_field_members(office_name)
+    form = forms.EditOfficeHead()
+    members = office_obj.select_field_members()
 
     # Make sure there are new members to choose from
     if len(members) <= 1:
@@ -105,10 +104,93 @@ def new_office_head(office_name):
     if request.method == 'POST':
         form.office_name.data = office_name
     if form.validate_on_submit():
-        Office.change_head(
-            office_name,
+        office_obj.change_head(
             form.head.data)
         flash('Head successfully changed!', 'success')
         return redirect(url_for('office', office_name=office_name))
 
     return render_template('offices/edit_head.html', form=form, office=office_obj)
+
+
+@app.route('/office/<office_name>/edit/responsibilities', methods=['GET', 'POST'])
+@flask_login.login_required
+@in_office(['HQ'], ['DYNAMIC'])
+def edit_office_resp(office_name):
+    """Change the office responsibilities
+
+    :param office_name: The name of the office to edit
+    :return: render_template() or redirect()
+    """
+    office_obj = Office.by_name_short(office_name)
+
+    form = forms.EditOfficeResp()
+    form.remove_resp.choices = office_obj.select_field_resp(blank=True)
+
+    if form.validate_on_submit():
+        office_obj.change_resp(
+            form.add_resp.data,
+            form.remove_resp.data)
+        flash('Responsibilities successfully edited!', 'success')
+        return redirect(url_for('office', office_name=office_name))
+
+    return render_template('offices/edit_resp.html', form=form, office=office_obj)
+
+
+@app.route('/office/<office_name>/edit/sop', methods=['GET', 'POST'])
+@flask_login.login_required
+@in_office(['HQ'], ['DYNAMIC'])
+def edit_office_sop(office_name):
+    """Change the office SOP
+
+    :param office_name: The name of the office to edit
+    :return: render_template() or redirect()
+    """
+    office_obj = Office.by_name_short(office_name)
+
+    form = forms.EditOfficeSOP()
+    form.sop_cat.choices = office_obj.select_field_sop_cat(blank=True)
+    form.remove_sop.choices = office_obj.select_field_sop()
+
+    # Add office name to form to allow for validation
+    if request.method == 'POST':
+        form.office_name.data = office_name
+    if form.validate_on_submit():
+        cat = form.add_sop_cat.data or form.sop_cat.data
+        office_obj.change_sop(
+            form.add_sop_point.data,
+            cat,
+            form.remove_sop.data)
+        flash('SOP successfully changed!', 'success')
+        return redirect(url_for('office', office_name=office_name))
+
+    return render_template('offices/edit_sop.html', form=form, office=office_obj)
+
+
+@app.route('/office/<office_name>/edit/member_resp', methods=['GET', 'POST'])
+@flask_login.login_required
+@in_office(['HQ'], ['DYNAMIC'])
+def edit_office_member_resp(office_name):
+    """Change office member responsibilities
+
+    :param office_name: The name of the office to edit
+    :return: render_template() or redirect()
+    """
+    office_obj = Office.by_name_short(office_name)
+
+    form = forms.EditOfficeMemberResp()
+    form.member.choices = office_obj.select_field_members()
+    form.remove_resp.choices = office_obj.select_field_member_resp(blank=True)
+
+    # Add office name to form to allow for validation
+    if request.method == 'POST':
+        form.office_name.data = office_name
+    if form.validate_on_submit():
+        office_obj.change_member_resp(
+            form.member.data,
+            form.resp.data,
+            form.uri.data,
+            form.remove_resp.data)
+        flash('Member responsibilities successfully changed!', 'success')
+        return redirect(url_for('office', office_name=office_name))
+
+    return render_template('offices/edit_member_resp.html', form=form, office=office_obj)

@@ -1,6 +1,6 @@
 from functools import wraps
 
-from flask import request, redirect, url_for, flash, g
+from flask import redirect, url_for, flash
 
 from app import CONFIG
 
@@ -32,14 +32,14 @@ def msg(member=None, head=None):
     :param head: List of office names that the user needs to be a head of
     :return: A string message derived from those lists
     """
-    msg = 'You need to be a'
+    text = 'You need to be a'
     if member:
-        msg = msg + ' member of ' + ' or '.join(member)
+        text += ' member of ' + ' or '.join(member)
     if member and head:
-        msg = msg + ' or a'
+        text += ' or a'
     if head:
-        msg = msg + 'head of ' + ' or '.join(head)
-    return msg
+        text += 'head of ' + ' or '.join(head)
+    return text
 
 
 def in_office(member=None, head=None):

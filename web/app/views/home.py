@@ -6,8 +6,7 @@ from app import app, flask_login
 @app.route('/')
 def home():
     """Landing Page"""
-    example_param = 'Test Param'
-    return render_template('public/home.html', example_param=example_param)
+    return render_template('public/home.html')
 
 
 @app.route('/debug')
