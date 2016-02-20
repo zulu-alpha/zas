@@ -4,7 +4,7 @@
 */
 aside {
     z-index: 2;
-    background-color: #808080;
+    background-color: #C9C9C9;
     /* I have to be careful to choose a value that wont overflow on small viewports */
     width: 250px;
     height: 100%;
@@ -35,6 +35,10 @@ aside.open {
     left: 10px;
     top: 5px;
     z-index: 1;
+}
+
+.nav-section{
+    margin-bottom: 20px;
 }
 
 /* Drawer Breakpoint */

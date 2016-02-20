@@ -24,7 +24,7 @@ You may have to set the owner and permissions of `/etc/letsencrypt/` to your use
 Use either  `success`, `info`, `warning`, `danger` for the category in `flash('message', 'category')`
 
 ### Backups
-Backups are handled automatically at 4AM, however you can manually backup at any tome without interrupting the schedule with the following command:
+Backups are handled automatically at 4AM, however you can manually backup at any time without interrupting the schedule with the following command:
 * `docker-compose -f backup.yml -f ./backup/prod.yml up`
   * or substitute `prod.yml` for `dev.yml` for a development environment
 then once the backup container closes, stop the whole compose.
@@ -44,3 +44,12 @@ To restore from backup, execute the following:
   
 ### Offices
 Don't make an office with the short name `DYNAMIC`, as that is reserved by the permission system.
+
+### Sub menus
+Make certain handlers sub menus of other handlers (including dynamically generated ones) by adding
+them to the MENUS list like in this example:
+```python
+MENUS.append({'parent_url': "url_for('office', office_name='HQ')",
+              'url': "url_for('home')",
+              'name': 'Home'})
+```

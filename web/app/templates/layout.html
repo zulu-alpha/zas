@@ -22,9 +22,11 @@
 
     <!-- Off canvas drawer (Nav menu) -->
     <aside id="drawer">
+      {% from "/util/_nav.html" import nav_active %}
+
       <nav class="list-group">
         {% if current_user.is_authenticated %}
-            <a class="list-group-item list-group-item-info">Hello {{ current_user.arma_name }}!</a>
+            <a class="list-group-item list-group-item-info" href="{{ url_for('profile', steam_id=current_user.steam_id) }}">Your profile</a>
             <a class="list-group-item list-group-item-warning" href="{{ url_for('logout') }}">Logout</a>
           {% else %}
             <a class="list-group-item list-group-item-info" href="{{ url_for('login') }}">
@@ -33,14 +35,28 @@
               </figure>
             </a>
           {% endif %}
-        <!-- Actual Nav menu -->
-        {% from "/util/_nav_select.html" import nav_active %}
-        {{ nav_active(url_for('home'), 'Home') }}
-        <br>
-        {% for office in g.offices %}
-          {{ nav_active(url_for('office', office_name=office.name_short), office.name + ' Office') }}
-        {% endfor %}
       </nav>
+
+      <!-- Public pages -->
+      <nav class="nav-section">
+        <ul class="nav nav-pills nav-stacked">
+          {{ nav_active(url_for('home'), 'Home') }}
+        </ul>
+        <ul class="nav nav-pills nav-stacked">
+          {{ nav_active(url_for('rules'), 'Rules') }}
+        </ul>
+      </nav>
+
+      <!-- Offices -->
+      <nav class="nav-section">
+        <h4>Offices</h4>
+        <ul class="nav nav-pills nav-stacked">
+          {% for office in g.offices %}
+            {{ nav_active(url_for('office', office_name=office.name_short), office.name) }}
+          {% endfor %}
+        </ul>
+      </nav>
+
     </aside>
 
 
