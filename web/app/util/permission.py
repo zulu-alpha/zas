@@ -2,10 +2,11 @@ from functools import wraps
 
 from flask import redirect, url_for, flash
 
-from app import CONFIG
+from .. import CONFIG
 
-from app import flask_login
-from app.models import User, Office
+from .. import flask_login
+
+from ..models.offices import Office
 
 
 def is_bootstraper():

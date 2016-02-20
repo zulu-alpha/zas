@@ -2,9 +2,9 @@ from copy import deepcopy
 
 from flask import g, request, url_for
 
-from app import app, MENUS
+from .. import app, MENUS
 
-from app.models import Office
+from ..models.offices import Office
 
 
 @app.before_request

@@ -1,6 +1,6 @@
 from flask import render_template
 
-from app import app, flask_login, MENUS
+from .. import app
 
 
 @app.route('/')

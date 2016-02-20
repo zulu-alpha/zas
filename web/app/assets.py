@@ -1,6 +1,6 @@
 """For combining and minifying CSS and JS by using Flask-Assets"""
 from flask.ext.assets import Bundle, Environment
-from app import app
+from . import app
 
 
 assets = Environment(app)

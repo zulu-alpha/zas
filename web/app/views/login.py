@@ -1,10 +1,10 @@
 from flask import render_template, session, redirect, flash, url_for
 from flask.ext.openid import OpenID
 
-from app import app, login_manager, flask_login, CONFIG
-from app.util import helper
-from app.forms import RegistrationForm
-from app.models import User
+from .. import app, flask_login, CONFIG
+from ..util import helper
+from ..forms import registration
+from ..models.users import User
 
 
 oid = OpenID(app, CONFIG['OPENID_FS_STORE_PATH'], safe_roots=[CONFIG['URL_ROOT']])
@@ -65,7 +65,7 @@ def create_profile():
                ' using the steam button on this site.'), 'danger')
         return redirect(url_for('home'))
 
-    form = RegistrationForm()
+    form = registration.RegistrationForm()
     # Inject an image into it the TS Label
     form.ts_id.label.text = ('TeamSpeak 3 Unique ID (<a href="{0}" '
                              'target="_blank">found here</a>)')\

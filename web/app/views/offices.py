@@ -1,9 +1,11 @@
-from flask import render_template, flash, redirect, url_for, request, g
+from flask import render_template, flash, redirect, url_for, request
 
-from app.util.permission import in_office, in_office_dynamic
+from ..util.permission import in_office, in_office_dynamic
 
-from app import app, flask_login, forms
-from app.models import User, Office
+from .. import app, flask_login
+from ..forms import offices
+from ..models.users import User
+from ..models.offices import Office
 
 
 @app.route('/office/create', methods=['GET', 'POST'])
@@ -11,7 +13,7 @@ from app.models import User, Office
 @in_office(['HQ'])
 def create_office():
     """Create a new office"""
-    form = forms.CreateOffice()
+    form = offices.CreateOffice()
     form.head.choices = User.select_field_ranked()
 
     if form.validate_on_submit():
@@ -58,7 +60,7 @@ def edit_office_members(office_name):
     """
     office_obj = Office.by_name_short(office_name)
 
-    form = forms.EditOfficeMembers()
+    form = offices.EditOfficeMembers()
     all_users = User.select_field_ranked()
     members = office_obj.select_field_members()
 
@@ -89,7 +91,7 @@ def new_office_head(office_name):
     """
     office_obj = Office.by_name_short(office_name)
 
-    form = forms.EditOfficeHead()
+    form = offices.EditOfficeHead()
     members = office_obj.select_field_members()
 
     # Make sure there are new members to choose from
@@ -123,7 +125,7 @@ def edit_office_resp(office_name):
     """
     office_obj = Office.by_name_short(office_name)
 
-    form = forms.EditOfficeResp()
+    form = offices.EditOfficeResp()
     form.remove_resp.choices = office_obj.select_field_resp(blank=True)
 
     if form.validate_on_submit():
@@ -147,7 +149,7 @@ def edit_office_sop(office_name):
     """
     office_obj = Office.by_name_short(office_name)
 
-    form = forms.EditOfficeSOP()
+    form = offices.EditOfficeSOP()
     form.sop_cat.choices = office_obj.select_field_sop_cat(blank=True)
     form.remove_sop.choices = office_obj.select_field_sop()
 
@@ -177,7 +179,7 @@ def edit_office_member_resp(office_name):
     """
     office_obj = Office.by_name_short(office_name)
 
-    form = forms.EditOfficeMemberResp()
+    form = offices.EditOfficeMemberResp()
     form.member.choices = office_obj.select_field_members()
     form.remove_resp.choices = office_obj.select_field_member_resp(blank=True)
 

@@ -21,7 +21,7 @@ if os.getenv('ZAS_CONFIG', None):
 CONFIG = app.config
 
 # Manage Assets
-from app import assets
+from . import assets
 
 # initialize DB after configs are handled
 db = MongoEngine(app)
@@ -36,7 +36,7 @@ login_manager.login_message = 'You need to be logged in to access this page.'
 MENUS = []
 
 # View handlers
-from app.views import before_request, login, public, offices, profile
+from .views import before_request, login, public, offices, profile
 
 # Debugging
 toolbar = DebugToolbarExtension(app)

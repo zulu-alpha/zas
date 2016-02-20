@@ -1,8 +1,8 @@
 from flask import render_template
 
-from app import app
+from .. import app
 
-from app.models import User
+from ..models.users import User
 
 
 @app.route('/profile/<steam_id>')

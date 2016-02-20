@@ -3,8 +3,10 @@ used in the flask app. This is done in order to abstract the DB
 interactions.
 """
 import re
-from app import login_manager
-from app.models import User
+
+from .. import login_manager
+
+from ..models.users import User
 
 
 def strip_steam_id(identity_url):
