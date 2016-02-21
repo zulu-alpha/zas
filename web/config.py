@@ -42,5 +42,5 @@ DEBUG_TB_PANELS = ('flask_debugtoolbar.panels.versions.VersionDebugPanel',
                    'flask_debugtoolbar.panels.profiler.ProfilerDebugPanel')
 SECRET_KEY = 'Temporary Development Key'
 LOG_PATH = '/var/log/web/flask.log'
-URL_ROOT = 'http://192.168.99.101/'
+URL_ROOT = 'http://192.168.99.100/'
 BOOTSTRAPPER = ''  # The steam ID of a user who can circumvent the Office permission system.

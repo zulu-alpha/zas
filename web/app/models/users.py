@@ -5,13 +5,13 @@ from .. import db
 
 class ArmaName(db.EmbeddedDocument):
     """Allows to store a history of Arma nicks used"""
-    arma_name = db.StringField(max_length=120, unique=True, required=True)
+    arma_name = db.StringField(max_length=60, unique=True, required=True)
     created = db.DateTimeField(default=datetime.utcnow())
 
 
 class TSID(db.EmbeddedDocument):
     """Allows for unique TeamSpeak Unique IDs to be enforced in the Schema"""
-    ts_id = db.StringField(max_length=28, unique=True, required=True)
+    ts_id = db.StringField(min_length=28, max_length=28, unique=True, required=True)
     created = db.DateTimeField(default=datetime.utcnow())
 
 
@@ -122,5 +122,17 @@ class User(db.Document):
             return False
 
         self.arma_names.append(ArmaName(arma_name=new_name))
+        self.save()
+        return True
+
+    def add_ts_id(self, new_ts_id):
+        """Add the TS ID to the list of TSIDs used by the user if it is unique
+
+        :param new_name: TS ID to add
+        :return: BOOL as to whether or not the DB was updated
+        """
+        if User.objects(ts_ids__ts_id=new_ts_id):
+            return False
+        self.ts_ids.append(TSID(ts_id=new_ts_id))
         self.save()
         return True

@@ -19,3 +19,13 @@ class ArmaName(Form):
                 Unique(User, 'arma_names.arma_name', exclude=True,
                        message='Arma name taken by another user')
             ])
+
+
+class TSID(Form):
+    ts_id = StringField(
+            'TeamSpeak 3 Unique ID',
+            [
+                InputRequired(),
+                Length(min=28, max=28),
+                Unique(User, 'ts_ids.ts_id', message='That ID is already in use!')
+            ])
