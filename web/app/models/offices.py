@@ -130,6 +130,7 @@ class Office(db.Document):
 
         if change:
             self.save()
+        return change
 
     def change_head(self, new_head_steam_id):
         """Change the head of the office to the given head
@@ -141,6 +142,9 @@ class Office(db.Document):
         if new_head in self.members:
             self.head = new_head
             self.save()
+            return True
+        else:
+            return False
 
     def select_field_resp(self, blank=False):
         """Returns a list of responsibility tuples suitable for a select field
@@ -172,6 +176,7 @@ class Office(db.Document):
 
         if change:
             self.save()
+        return change
 
     def select_field_sop(self, blank=False):
         """Returns a list of SOP point tuples suitable for a select field
@@ -258,6 +263,7 @@ class Office(db.Document):
 
         if change:
             self.save()
+        return change
 
     def select_field_member_resp(self, blank=False):
         """Returns a list of member responsibility tuples suitable for a select field
@@ -299,3 +305,4 @@ class Office(db.Document):
 
         if change:
             self.save()
+        return change

@@ -8,17 +8,21 @@
 
 
 {% block main %}
+  {% from "/util/_permissions.html" import edit %}
+  {% from "/util/_datetime.html" import date %}
   <section class="row">
+
     <article class="col-lg-12">
-    {% from "/util/_datetime.html" import date %}
-
       <h3><a href="http://steamcommunity.com/profiles/{{ user.steam_id }}">Steam profile page</a></h3>
+    </article>
 
+    <article class="col-lg-12">
       <h3>History of Arma names:</h3>
       {% for arma_name in user.arma_names|sort(attribute='created') %}
-        <strong>{{ arma_name.arma_name }}</strong> - ({{ date(arma_name.created) }})
+        <p><strong>{{ arma_name.arma_name }}</strong> - ({{ date(arma_name.created) }})</p>
       {% endfor %}
-
+      <p>{{ edit(is_owner, request.url + "/update/arma-name", "Update Arma name") }}</p>
     </article>
+
   </section>
 {% endblock %}

@@ -6,6 +6,7 @@ from .. import CONFIG
 
 from .. import flask_login
 
+from ..models.users import User
 from ..models.offices import Office
 
 
@@ -117,3 +118,28 @@ def in_office_dynamic(member=None, head=None, do_flash=False):
     # If no match is found, return a failure
     if do_flash:
         flash(msg(member, head), 'warning')
+
+
+def owns_steam_id_page():
+    """Decorator that checks to see if the currently logged in user is the owner of the steam_id used to render
+    the page. Make sure that name of the steam_id parameter for the view 'steam_id'.
+
+    :return: The view if owner of steam_id, else redirection with a warning
+    """
+    def decorator(f):
+        @wraps(f)
+        def decorated_function(*args, **kwargs):
+            # Check to see if permission checking can be skipped due to bootstrapping
+            steam_id = kwargs['steam_id']
+            user = flask_login.current_user
+            q_user = User.by_steam_id(steam_id)
+
+            if user.id == q_user.id:
+                return f(*args, **kwargs)
+
+            # If no match is found, return a failure
+            flash('Only {0} can use this page'.format(q_user.arma_name), 'warning')
+            return redirect(url_for('home'))
+
+        return decorated_function
+    return decorator

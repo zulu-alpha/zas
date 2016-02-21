@@ -103,3 +103,24 @@ class User(db.Document):
                    name=name, is_active=is_active, is_authenticated=is_authenticated)
         user.save()
         return user
+
+    def update_arma_name(self, new_name):
+        """Update the user's arma name if it isn't already the latest name and has never been used
+        by any other user.
+
+        :param new_name: Arma name to update to
+        :return: BOOL as to whether or not the DB was updated
+        """
+        # Don't update the name if it's already that.
+        if self.arma_name == new_name:
+            return False
+
+        users = User.objects(arma_names__arma_name=new_name)
+
+        # Don't update if the name is in use and not by the user in question.
+        if users and self not in users:
+            return False
+
+        self.arma_names.append(ArmaName(arma_name=new_name))
+        self.save()
+        return True

@@ -3,9 +3,11 @@ from flask import render_template, flash, redirect, url_for, request
 from ..util.permission import in_office, in_office_dynamic
 
 from .. import app, flask_login
-from ..forms import offices
-from ..models.users import User
+
 from ..models.offices import Office
+from ..models.users import User
+
+from ..forms import offices
 
 
 @app.route('/office/create', methods=['GET', 'POST'])
