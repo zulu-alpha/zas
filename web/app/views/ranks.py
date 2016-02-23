@@ -63,7 +63,7 @@ def ranks_image(name_short):
     return send_file(rank.image, mimetype=rank.image.content_type)
 
 
-@app.route('/ranks/image_squad/<name_short>')
+@app.route('/profile/xml/<name_short>.paa')
 def ranks_image_squad(name_short):
     """Render the rank image for Squad XML
 

@@ -101,7 +101,6 @@ def profile_xml(steam_id):
 
     if not user.rank:
         abort(404)
-
     template = render_template('profile/squad.xml', user=user)
     response = make_response(template)
     response.headers['Content-Type'] = 'application/xml'
