@@ -15,7 +15,7 @@ class ArmaName(Form):
             'Your new Arma name',
             [
                 InputRequired(),
-                Length(min=4, max=60),
+                Length(min=2, max=60),
                 Unique(User, 'arma_names.arma_name', exclude=True,
                        message='Arma name taken by another user')
             ])

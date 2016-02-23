@@ -20,7 +20,7 @@ class RegistrationForm(Form):
             'Arma in game nick name',
             [
                 InputRequired(),
-                Length(min=4, max=60),
+                Length(min=2, max=60),
                 Unique(User, 'arma_names.arma_name', message='Arma name already taken!')
             ])
     ts_id = StringField(
