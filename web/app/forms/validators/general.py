@@ -1,3 +1,5 @@
+import re
+
 from wtforms.validators import ValidationError
 
 
@@ -62,3 +64,20 @@ class ExistsList:
             instance = self.model.objects(__raw__={self.db_field: item}).first()
             if not instance:
                 raise ValidationError(self.message)
+
+
+class Extension:
+    """Checks if the given FileField file name has the given extension"""
+    def __init__(self, extension, message="This is the wrong file type"):
+        """
+        :param extension: The extension to check for (eg: 'png')
+        :param message: Optional message for validation error
+        :return: None
+        """
+        self.extension = extension
+        self.message = message
+
+    def __call__(self, form, field):
+        filename = field.data.filename
+        if not re.search('[\w-].' + self.extension, filename, re.IGNORECASE):
+            raise ValidationError(self.message)

@@ -1,5 +1,5 @@
 from flask.ext.wtf import Form
-from ..lib.wtformsparsleyjs import StringField, SelectField, SelectMultipleField, \
+from ..lib.wtformsparsleyjs import StringField, SelectField, SelectMultipleField, IntegerField, \
     URLField
 from wtforms.fields import HiddenField
 from wtforms.validators import InputRequired, Length, Optional, URL
@@ -11,6 +11,7 @@ from .validators.offices import OfficeIsMemberList, OfficeIsNotMemberList, Offic
 
 from ..models.users import User
 from ..models.offices import Office
+from ..models.ranks import Rank
 
 
 class CreateOffice(Form):
@@ -40,6 +41,13 @@ class CreateOffice(Form):
             [
                 InputRequired(),
                 Exists(User, 'steam_id', message='This member does not exist!')
+            ])
+    ts_group = IntegerField(
+            'Select the TS Server Group ID that represents the Office',
+            [
+                InputRequired(),
+                Unique(Office, 'ts_group', message='TS Server Group ID already used by an Office!'),
+                Unique(Rank, 'ts_group', message='TS Server Group ID already used by a Rank!')
             ])
 
 

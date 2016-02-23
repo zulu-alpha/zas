@@ -44,6 +44,7 @@ To restore from backup, execute the following:
   
 ### Offices
 Don't make an office with the short name `DYNAMIC`, as that is reserved by the permission system.
+To add a new office, use: `/office/create`.
 
 ### Sub menus
 Make certain handlers sub menus of other handlers (including dynamically generated ones) by adding

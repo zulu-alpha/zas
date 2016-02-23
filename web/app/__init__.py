@@ -36,7 +36,7 @@ login_manager.login_message = 'You need to be logged in to access this page.'
 MENUS = []
 
 # View handlers
-from .views import before_request, login, public, offices, profile
+from .views import before_request, login, public, offices, profile, ranks
 
 # Debugging
 toolbar = DebugToolbarExtension(app)

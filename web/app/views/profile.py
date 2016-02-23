@@ -1,7 +1,7 @@
 from flask import render_template, request, flash, redirect, url_for
 
 from .. import app, flask_login
-from ..util.permission import owns_steam_id_page
+from ..util.permission import in_office_dynamic, owns_steam_id_page
 
 from ..models.users import User
 
@@ -18,7 +18,10 @@ def profile(steam_id):
     """
     user = User.by_steam_id(steam_id)
     is_owner = user.id == flask_login.current_user.id
-    return render_template('profile/view.html', user=user, is_owner=is_owner)
+    return render_template('profile/view.html',
+                           user=user,
+                           is_owner=is_owner,
+                           is_org=in_office_dynamic(['Organizational', 'HQ']))
 
 
 @app.route('/profile/<steam_id>/update/arma-name', methods=['GET', 'POST'])

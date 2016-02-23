@@ -3,7 +3,11 @@
     {% if field.errors %}
       <div class="form-group has-error">
         {{ field.label(class_="control-label")|safe }}
-        {{ field(class_="form-control")|safe }}
+        {% if field.type not in ['FileField'] %}
+          {{ field(class_="form-control")|safe }}
+        {% else %}
+          {{ field() }}
+        {% endif %}
         <span class="help-block">
           {% for error in field.errors %}
             <span>{{ error }}</span>
@@ -13,7 +17,11 @@
     {% else %}
       <div class="form-group">
         {{ field.label(class_="control-label")|safe }}
-        {{ field(class_="form-control")|safe }}
+        {% if field.type not in ['FileField'] %}
+          {{ field(class_="form-control")|safe }}
+        {% else %}
+          {{ field() }}
+        {% endif %}
       </div>
     {% endif %}
   {% endif %}

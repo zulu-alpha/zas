@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from .. import db
+from ..models.ranks import Rank
 
 
 class ArmaName(db.EmbeddedDocument):
@@ -25,7 +26,7 @@ class User(db.Document):
     name = db.StringField(max_length=120, unique=True, sparse=True)  # Real name
     arma_names = db.ListField(db.EmbeddedDocumentField(ArmaName), required=True)
     ts_ids = db.ListField(db.EmbeddedDocumentField(TSID), required=True)
-    # rank = db.ReferenceField(Rank)
+    rank = db.ReferenceField(Rank)
     is_active = db.BooleanField(required=True)
     is_authenticated = db.BooleanField(required=True)
     is_anonymous = db.BooleanField(default=False, required=True)
@@ -128,7 +129,7 @@ class User(db.Document):
     def add_ts_id(self, new_ts_id):
         """Add the TS ID to the list of TSIDs used by the user if it is unique
 
-        :param new_name: TS ID to add
+        :param new_ts_id: TS ID to add
         :return: BOOL as to whether or not the DB was updated
         """
         if User.objects(ts_ids__ts_id=new_ts_id):
@@ -136,3 +137,22 @@ class User(db.Document):
         self.ts_ids.append(TSID(ts_id=new_ts_id))
         self.save()
         return True
+
+    def assign_rank(self, rank_name_short):
+        """Assign the given user the given rank, referenced by it's short name
+
+        :param rank_name_short: String of the short name of the rank
+        :return: BOOL as to whether the rank was changed
+        """
+        rank = Rank.by_name_short(rank_name_short)
+
+        if self.rank and self.rank.id != rank.id:
+            self.rank = rank
+            self.save()
+            return True
+        elif not self.rank and rank.id:
+            self.rank = rank
+            self.save()
+            return True
+
+        return False
