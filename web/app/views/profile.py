@@ -1,6 +1,6 @@
 from flask import render_template, request, flash, redirect, url_for
 
-from .. import app, flask_login
+from .. import app, flask_login, MENUS
 from ..util.permission import in_office_dynamic, owns_steam_id_page
 
 from ..models.users import User
@@ -22,6 +22,22 @@ def profile(steam_id):
                            user=user,
                            is_owner=is_owner,
                            is_org=in_office_dynamic(['Organizational', 'HQ']))
+
+
+MENUS.append({'parent_url': "url_for('office', office_name='Organizational')",
+              'url': "url_for('profile_all')",
+              'name': 'All Users'})
+
+
+@app.route('/profile/all')
+@flask_login.login_required
+def profile_all():
+    """Shows all the users on the site.
+
+    :return: render_template() or redirect()
+    """
+    users = User.all()
+    return render_template('profile/all.html', users=users)
 
 
 @app.route('/profile/<steam_id>/update/arma-name', methods=['GET', 'POST'])

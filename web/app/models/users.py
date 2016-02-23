@@ -70,6 +70,15 @@ class User(db.Document):
         return cls.objects(id=user_id).first()
 
     @classmethod
+    def all(cls):
+        """Returns all the users on the site
+
+        :return: All users
+        """
+        return cls.objects.only('steam_id', 'arma_names', 'rank').\
+            order_by('arma_names.arma_name').all()
+
+    @classmethod
     def select_field_ranked(cls):
         """Returns a list of steam IDs with Arma Name labels who have a ranks.
         This is useful for selecting members for an office.
