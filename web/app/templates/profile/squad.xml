@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!DOCTYPE squad SYSTEM "/static/xml/squad.dtd">
+<squad nick="ZA {{ user.rank.name_short }}">
+	<name>Zulu-Alpha {{ user.rank.name }}</name>
+	<email>admin@zulu-alpha.co.za</email>
+	<web>zulu-alpha.co.za</web>
+	<picture>{{ url_for('ranks_image_squad', name_short=user.rank.name_short) }}</picture>
+	<title>Zulu-Alpha {{ user.rank.name_short }}</title>
+	<member id="{{ user.steam_id }}" nick="{{ user.arma_name }}">
+		<name>{{ user.arma_name }}</name>
+		<email>Private</email>
+		<icq>Private</icq>
+		<remark>['rank',{{ user.rank.order }}]</remark>
+	</member>
+</squad>

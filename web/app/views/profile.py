@@ -1,4 +1,4 @@
-from flask import render_template, request, flash, redirect, url_for
+from flask import render_template, request, flash, redirect, url_for, abort, make_response
 
 from .. import app, flask_login, MENUS
 from ..util.permission import in_office_dynamic, owns_steam_id_page
@@ -88,3 +88,22 @@ def update_ts_id(steam_id):
         return redirect(url_for('profile', steam_id=steam_id))
 
     return render_template('profile/update_ts_id.html', user=user, form=form)
+
+
+@app.route('/profile/xml/<steam_id>')
+def profile_xml(steam_id):
+    """Shows a personalized squad XML for the user
+
+    :param steam_id: The steam ID of the user in question
+    :return: render_template() in XML or abort(404) if no rank
+    """
+    user = User.by_steam_id(steam_id)
+
+    if not user.rank:
+        abort(404)
+
+    template = render_template('profile/squad.xml', user=user)
+    response = make_response(template)
+    response.headers['Content-Type'] = 'application/xml'
+
+    return response
