@@ -44,3 +44,6 @@ SECRET_KEY = 'Temporary Development Key'
 LOG_PATH = '/var/log/web/flask.log'
 URL_ROOT = 'http://192.168.99.100/'
 BOOTSTRAPPER = ''  # The steam ID of a user who can circumvent the Office permission system.
+SLACK_TEAM = 'zulu-alpha'
+SLACK_TOKEN = ''
+SLACK_CHANNELS = ['']

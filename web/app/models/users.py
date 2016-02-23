@@ -3,6 +3,8 @@ from datetime import datetime
 from .. import db
 from ..models.ranks import Rank
 
+from ..util.slack import invite_user_slack
+
 
 class ArmaName(db.EmbeddedDocument):
     """Allows to store a history of Arma nicks used"""
@@ -155,15 +157,21 @@ class User(db.Document):
         """
         rank = Rank.by_name_short(rank_name_short)
 
+        changed = False
         # If user has a rank and the new rank is different
         if self.rank and (not rank or self.rank.id != rank.id):
             self.rank = rank
             self.save()
-            return True
+            changed = True
         # If the user does not have a rank and the new one is a valid rank
         elif not self.rank and rank.id:
             self.rank = rank
             self.save()
-            return True
+            changed = True
 
-        return False
+        # Invite to slack if valid rank and not already on slack
+        if rank:
+            invite_user_slack(self)
+            pass
+
+        return changed

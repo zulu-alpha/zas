@@ -9,3 +9,4 @@ jsmin
 cssmin
 flask-assets
 Pillow
+requests
