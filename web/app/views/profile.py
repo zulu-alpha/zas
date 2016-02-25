@@ -1,4 +1,5 @@
-from flask import render_template, request, flash, redirect, url_for, abort, make_response
+from flask import render_template, request, flash, redirect, url_for, abort, make_response, \
+    send_file
 
 from .. import app, flask_login, CONFIG, MENUS
 from ..util.permission import in_office_dynamic, owns_steam_id_page
@@ -22,7 +23,7 @@ def profile(steam_id):
                            user=user,
                            is_owner=is_owner,
                            is_org=in_office_dynamic(['Organizational', 'HQ']),
-                           url_root=CONFIG['URL_ROOT'])
+                           url_root=CONFIG['URL_ROOT'][:-1])
 
 
 MENUS.append({'parent_url': "url_for('office', office_name='Organizational')",
@@ -101,7 +102,9 @@ def profile_xml(steam_id):
 
     if not user.rank:
         abort(404)
-    template = render_template('profile/squad.xml', user=user)
+
+    display_za = user.xml_display == 'za'
+    template = render_template('profile/squad.xml', user=user, display_za=display_za)
     response = make_response(template)
     response.headers['Content-Type'] = 'application/xml'
 
@@ -119,11 +122,20 @@ def update_xml_display(steam_id):
     """
     user = User.by_steam_id(steam_id)
 
-    if not user.rank or user.rank.name_short == 'HON':
-        flash('You need to have a rank or not be an honorary member to adjust this!', 'warning')
+    if not user.rank:
+        flash('You need to have a rank to adjust this!', 'warning')
         return redirect(url_for('profile', steam_id=steam_id))
+    if user.rank:
+        if user.rank.name_short == 'HON':
+            flash('You cannot adjust this as an honorary member!', 'warning')
+            return redirect(url_for('profile', steam_id=steam_id))
 
     form = XMLDisplay()
+    if user.xml_display == 'rank':
+        choices = [('za', 'General ZA')]
+    else:
+        choices = [('rank', 'Rank')]
+    form.xml_display.choices = choices
 
     if form.validate_on_submit():
         if user.update_xml_display(form.xml_display.data):
@@ -133,3 +145,12 @@ def update_xml_display(steam_id):
         return redirect(url_for('profile', steam_id=steam_id))
 
     return render_template('profile/update_xml_display.html', user=user, form=form)
+
+
+@app.route('/profile/xml/logo.paa')
+def za_paa():
+    """Render the ZA PAA logo
+
+    :return: Image file
+    """
+    return send_file('.' + url_for('static', filename='xml/za_logo.paa'), mimetype='image/paa')

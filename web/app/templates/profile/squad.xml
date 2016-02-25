@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <!DOCTYPE squad SYSTEM "/static/xml/squad.dtd">
-<squad nick="ZA {{ user.rank.name_short }}">
-	<name>Zulu-Alpha {{ user.rank.name }}</name>
+<squad nick="ZA{% if not display_za %} {{ user.rank.name_short }}{% endif %}">
+	<name>Zulu-Alpha{% if not display_za %} {{ user.rank.name }}{% endif %}</name>
 	<email>admin@zulu-alpha.co.za</email>
 	<web>zulu-alpha.co.za</web>
-	<picture>{{ user.rank.name_short }}.paa</picture>
-	<title>Zulu-Alpha {{ user.rank.name_short }}</title>
+	<picture>{% if display_za %}logo{% else %}{{ user.rank.name_short }}{% endif %}.paa</picture>
+	<title>Zulu-Alpha{% if not display_za %} {{ user.rank.name_short }}{% endif %}</title>
 	<member id="{{ user.steam_id }}" nick="{{ user.arma_name }}">
 		<name>{{ user.arma_name }}</name>
 		<email>N/A</email>

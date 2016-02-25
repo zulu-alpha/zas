@@ -36,5 +36,4 @@ class XMLDisplay(Form):
             'Select the what kind of Squad XML to display',
             [
                 InputRequired()
-            ],
-            choices=[('rank', 'Rank'), ('za', 'General ZA')])
+            ])
