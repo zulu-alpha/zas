@@ -1,5 +1,5 @@
 from flask.ext.wtf import Form
-from ..lib.wtformsparsleyjs import StringField
+from ..lib.wtformsparsleyjs import StringField, SelectField
 
 from wtforms.fields import HiddenField
 from wtforms.validators import InputRequired, Length
@@ -29,3 +29,12 @@ class TSID(Form):
                 Length(min=28, max=28),
                 Unique(User, 'ts_ids.ts_id', message='That ID is already in use!')
             ])
+
+
+class XMLDisplay(Form):
+    xml_display = SelectField(
+            'Select the what kind of Squad XML to display',
+            [
+                InputRequired()
+            ],
+            choices=[('rank', 'Rank'), ('za', 'General ZA')])

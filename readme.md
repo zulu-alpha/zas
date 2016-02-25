@@ -54,3 +54,10 @@ MENUS.append({'parent_url': "url_for('office', office_name='HQ')",
               'url': "url_for('home')",
               'name': 'Home'})
 ```
+
+### Ranks
+To add a new rank, use: `/ranks/create`.
+
+### Squad XML User attribute
+`.xml_display` should either be `rank` or `za` to either display the user's rank or the ZA logo for
+their squad xml.

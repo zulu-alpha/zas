@@ -1,11 +1,11 @@
 from flask import render_template, request, flash, redirect, url_for, abort, make_response
 
-from .. import app, flask_login, MENUS
+from .. import app, flask_login, CONFIG, MENUS
 from ..util.permission import in_office_dynamic, owns_steam_id_page
 
 from ..models.users import User
 
-from ..forms.profile import ArmaName, TSID
+from ..forms.profile import ArmaName, TSID, XMLDisplay
 
 
 @app.route('/profile/<steam_id>')
@@ -21,7 +21,8 @@ def profile(steam_id):
     return render_template('profile/view.html',
                            user=user,
                            is_owner=is_owner,
-                           is_org=in_office_dynamic(['Organizational', 'HQ']))
+                           is_org=in_office_dynamic(['Organizational', 'HQ']),
+                           url_root=CONFIG['URL_ROOT'])
 
 
 MENUS.append({'parent_url': "url_for('office', office_name='Organizational')",
@@ -79,7 +80,6 @@ def update_ts_id(steam_id):
 
     form = TSID()
 
-    # Add user id to form to allow for validation
     if form.validate_on_submit():
         if user.add_ts_id(form.ts_id.data):
             flash('TeamSpeak ID successfully added!', 'success')
@@ -106,3 +106,30 @@ def profile_xml(steam_id):
     response.headers['Content-Type'] = 'application/xml'
 
     return response
+
+
+@app.route('/profile/<steam_id>/update/xml-display', methods=['GET', 'POST'])
+@flask_login.login_required
+@owns_steam_id_page()
+def update_xml_display(steam_id):
+    """Change the kind of squad XML to display.
+
+    :param steam_id: The steam ID of the user in question
+    :return: render_template() or redirect()
+    """
+    user = User.by_steam_id(steam_id)
+
+    if not user.rank or user.rank.name_short == 'HON':
+        flash('You need to have a rank or not be an honorary member to adjust this!', 'warning')
+        return redirect(url_for('profile', steam_id=steam_id))
+
+    form = XMLDisplay()
+
+    if form.validate_on_submit():
+        if user.update_xml_display(form.xml_display.data):
+            flash('Squad XML Display type successfully updated!', 'success')
+        else:
+            flash('Squad XML Display type failed to be changed for some reason!', 'danger')
+        return redirect(url_for('profile', steam_id=steam_id))
+
+    return render_template('profile/update_xml_display.html', user=user, form=form)

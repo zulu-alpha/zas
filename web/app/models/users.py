@@ -29,6 +29,7 @@ class User(db.Document):
     arma_names = db.ListField(db.EmbeddedDocumentField(ArmaName), required=True)
     ts_ids = db.ListField(db.EmbeddedDocumentField(TSID), required=True)
     rank = db.ReferenceField(Rank)
+    xml_display = db.StringField(max_length=25, default='rank', choices=('rank', 'za'))
     is_active = db.BooleanField(required=True)
     is_authenticated = db.BooleanField(required=True)
     is_anonymous = db.BooleanField(default=False, required=True)
@@ -175,3 +176,13 @@ class User(db.Document):
             pass
 
         return changed
+
+    def update_xml_display(self, new_display):
+        """Update the xml display type
+
+        :param new_display: String representing new Squad XML type to display (rank or za)
+        :return: BOOL as to whether the rank was changed
+        """
+        self.xml_display = new_display
+        self.save()
+        return True
