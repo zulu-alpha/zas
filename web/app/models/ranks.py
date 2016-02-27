@@ -8,13 +8,20 @@ class Rank(db.Document):
     description = db.StringField(min_length=2, max_length=200, unique=True, required=True)
     order = db.IntField(required=True)
     ts_group = db.IntField(required=True)
-    image = db.ImageField(size=(512, 512, True), thumbnail_size=(64, 64, True))
+    image = db.ImageField(size=(350, 350, True), thumbnail_size=(64, 64, True))
     image_squad = db.FileField()
 
     @classmethod
-    def all(cls):
-        """Returns all ranks by their 'order' attribute"""
-        return cls.objects.order_by('order').all()
+    def all(cls, reverse=False):
+        """Returns all ranks by their 'order' attribute
+
+        :param reverse: Optional BOOL as to whether or not to return in reverse order
+        :return: A list of Ranks ordered by their 'order attribute'
+        """
+        sort = 'order'
+        if reverse:
+            sort = '-' + sort
+        return cls.objects.order_by(sort).all()
 
     @classmethod
     def by_name_short(cls, name_short):
@@ -24,6 +31,15 @@ class Rank(db.Document):
         :return: Rank object
         """
         return cls.objects(name_short=name_short).first()
+
+    @classmethod
+    def by_name(cls, name):
+        """Returns the Rank object that has the given name
+
+        :param name: String representing name attribute of a rank
+        :return: Rank object
+        """
+        return cls.objects(name=name).first()
 
     @classmethod
     def image_by_id(cls, _id):
