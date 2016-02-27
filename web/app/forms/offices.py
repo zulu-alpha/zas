@@ -126,6 +126,7 @@ class EditOfficeMemberResp(Form):
             'Resource (Optional)',
             [
                 Optional(),
+                Length(min=2, max=140),
                 URL()
             ])
     remove_resp = SelectField('Remove an responsibility')

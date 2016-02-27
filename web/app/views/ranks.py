@@ -1,4 +1,4 @@
-from flask import render_template, flash, redirect, url_for, send_file
+from flask import render_template, flash, redirect, url_for, send_file, request
 
 from .. import app, flask_login, MENUS
 
@@ -7,7 +7,7 @@ from ..util.permission import in_office, in_office_dynamic
 from ..models.ranks import Rank
 from ..models.users import User
 
-from ..forms.ranks import Create, Assign
+from ..forms.ranks import Create, Assign, Edit
 
 
 MENUS.append({'parent_url': "url_for('office', office_name='Organizational')",
@@ -22,6 +22,20 @@ def ranks():
 
     return render_template('ranks/all.html',
                            ranks=all_ranks,
+                           has_permission=in_office_dynamic(['HQ'], ['Organizational']))
+
+
+@app.route('/ranks/<name_short>')
+def ranks_rank(name_short):
+    """List the individual rank
+
+    :param name_short: A string representation fo the short name of the Rank
+    :return: render_template() or redirect()
+    """
+    rank = Rank.by_name_short(name_short)
+
+    return render_template('ranks/rank.html',
+                           rank=rank,
                            has_permission=in_office_dynamic(['HQ'], ['Organizational']))
 
 
@@ -49,6 +63,52 @@ def ranks_create():
         return redirect(url_for('ranks'))
 
     return render_template('ranks/create.html', form=form)
+
+
+@app.route('/ranks/<name_short>/edit', methods=['GET', 'POST'])
+@flask_login.login_required
+@in_office(['HQ'], ['Organizational'])
+def ranks_edit(name_short):
+    """Edit the given rank
+
+    :param name_short: A string representation fo the short name of the Rank
+    :return: render_template() or redirect()
+    """
+    rank = Rank.by_name_short(name_short)
+    if not rank:
+        flash('{0} Rank not found!'.format(name_short), 'warning')
+        return redirect(url_for('ranks'))
+
+    form = Edit()
+
+    # Populate fields with default values
+    if request.method == 'GET':
+        form.name.data = rank.name
+        form.name_short.data = rank.name_short
+        form.description.data = rank.description
+        form.order.data = rank.order
+        form.ts_group.data = rank.ts_group
+
+    # Add office name to form to allow for validation
+    if request.method == 'POST':
+        form.exclude_id.data = rank.id
+    if form.validate_on_submit():
+        db_change = rank.edit(
+            name=form.name.data,
+            name_short=form.name_short.data,
+            description=form.description.data,
+            order=form.order.data,
+            ts_group=form.ts_group.data,
+            image=form.image.data,
+            image_squad=form.image_squad.data
+        )
+        if db_change:
+            flash('Rank successfully edited!', 'success')
+        else:
+            flash('Rank failed to be edited!', 'danger')
+        return redirect(url_for('ranks_rank', name_short=rank.name_short))
+
+    return render_template('ranks/edit.html', form=form, rank=rank)
 
 
 @app.route('/ranks/image/<name_short>')

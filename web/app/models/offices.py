@@ -12,7 +12,7 @@ class SOP(db.EmbeddedDocument):
 class MemberResp(db.EmbeddedDocument):
     member = db.ReferenceField(User, required=True)
     resp = db.StringField(min_length=2, max_length=140, required=True)
-    uri = db.StringField(min_length=2, max_length=50)
+    uri = db.StringField(min_length=2, max_length=140)
 
 
 class Office(db.Document):

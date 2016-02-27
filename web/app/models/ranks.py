@@ -71,3 +71,44 @@ class Rank(db.Document):
             rank_choices.insert(0, ('', ''))
 
         return rank_choices
+
+    def edit(self, name, name_short, description, order, ts_group, image, image_squad):
+        """Create a new rank
+
+        :param name: String of the rank name
+        :param name_short: String of the rank short name
+        :param description: String of description of the rank
+        :param order: Int of rank priority
+        :param ts_group: Int of TS server group
+        :param image: PNG Image of 512x512
+        :param image_squad: PAA image for the Squad XML
+        :return: BOOL if the DB was changed
+        """
+        change = False
+        if name and self.name != name:
+            self.name = name
+            change = True
+        if name_short and self.name_short != name_short:
+            self.name_short = name_short
+            change = True
+        if description and self.description != description:
+            self.description = description
+            change = True
+        if order and self.order != order:
+            self.order = order
+            change = True
+        if ts_group and self.ts_group != ts_group:
+            self.ts_group = ts_group
+            change = True
+        if image:
+            self.image.replace(image, content_type='image/png')
+            change = True
+        if image_squad:
+            self.image_squad.replace(image_squad, content_type='image/paa')
+            change = True
+
+        if change:
+            self.save()
+            return True
+
+        return False

@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+{% block title %}{{ rank.name_short }}{% endblock %}
+
+{% block heading %}{{ rank.name }}{% endblock %}
+
+{% block sub_heading %}
+  {{ rank.description }}
+{% endblock %}
+
+
+{% block main %}
+  {% from "/util/_permissions.html" import edit %}
+
+  <section class="row">
+
+
+    <article class="col-lg-12">
+      <h3>{{ rank.name }} ({{ rank.name_short }})</h3>
+      <img src="{{ url_for('ranks_image', name_short=rank.name_short) }}" class="img-responsive" alt="{{ rank.name }} image">
+      <p>Rank hierarchy: {{ rank.order }}</p>
+      <p>TS Server group: {{ rank.ts_group }}</p>
+      <p>{{ edit(has_permission, url_for('ranks_edit', name_short=rank.name_short), "Edit") }}</p>
+    </article>
+
+
+  </section>
+
+{% endblock %}

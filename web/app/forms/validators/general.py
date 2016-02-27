@@ -79,5 +79,5 @@ class Extension:
 
     def __call__(self, form, field):
         filename = field.data.filename
-        if not re.search('[\w-].' + self.extension, filename, re.IGNORECASE):
+        if filename and not re.search('[\w-].' + self.extension, filename, re.IGNORECASE):
             raise ValidationError(self.message)
