@@ -33,6 +33,8 @@ def ranks_rank(name_short):
     :return: render_template() or redirect()
     """
     rank = Rank.by_name_short(name_short)
+    if not rank:
+        abort(404)
 
     return render_template('ranks/rank.html',
                            rank=rank,
@@ -111,7 +113,7 @@ def ranks_edit(name_short):
     return render_template('ranks/edit.html', form=form, rank=rank)
 
 
-@app.route('/ranks/image/<name_short>')
+@app.route('/ranks/image/<name_short>.png')
 def ranks_image(name_short):
     """Render the image for the rank
 
@@ -120,17 +122,35 @@ def ranks_image(name_short):
     """
     rank = Rank.by_name_short(name_short)
 
+    if not rank.image:
+        abort(404)
+
     return send_file(rank.image, mimetype=rank.image.content_type)
 
 
-@app.route('/profile/xml/<id>.paa')
-def ranks_image_squad(id):
-    """Render the rank image for Squad XML
+@app.route('/ranks/image/<name_short>_thumb.png')
+def ranks_image_thumb(name_short):
+    """Render the image for the rank
 
-    :param name_short: Object ID of the rank
+    :param name_short: The name_short attribute of the Rank
     :return: Image file
     """
-    image_squad = Rank.image_by_id(id)
+    rank = Rank.by_name_short(name_short)
+
+    if not rank.image.thumbnail:
+        abort(404)
+
+    return send_file(rank.image.thumbnail, mimetype=rank.image.content_type)
+
+
+@app.route('/profile/xml/<_id>.paa')
+def ranks_image_squad(_id):
+    """Render the rank image for Squad XML
+
+    :param _id: Object ID of the rank
+    :return: Image file
+    """
+    image_squad = Rank.image_by_id(_id)
 
     if not image_squad:
         abort(404)

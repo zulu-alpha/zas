@@ -44,7 +44,10 @@
     <article class="col-lg-12">
       <h3>Rank</h3>
       {% if user.rank %}
-        <a href="{{ url_for('ranks_rank', name_short=user.rank.name_short) }}">{{ user.rank.name }}</a>
+        <a href="{{ url_for('ranks_rank', name_short=user.rank.name_short) }}">
+          <img src="{{ url_for('ranks_image_thumb', name_short=user.rank.name_short) }}" alt="{{ user.rank.name }} thumbnail image">
+          {{ user.rank.name_short }} - ({{ user.rank.name }})
+        </a>
       {% else %}
         No rank
       {% endif %}

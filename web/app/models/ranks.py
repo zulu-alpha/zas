@@ -8,7 +8,7 @@ class Rank(db.Document):
     description = db.StringField(min_length=2, max_length=200, unique=True, required=True)
     order = db.IntField(required=True)
     ts_group = db.IntField(required=True)
-    image = db.FileField()
+    image = db.ImageField(size=(512, 512, True), thumbnail_size=(64, 64, True))
     image_squad = db.FileField()
 
     @classmethod
@@ -26,16 +26,16 @@ class Rank(db.Document):
         return cls.objects(name_short=name_short).first()
 
     @classmethod
-    def image_by_id(cls, id):
+    def image_by_id(cls, _id):
         """Returns the image object by it's ID
 
-        :param name_short: String representing of ID
+        :param _id: String representing of ID
         :return: image object or None
         """
         for rank in Rank.objects:
-            if str(rank.image_squad.grid_id) == id:
+            if str(rank.image_squad.grid_id) == _id:
                 return rank.image_squad
-            if str(rank.image.grid_id) == id:
+            if str(rank.image.grid_id) == _id:
                 return rank.image
 
     @classmethod
@@ -63,27 +63,6 @@ class Rank(db.Document):
         rank.save()
 
         return True
-
-    @classmethod
-    def select_field_ranks(cls, blank=False, exclude=''):
-        """Returns a list of tuples representing all ranks, identified by their name_short.
-        This is useful for assigning a rank to a member.
-
-        :param blank: Whether to make the first tuple an empty value (default: False)
-        :param exclude: Rank by short name to exclude from the list
-        :return: Tuple of format (rank.name_short, rank.name)
-        """
-        ranks = cls.objects.only('name_short', 'name', 'order').order_by('order').all()
-
-        rank_choices = []
-        for rank in ranks:
-            if rank.name_short != exclude:
-                rank_choices.append((rank.name_short, rank.name))
-
-        if blank and not exclude == '':
-            rank_choices.insert(0, ('', ''))
-
-        return rank_choices
 
     def edit(self, name, name_short, description, order, ts_group, image, image_squad):
         """Create a new rank
@@ -125,3 +104,24 @@ class Rank(db.Document):
             return True
 
         return False
+
+    @classmethod
+    def select_field_ranks(cls, blank=False, exclude=''):
+        """Returns a list of tuples representing all ranks, identified by their name_short.
+        This is useful for assigning a rank to a member.
+
+        :param blank: Whether to make the first tuple an empty value (default: False)
+        :param exclude: Rank by short name to exclude from the list
+        :return: Tuple of format (rank.name_short, rank.name)
+        """
+        ranks = cls.objects.only('name_short', 'name', 'order').order_by('order').all()
+
+        rank_choices = []
+        for rank in ranks:
+            if rank.name_short != exclude:
+                rank_choices.append((rank.name_short, rank.name))
+
+        if blank and not exclude == '':
+            rank_choices.insert(0, ('', ''))
+
+        return rank_choices
