@@ -1,4 +1,4 @@
-from flask import render_template, flash, redirect, url_for, send_file, request
+from flask import render_template, flash, redirect, url_for, send_file, request, abort
 
 from .. import app, flask_login, MENUS
 
@@ -123,16 +123,19 @@ def ranks_image(name_short):
     return send_file(rank.image, mimetype=rank.image.content_type)
 
 
-@app.route('/profile/xml/<name_short>.paa')
-def ranks_image_squad(name_short):
+@app.route('/profile/xml/<id>.paa')
+def ranks_image_squad(id):
     """Render the rank image for Squad XML
 
-    :param name_short: The name_short attribute of the Rank
+    :param name_short: Object ID of the rank
     :return: Image file
     """
-    rank = Rank.by_name_short(name_short)
+    image_squad = Rank.image_by_id(id)
 
-    return send_file(rank.image_squad, mimetype=rank.image_squad.content_type)
+    if not image_squad:
+        abort(404)
+
+    return send_file(image_squad, mimetype=image_squad.content_type)
 
 
 @app.route('/ranks/assign/<steam_id>', methods=['GET', 'POST'])

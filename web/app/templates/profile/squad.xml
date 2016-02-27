@@ -4,7 +4,7 @@
 	<name>Zulu-Alpha{% if not display_za %} {{ user.rank.name }}{% endif %}</name>
 	<email>admin@zulu-alpha.co.za</email>
 	<web>zulu-alpha.co.za</web>
-	<picture>{% if display_za %}logo{% else %}{{ user.rank.name_short }}{% endif %}.paa</picture>
+	<picture>{% if display_za %}logo{% else %}{{ user.rank.image_squad.grid_id }}{% endif %}.paa</picture>
 	<title>Zulu-Alpha{% if not display_za %} {{ user.rank.name_short }}{% endif %}</title>
 	<member id="{{ user.steam_id }}" nick="{{ user.arma_name }}">
 		<name>{{ user.arma_name }}</name>

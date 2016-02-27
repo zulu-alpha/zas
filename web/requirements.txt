@@ -8,5 +8,4 @@ flask-wtf
 jsmin
 cssmin
 flask-assets
-Pillow
 requests

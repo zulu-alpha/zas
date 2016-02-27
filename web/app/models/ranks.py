@@ -26,6 +26,19 @@ class Rank(db.Document):
         return cls.objects(name_short=name_short).first()
 
     @classmethod
+    def image_by_id(cls, id):
+        """Returns the image object by it's ID
+
+        :param name_short: String representing of ID
+        :return: image object or None
+        """
+        for rank in Rank.objects:
+            if str(rank.image_squad.grid_id) == id:
+                return rank.image_squad
+            if str(rank.image.grid_id) == id:
+                return rank.image
+
+    @classmethod
     def create(cls, name, name_short, description, order, ts_group, image, image_squad):
         """Create a new rank
 
