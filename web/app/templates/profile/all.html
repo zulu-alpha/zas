@@ -5,7 +5,7 @@
 {% block heading %}All users{% endblock %}
 
 {% block sub_heading %}
-  All the users on the site by alphabetical order
+  All the users on the site grouped according to rank and in alphabetical order
 {% endblock %}
 
 
@@ -17,19 +17,21 @@
 
 
     <article class="col-lg-12">
-      <h3>Users</h3>
-      <ul>
-        {% for user in users %}
-          <li>
-            {% if user.rank %}
-              <a href="{{ url_for('ranks_rank', name_short=user.rank.name_short) }}">
-                <img src="{{ url_for('ranks_image_thumb', name_short=user.rank.name_short) }}" alt="{{ user.rank.name }} thumbnail image">
+      {% for group in users %}
+        <h3><a href="{{ group.rank_url }}">{{ group.rank }}</a></h3>
+        <ul>
+          {% for user in group.users %}
+            <li>
+              <a href="{{ url_for('profile', steam_id=user.steam_id) }}">
+                {% if user.rank %}
+                  <img src="{{ url_for('ranks_image_thumb', name_short=user.rank.name_short) }}" alt="{{ user.rank.name }} thumbnail image">
+                {% endif %}
+                {{ user.arma_name }}
               </a>
-            {% endif %}
-            <a href="{{ url_for('profile', steam_id=user.steam_id) }}">{{ user.arma_name }}</a>
-          </li>
-        {% endfor %}
-      </ul>
+            </li>
+          {% endfor %}
+        </ul>
+      {% endfor %}
     </article>
 
 

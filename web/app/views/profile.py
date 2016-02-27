@@ -5,6 +5,7 @@ from .. import app, flask_login, CONFIG, MENUS
 from ..util.permission import in_office_dynamic, owns_steam_id_page
 
 from ..models.users import User
+from ..models.ranks import Rank
 
 from ..forms.profile import ArmaName, TSID, XMLDisplay
 
@@ -34,11 +35,32 @@ MENUS.append({'parent_url': "url_for('office', office_name='Organizational')",
 @app.route('/profile/all')
 @flask_login.login_required
 def profile_all():
-    """Shows all the users on the site.
+    """Shows all the users on the site in a sorted manner.
 
     :return: render_template() or redirect()
     """
-    users = User.all()
+    users_unsorted = User.all()
+    ranks = Rank.all(reverse=True)
+    users = []
+
+    # Add ranks in order
+    for rank in ranks:
+        users.append({'rank': rank.name,
+                      'users': [],
+                      'rank_url': url_for('ranks_rank', name_short=rank.name_short)})
+    users.append({'rank': 'No rank',
+                  'users': []})
+
+    # Add users to respective ranks
+    for user in users_unsorted:
+        if user.rank:
+            for group in users:
+                if user.rank.name == group['rank']:
+                    group['users'].append(user)
+                    continue
+        else:
+            users[-1]['users'].append(user)
+
     return render_template('profile/all.html', users=users)
 
 
