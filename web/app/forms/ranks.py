@@ -45,13 +45,13 @@ class Create(Form):
                 Unique(Rank, 'ts_group', message='TS Server Group ID already used by a Rank!')
             ])
     image = FileField(
-            'Image of the Rank to be displayed on the the site. Must be a PNG file',
+            'Image of the Rank to be displayed on the the site. Must be a PNG file. At least 350x350 is ideal.',
             [
                 InputRequired(),
                 Extension('png', message='The file needs to be a PNG file!')
             ])
     image_squad = FileField(
-            'Image of the Rank to be used in the Squad XML. Must be a PAA file',
+            'Image of the Rank to be used in the Squad XML. Must be a PAA file. 256x256 is ideal.',
             [
                 InputRequired(),
                 Extension('paa', message='The file needs to be a PAA file!')
@@ -105,13 +105,13 @@ class Edit(Form):
                        message='TS Server Group ID already used by a Rank!')
             ])
     image = FileField(
-            'Image of the Rank to be displayed on the the site. Must be a PNG file',
+            'Image of the Rank to be displayed on the the site. Must be a PNG file. At least 350x350 is ideal.',
             [
                 Optional(),
                 Extension('png', message='The file needs to be a PNG file!')
             ])
     image_squad = FileField(
-            'Image of the Rank to be used in the Squad XML. Must be a PAA file',
+            'Image of the Rank to be used in the Squad XML. Must be a PAA file. 256x256 is ideal.',
             [
                 Optional(),
                 Extension('paa', message='The file needs to be a PAA file!')
