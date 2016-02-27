@@ -9,7 +9,9 @@
     {{ user.arma_name }}
   {% endif %}
 {% endblock %}
-{% block header_image_url %}{{ url_for('ranks_image', name_short=user.rank.name_short, _external=True) }}{% endblock %}
+{% if user.rank %}
+  {% block header_image_url %}{{ url_for('ranks_image', name_short=user.rank.name_short, _external=True) }}{% endblock %}
+{% endif %}
 
 {% block sub_heading %}
   Profile page for {{ user.arma_name }}. This user is only a member of Zulu-Alpha if they have a
