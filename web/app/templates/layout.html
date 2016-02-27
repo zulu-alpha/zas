@@ -5,6 +5,22 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <!-- Unfurling -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="{{ request.url }}" />
+    <meta property="twitter:url" content="{{ request.url }}" />
+    <meta property="twitter:domain" content="{{ request.url_root }}" />
+    <meta property="og:title" content="{% block heading %}Zulu-Alpha{% endblock %} - Zulu-Alpha.co.za" />
+    <meta property="twitter:title" content="{{ self.heading() }} - Zulu-Alpha.co.za" />
+    <meta property="og:description" content="{% block sub_heading %}
+                  We are a serious South African Arma community that makes our own content
+                  and use real world military tactics. We mainly play CO-OP with some
+                  occasional FvF against other international communities.{% endblock %}" />
+    <meta property="twitter:description" content="{{ self.sub_heading() }}" />
+    <meta property="og:image" content="{% block header_image_url %}{{ url_for('static', filename='img/logo_314x350.png', _external=True) }}{% endblock %}" />
+    <meta property="twitter:image" content="{{ self.header_image_url() }}" />
+
+    <!-- Title -->
     <title>{% block title %}{% endblock %} - Zulu-Alpha.co.za</title>
 
     <!-- Icons -->
@@ -26,15 +42,15 @@
 
       <nav class="list-group">
         {% if current_user.is_authenticated %}
-            <a class="list-group-item list-group-item-info" href="{{ url_for('profile', steam_id=current_user.steam_id) }}">Your profile</a>
-            <a class="list-group-item list-group-item-warning" href="{{ url_for('logout') }}">Logout</a>
-          {% else %}
-            <a class="list-group-item list-group-item-info" href="{{ url_for('login') }}">
-              <figure>
-                <img class="img-responsive center-block" src="{{ url_for('static', filename='img/sits_large_border.png') }}" alt="Login with Steam">
-              </figure>
-            </a>
-          {% endif %}
+          <a class="list-group-item list-group-item-info" href="{{ url_for('profile', steam_id=current_user.steam_id) }}">Your profile</a>
+          <a class="list-group-item list-group-item-warning" href="{{ url_for('logout') }}">Logout</a>
+        {% else %}
+          <a class="list-group-item list-group-item-info" href="{{ url_for('login') }}">
+            <figure>
+              <img class="img-responsive center-block" src="{{ url_for('static', filename='img/sits_large_border.png') }}" alt="Login with Steam">
+            </figure>
+          </a>
+        {% endif %}
       </nav>
 
       <!-- Public pages -->
@@ -76,24 +92,18 @@
       <header class="row">
         <div class="col-lg-4">
           <figure>
-            <img src="{{ url_for('static', filename='img/logo_314x350.png') }}" class="img-responsive center-block" alt="ZA Logo">
+            <img src="{{ self.header_image_url() }}" class="img-responsive center-block" alt="ZA Logo">
           </figure>
         </div>
         <div class="col-lg-8 jumbotron">
           <div class="row">
             <div class="col-sm-12">
-              <h1 class="text-center">{% block heading %}Zulu-Alpha{% endblock %}</h1>
+              <h1 class="text-center">{{ self.heading() }}</h1>
             </div>
           </div>
           <div class="row sub-heading">
             <div class="col-md-12">
-              <p class="text-center">
-                {% block sub_heading %}
-                  We are a serious South African Arma community that makes our own content
-                  and use real world military tactics. We mainly play CO-OP with some
-                  occasional FvF against other international communities.
-                {% endblock %}
-              </p>
+              <p class="text-center">{{ self.sub_heading() }}</p>
             </div>
           </div>
         </div>
