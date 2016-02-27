@@ -1,5 +1,5 @@
 from flask.ext.wtf import Form
-from ..lib.wtformsparsleyjs import StringField, SelectField
+from ..lib.wtformsparsleyjs import StringField, SelectField, Email
 
 from wtforms.fields import HiddenField
 from wtforms.validators import InputRequired, Length
@@ -36,4 +36,16 @@ class XMLDisplay(Form):
             'Select the what kind of Squad XML to display',
             [
                 InputRequired()
+            ])
+
+
+class EmailUpdate(Form):
+    exclude_id = HiddenField()
+    email = StringField(
+            'E-Mail address',
+            [
+                InputRequired(),
+                Email(),
+                Unique(User, 'email', exclude=True,
+                       message='Email already Taken!')
             ])

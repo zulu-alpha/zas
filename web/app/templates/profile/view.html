@@ -29,15 +29,19 @@
     </article>
 
 
-    {% if is_owner and user.rank %}
+    {% if is_owner_or_org and user.rank %}
       <article class="col-lg-12">
         <h3>Squad XML</h3>
-        <p>Copy and paste the following URL into your 'Squad URL' in your Arma 3 profile screen:</p>
-        <ul>
-          <li><strong>{{ url_root }}{{ url_for('profile_xml', steam_id=user.steam_id) }}</strong></li>
-        </ul>
-        <p>Your Squad XML is currently displaying <strong>{{ user.xml_display }}</strong></p>
-        <p>{{ edit(is_owner, url_for('update_xml_display', steam_id=user.steam_id), "Change XML Type") }}</p>
+        {% if is_owner %}
+          <p>Copy and paste the following URL into your 'Squad URL' in your Arma 3 profile screen:</p>
+          <ul>
+            <li><strong>{{ url_root }}{{ url_for('profile_xml', steam_id=user.steam_id) }}</strong></li>
+          </ul>
+          <p>Your Squad XML is currently displaying <strong>{{ user.xml_display }}</strong></p>
+        {% else %}
+          <p>Squad XML is currently displaying <strong>{{ user.xml_display }}</strong></p>
+        {% endif %}
+        <p>{{ edit(is_owner_or_org, url_for('update_xml_display', steam_id=user.steam_id), "Change XML Type") }}</p>
       </article>
     {% endif %}
 
@@ -55,21 +59,32 @@
       <p>{{ edit(is_org, url_for('ranks_assign', steam_id=user.steam_id), "Assign Rank") }}</p>
     </article>
 
+
     <article class="col-lg-12">
       <h3>History of Arma names:</h3>
       {% for arma_name in user.arma_names|sort(attribute='created', reverse=True) %}
         <p><strong>{{ arma_name.arma_name }}</strong> - ({{ date(arma_name.created) }})</p>
       {% endfor %}
-      <p>{{ edit(is_owner, url_for('update_arma_name', steam_id=user.steam_id), "Update Arma name") }}</p>
+      <p>{{ edit(is_owner_or_org, url_for('update_arma_name', steam_id=user.steam_id), "Update Arma name") }}</p>
     </article>
 
-    {% if is_owner %}
+
+    {% if is_owner_or_org %}
       <article class="col-lg-12">
         <h3>TeamSpeak IDs:</h3>
         {% for ts_id in user.ts_ids|sort(attribute='created') %}
           <p>{{ ts_id.ts_id }}</p>
         {% endfor %}
-        <p>{{ edit(is_owner, url_for('update_ts_id', steam_id=user.steam_id), "Add TeamSpeak ID") }}</p>
+        <p>{{ edit(is_owner_or_org, url_for('update_ts_id', steam_id=user.steam_id), "Add TeamSpeak ID") }}</p>
+      </article>
+    {% endif %}
+
+
+    {% if is_owner_or_org %}
+      <article class="col-lg-12">
+        <h3>Email</h3>
+        <p><strong>{{ user.email }}</strong></p>
+        <p>{{ edit(is_owner_or_org, url_for('update_email', steam_id=user.steam_id), "Change email") }}</p>
       </article>
     {% endif %}
 

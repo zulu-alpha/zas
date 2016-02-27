@@ -120,10 +120,12 @@ def in_office_dynamic(member=None, head=None, do_flash=False):
         flash(msg(member, head), 'warning')
 
 
-def owns_steam_id_page():
-    """Decorator that checks to see if the currently logged in user is the owner of the steam_id used to render
-    the page. Make sure that name of the steam_id parameter for the view 'steam_id'.
+def owns_steam_id_page(exceptions=None):
+    """Decorator that checks to see if the currently logged in user is the owner of the steam_id
+    used to render the page or satisfies the exceptions. Make sure that name of the steam_id
+    parameter for the view 'steam_id'.
 
+    :param exceptions: Tuple of lists describing offices that are exceptions (ala in_office())
     :return: The view if owner of steam_id, else redirection with a warning
     """
     def decorator(f):
@@ -134,8 +136,20 @@ def owns_steam_id_page():
             user = flask_login.current_user
             q_user = User.by_steam_id(steam_id)
 
+            # If is owner, allow
             if user.id == q_user.id:
                 return f(*args, **kwargs)
+
+            # If valid office, allow
+            if exceptions:
+                # if was a single argument then likely not a tiple
+                if isinstance(exceptions, list):
+                    if in_office_dynamic(member=exceptions):
+                        return f(*args, **kwargs)
+                # If tuple of lists
+                else:
+                    if in_office_dynamic(*exceptions):
+                        return f(*args, **kwargs)
 
             # If no match is found, return a failure
             flash('Only {0} can use this page'.format(q_user.arma_name), 'warning')

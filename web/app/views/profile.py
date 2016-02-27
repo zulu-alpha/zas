@@ -7,7 +7,7 @@ from ..util.permission import in_office_dynamic, owns_steam_id_page
 from ..models.users import User
 from ..models.ranks import Rank
 
-from ..forms.profile import ArmaName, TSID, XMLDisplay
+from ..forms.profile import ArmaName, TSID, XMLDisplay, EmailUpdate
 
 
 @app.route('/profile/<steam_id>')
@@ -20,10 +20,13 @@ def profile(steam_id):
     """
     user = User.by_steam_id(steam_id)
     is_owner = user.id == flask_login.current_user.id
+    is_org = in_office_dynamic(['Organizational', 'HQ'])
+    is_owner_or_org = is_owner or is_org
     return render_template('profile/view.html',
                            user=user,
                            is_owner=is_owner,
-                           is_org=in_office_dynamic(['Organizational', 'HQ']),
+                           is_owner_or_org=is_owner_or_org,
+                           is_org=is_org,
                            url_root=CONFIG['URL_ROOT'][:-1])
 
 
@@ -66,7 +69,7 @@ def profile_all():
 
 @app.route('/profile/<steam_id>/update/arma-name', methods=['GET', 'POST'])
 @flask_login.login_required
-@owns_steam_id_page()
+@owns_steam_id_page(exceptions=(['HQ'], ['Organizational']))
 def update_arma_name(steam_id):
     """Updates the Arma name of the given user by steam id.
 
@@ -92,7 +95,7 @@ def update_arma_name(steam_id):
 
 @app.route('/profile/<steam_id>/update/ts-id', methods=['GET', 'POST'])
 @flask_login.login_required
-@owns_steam_id_page()
+@owns_steam_id_page(exceptions=(['HQ'], ['Organizational']))
 def update_ts_id(steam_id):
     """Updates the Arma name of the given user by steam id.
 
@@ -135,7 +138,7 @@ def profile_xml(steam_id):
 
 @app.route('/profile/<steam_id>/update/xml-display', methods=['GET', 'POST'])
 @flask_login.login_required
-@owns_steam_id_page()
+@owns_steam_id_page(exceptions=(['HQ'], ['Organizational']))
 def update_xml_display(steam_id):
     """Change the kind of squad XML to display.
 
@@ -176,3 +179,29 @@ def za_paa():
     :return: Image file
     """
     return send_file('.' + url_for('static', filename='xml/za_logo.paa'), mimetype='image/paa')
+
+
+@app.route('/profile/<steam_id>/update/email', methods=['GET', 'POST'])
+@flask_login.login_required
+@owns_steam_id_page(exceptions=(['HQ'], ['Organizational']))
+def update_email(steam_id):
+    """Updates the email of the user.
+
+    :param steam_id: The steam ID of the user in question
+    :return: render_template() or redirect()
+    """
+    user = User.by_steam_id(steam_id)
+
+    form = EmailUpdate()
+
+    # Add user id to form to allow for validation
+    if request.method == 'POST':
+        form.exclude_id.data = user.id
+    if form.validate_on_submit():
+        if user.update_email(form.email.data):
+            flash('Email successfully added!', 'success')
+        else:
+            flash('Email failed to be added for some reason!', 'danger')
+        return redirect(url_for('profile', steam_id=steam_id))
+
+    return render_template('profile/update_email.html', user=user, form=form)

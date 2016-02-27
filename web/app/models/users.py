@@ -186,3 +186,24 @@ class User(db.Document):
         self.xml_display = new_display
         self.save()
         return True
+
+    def update_email(self, new_email):
+        """Update the user's email if it isn't used been used
+        by any other user.
+
+        :param new_name: Email to update to
+        :return: BOOL as to whether or not the DB was updated
+        """
+        # Don't update the name if it's already that.
+        if self.email == new_email:
+            return False
+
+        users = User.objects(email=new_email)
+
+        # Don't update if the name is in use and not by the user in question.
+        if users and self not in users:
+            return False
+
+        self.email=new_email
+        self.save()
+        return True
