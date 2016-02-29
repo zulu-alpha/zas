@@ -90,6 +90,20 @@
       </article>
     {% endif %}
 
+    <article class="col-lg-12">
+      <h3>Slack:</h3>
+      {% if not user.slack_id %}
+        {% if not user.slack_invited %}
+          <p><strong>Not invited</strong></p>
+          <p>{{ edit(is_org, url_for('slack_invite', steam_id=user.steam_id), "Invite") }}</p>
+        {% else %}
+          <p><strong>Invited</strong></p>
+          <p>{{ edit(is_org, url_for('slack_invite', steam_id=user.steam_id), "Invite again") }}</p>
+        {% endif %}
+      {% else %}
+        <p><strong>In slack team</strong></p>
+      {% endif %}
+    </article>
 
   </section>
 

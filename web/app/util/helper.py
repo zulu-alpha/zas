@@ -2,11 +2,9 @@
 used in the flask app. This is done in order to abstract the DB
 interactions.
 """
+import string
+import random
 import re
-
-from .. import login_manager
-
-from ..models.users import User
 
 
 def strip_steam_id(identity_url):
@@ -19,11 +17,12 @@ def strip_steam_id(identity_url):
     return match.group(1)
 
 
-@login_manager.user_loader
-def user_by_id(user_id):
-    """Returns the user that has the given _id. Required by flask-login
+def random_str(length=32):
+    """Generate a random string consisting of upper and lower case letters and numbers and with
+    the given length.
 
-    :param user_id: String that represents the User id
-    :return: MongoDB Object
+    :param length: Number of characters the string should be. Default is 32
+    :return: Randomly generated string
     """
-    return User.by_id(user_id)
+    chars = string.ascii_uppercase + string.ascii_lowercase + string.digits
+    return ''.join(random.SystemRandom().choice(chars) for _ in range(length))
