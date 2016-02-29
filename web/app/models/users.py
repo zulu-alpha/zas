@@ -3,8 +3,6 @@ from datetime import datetime
 from .. import db, login_manager
 from ..models.ranks import Rank
 
-from ..util import slack
-
 
 class ArmaName(db.EmbeddedDocument):
     """Allows to store a history of Arma nicks used"""
@@ -180,11 +178,6 @@ class User(db.Document):
             self.rank = rank
             self.save()
             changed = True
-
-        # Invite to slack if valid rank and not already on slack
-        if rank:
-            slack.invite_user(self)
-            pass
 
         return changed
 
