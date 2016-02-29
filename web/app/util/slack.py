@@ -33,6 +33,9 @@ def invite_user(user):
     """
     invite_url = BASE_URL + 'users.admin.invite'
 
+    if user.slack_id:
+        return False
+
     logging.log(level=logging.INFO, msg='Inviting {0} to slack'.format(user.arma_name))
 
     params = {'t': str(time.time())}
@@ -60,12 +63,13 @@ def invite_user(user):
             user.slack_invited = True
             user.save()
             flash('Invited to Slack' + FLASH + r.text, 'success')
+            return True
         else:
             flash('Not invited to Slack' + FLASH + r.text, 'warning')
+            return False
     else:
         flash(FLASH + r.text, 'info')
-
-    return r
+        return False
 
 
 def oauth_url():
