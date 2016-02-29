@@ -3,6 +3,7 @@ from flask import render_template, flash, redirect, url_for, send_file, request,
 from .. import app, flask_login, MENUS
 
 from ..util.permission import in_office, in_office_dynamic
+from ..util import slack
 
 from ..models.ranks import Rank
 from ..models.users import User
@@ -179,6 +180,10 @@ def ranks_assign(steam_id):
     if form.validate_on_submit():
         db_change = user.assign_rank(form.rank.data)
         if db_change:
+            # Invite to slack if valid rank and not already on slack
+            if user.rank:
+                slack.invite_user(user)
+            pass
             flash('Rank successfully assigned!', 'success')
         else:
             flash('Rank failed to be assigned!', 'danger')
