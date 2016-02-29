@@ -1,9 +1,9 @@
 from datetime import datetime
 
-from .. import db
+from .. import db, login_manager
 from ..models.ranks import Rank
 
-from ..util.slack import invite_user_slack
+from ..util import slack
 
 
 class ArmaName(db.EmbeddedDocument):
@@ -71,6 +71,16 @@ class User(db.Document):
         :return: MongoDB Object
         """
         return cls.objects(id=user_id).first()
+
+    @staticmethod
+    @login_manager.user_loader
+    def user_by_id(user_id):
+        """Returns the user that has the given _id. Required by flask-login
+
+        :param user_id: String that represents the User id
+        :return: MongoDB Object
+        """
+        return User.by_id(user_id)
 
     @classmethod
     def all(cls):
@@ -172,7 +182,7 @@ class User(db.Document):
 
         # Invite to slack if valid rank and not already on slack
         if rank:
-            invite_user_slack(self)
+            slack.invite_user(self)
             pass
 
         return changed
@@ -191,7 +201,7 @@ class User(db.Document):
         """Update the user's email if it isn't used been used
         by any other user.
 
-        :param new_name: Email to update to
+        :param new_email: Email to update to
         :return: BOOL as to whether or not the DB was updated
         """
         # Don't update the name if it's already that.
@@ -204,6 +214,6 @@ class User(db.Document):
         if users and self not in users:
             return False
 
-        self.email=new_email
+        self.email = new_email
         self.save()
         return True
