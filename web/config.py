@@ -50,4 +50,4 @@ SLACK_TEAM_ID = ''
 SLACK_CHANNELS = ['']
 SLACK_CLIENT_ID = ''
 SLACK_CLIENT_SECRET = ''
-SLACK_SCOPES = 'admin users:read'
+SLACK_SCOPES = 'admin users:read client'
