@@ -160,7 +160,7 @@ def ranks_image_squad(_id):
 
 @app.route('/ranks/assign/<steam_id>', methods=['GET', 'POST'])
 @flask_login.login_required
-@in_office(['Organizational', 'HQ'])
+@in_office(['HQ', 'Organizational'])
 def ranks_assign(steam_id):
     """Assign a rank to the user with the given steam ID
 
