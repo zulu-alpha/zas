@@ -8,6 +8,7 @@ from requests.compat import urlencode
 from flask import flash, url_for
 
 from ..models.slack import SlackOAuthState, SlackTeam
+from ..models.users import User
 
 from .. import CONFIG
 
@@ -119,3 +120,44 @@ def token_from_code(code, state):
         return True
     else:
         return False
+
+
+def link_all_members():
+    """Scans the slack team for members that have matching email addresses of users on this site
+    and links their Slack IDs to their profiles.
+
+    :return: List of users that where linked represented by their arma names.
+    """
+    url = BASE_URL + 'users.list'
+
+    payload = {
+        'token': TOKEN
+    }
+
+    r = requests.post(url, data=payload)
+    j = json.loads(r.text)
+
+    members = j['members']
+    users = User.all_full()
+
+    # Make dictionary of slack member emails as keys and IDs as values
+    members_dic = {}
+    for member in members:
+        email = member['profile'].get('email')
+        if email:
+            members_dic[email] = member['id']
+
+    # Keep list of all users who had their slack ID's linked
+    linked = []
+
+    # Go through all users and if a matching email is found and there is no ID or it's different,
+    # then update with new ID.
+    for user in users:
+        if user.email in members_dic:
+            slack_id = members_dic[user.email]
+            if slack_id != user.slack_id:
+                user.slack_id = slack_id
+                user.save()
+                linked.append(user.arma_name)
+
+    return linked

@@ -58,3 +58,13 @@ def slack_invite(steam_id):
         return redirect(url_for('profile', steam_id=user.steam_id))
     slack.invite_user(user)
     return redirect(url_for('profile', steam_id=user.steam_id))
+
+
+@app.route('/slack/sync/members')
+@flask_login.login_required
+@in_office(['HQ', 'Organizational'])
+def slack_sync_members():
+    """Sync all users on the site with slack by updating their slack IDs"""
+    linked = slack.link_all_members()
+    flash('Users synced: {0}'.format(linked), 'info')
+    return redirect(url_for('home'))

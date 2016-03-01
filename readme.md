@@ -37,10 +37,10 @@ then once the migration container closes, stop the whole compose.
 
 ### Restore 
 To restore from backup, execute the following:
-*  `docker-compose -f restore.yml -f ./restore/prod.yml run restore FILE_NAME`
-  *  Where FILE_NAME is the name of the file on the FTP server.
-  *  Substitute `prod` for `dev` when in development.
-  *  If you are running on Windows, `-d` is required.
+* `docker-compose -f restore.yml -f ./restore/prod.yml run restore FILE_NAME`
+  * Where FILE_NAME is the name of the file on the FTP server.
+  * Substitute `prod` for `dev` when in development.
+  * If you are running on Windows, `-d` is required.
   
 ### Offices
 Don't make an office with the short name `DYNAMIC`, as that is reserved by the permission system.
@@ -61,3 +61,7 @@ To add a new rank, use: `/ranks/create`.
 ### Squad XML User attribute
 `.xml_display` should either be `rank` or `za` to either display the user's rank or the ZA logo for
 their squad xml.
+
+### Slack
+* To get a new token, go to `/slack/oauth/start`
+* To force the linking of slack team members with the site, go to `/slack/sync/members`

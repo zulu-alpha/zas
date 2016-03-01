@@ -83,12 +83,20 @@ class User(db.Document):
 
     @classmethod
     def all(cls):
-        """Returns all the users on the site
+        """Returns all the users on the site, but with limited values
 
         :return: All users
         """
         return cls.objects.only('steam_id', 'arma_names', 'rank').\
             order_by('arma_names.arma_name').all()
+
+    @classmethod
+    def all_full(cls):
+        """Returns all the users on the site, but their full objects
+
+        :return: All users
+        """
+        return cls.objects.order_by('arma_names.arma_name').all()
 
     @classmethod
     def select_field_ranked(cls):
