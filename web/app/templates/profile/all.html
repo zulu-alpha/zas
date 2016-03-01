@@ -15,9 +15,8 @@
 
   <section class="row">
 
-
-    <article class="col-lg-12">
-      {% for group in users %}
+    {% for group in users %}
+      <article class="col-sm-6 col-md-4">
         <h3><a href="{{ group.rank_url }}">{{ group.rank }}</a></h3>
         <ul>
           {% for user in group.users %}
@@ -31,9 +30,8 @@
             </li>
           {% endfor %}
         </ul>
-      {% endfor %}
-    </article>
-
+      </article>
+    {% endfor %}
 
   </section>
 
