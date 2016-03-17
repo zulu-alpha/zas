@@ -10,3 +10,4 @@ cssmin
 flask-assets
 Pillow
 requests
+Flask-Misaka
