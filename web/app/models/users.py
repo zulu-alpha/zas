@@ -3,6 +3,7 @@ from datetime import datetime
 from .. import db, login_manager
 from ..models.ranks import Rank
 from ..models.badges import Skill
+from ..models.events import Event
 
 
 class ArmaName(db.EmbeddedDocument):
@@ -14,6 +15,14 @@ class ArmaName(db.EmbeddedDocument):
 class TSID(db.EmbeddedDocument):
     """Allows for unique TeamSpeak Unique IDs to be enforced in the Schema"""
     ts_id = db.StringField(min_length=28, max_length=28, unique=True, required=True)
+    created = db.DateTimeField(default=datetime.utcnow())
+
+
+class EarnedSkill(db.EmbeddedDocument):
+    """Allows to store skills and the date at which they where received"""
+    skill = db.ReferenceField(Skill, reverse_delete_rule=1, required=True)
+    event = db.ReferenceField(Event, reverse_delete_rule=1)
+    instructor = db.ReferenceField(User, reverse_delete_rule=1, required=True)
     created = db.DateTimeField(default=datetime.utcnow())
 
 
@@ -30,7 +39,7 @@ class User(db.Document):
     ts_ids = db.ListField(db.EmbeddedDocumentField(TSID), required=True)
     rank = db.ReferenceField(Rank)
     xml_display = db.StringField(max_length=25, default='rank', choices=('rank', 'za'))
-    skills = db.ListField(db.ReferenceField(Skill, reverse_delete_rule=4))
+    skills = db.ListField(db.EmbeddedDocumentField(EarnedSkill))
     is_active = db.BooleanField(required=True)
     is_authenticated = db.BooleanField(required=True)
     is_anonymous = db.BooleanField(default=False, required=True)
