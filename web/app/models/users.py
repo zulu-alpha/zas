@@ -4,6 +4,7 @@ from .. import db, login_manager
 from ..models.ranks import Rank
 from ..models.badges import Skill
 from ..models.events import Event
+from ..models.posts import Comment
 
 
 class ArmaName(db.EmbeddedDocument):
@@ -40,6 +41,7 @@ class User(db.Document):
     rank = db.ReferenceField(Rank)
     xml_display = db.StringField(max_length=25, default='rank', choices=('rank', 'za'))
     skills = db.ListField(db.EmbeddedDocumentField(EarnedSkill))
+    comments = db.ListField(db.ReferenceField(Comment, reverse_delete_rule=4))
     is_active = db.BooleanField(required=True)
     is_authenticated = db.BooleanField(required=True)
     is_anonymous = db.BooleanField(default=False, required=True)
