@@ -41,7 +41,7 @@ class User(db.Document):
     rank = db.ReferenceField(Rank)
     xml_display = db.StringField(max_length=25, default='rank', choices=('rank', 'za'))
     skills = db.ListField(db.EmbeddedDocumentField(EarnedSkill))
-    comments = db.ListField(db.ReferenceField(Comment, reverse_delete_rule=4))
+    skills_instructs = db.ListField(db.EmbeddedDocumentField(Skill))
     is_active = db.BooleanField(required=True)
     is_authenticated = db.BooleanField(required=True)
     is_anonymous = db.BooleanField(default=False, required=True)
@@ -83,6 +83,15 @@ class User(db.Document):
         :return: MongoDB Object
         """
         return cls.objects(id=user_id).first()
+
+    @classmethod
+    def by_arma_name(cls, arma_name):
+        """Returns the user that has the given arma_name
+
+        :param arma_name: String that represents the arma_name
+        :return: MongoDB Object
+        """
+        return cls.objects(arma_name=arma_name).first()
 
     @staticmethod
     @login_manager.user_loader
