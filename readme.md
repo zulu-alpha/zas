@@ -16,7 +16,7 @@ Even in windows, if you aren't me, change instances of `adam` to your username, 
 
 On production, run the `Let's Encrypt` docker image as described [here](http://letsencrypt.readthedocs.org/en/latest/using.html#running-with-docker).
 Make sure to set it up for the site and for a different subdomain for Mongo-Express.
-I haven't setup any mechanism for auto renewal as of yet.
+For auto-renewal, copy `extra/letsencrypt_renew.sh` to `/etc/cron.monthly/letsencrypt_renew.sh` and make it executable with `chmod +x letsencrypt_renew.sh`.
 You may have to set the owner and permissions of `/etc/letsencrypt/` to your user account with `sudo chown -R adam:adam /etc/letsencrypt` and 
 `sudo chmod -R 755 /etc/letsencrypt` for nginx to be able to mount the certificates.
 
