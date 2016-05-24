@@ -1,4 +1,6 @@
 backup:
   volumes:
-    - /c/Users/adam/zas/config/backup_config.py:/opt/backup/backup_config.py:ro
-    - /c/Users/adam/zas/log/backup:/var/log/backup
+  #  - /c/Users/adam/zas/config/backup_config.py:/opt/backup/backup_config.py:ro
+    - /home/adam/zas/config/backup_config.py:/opt/backup/backup_config.py:ro
+  #  - /c/Users/adam/zas/log/backup:/var/log/backup
+    - /home/adam/zas/log/backup:/var/log/backup
