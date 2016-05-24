@@ -51,3 +51,10 @@ SLACK_CHANNELS = ['']
 SLACK_CLIENT_ID = ''
 SLACK_CLIENT_SECRET = ''
 SLACK_SCOPES = 'admin read client'
+
+CALENDAR_MISSIONS = '1tp9o9bs9gunu0vc0h3lunlvms@group.calendar.google.com'
+CALENDAR_ELECTIVE_MISSIONS = 'jvj1hjdar9mh4qhut88rp9gne4@group.calendar.google.com'
+CALENDAR_TRAINING = '3e2f42jfcjou4v1ag8rhf4qrm0@group.calendar.google.com'
+CALENDAR_ELECTIVE_TESTING = 'au125a4u2tvkbvcaiput27d9l8@group.calendar.google.com'
+CALENDAR_SELECTION = '1g12coo02ao7rdr255u32prd6o@group.calendar.google.com'
+CALENDAR_MISC = 'k7vf7mumjbrsr2eub2njp7i7hc@group.calendar.google.com'
