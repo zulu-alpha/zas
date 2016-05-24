@@ -1,6 +1,7 @@
 # Installation
 Copy the files *inside* `./config` to `./etc/zas/` and the *folder* `/log` to `/var/zas/`.
-In a windows development environment, copy the `./config` and `./log` *folders* to `C:\Users\adam\zas\config`.
+In a windows development environment, copy the `./config` and `./log` *folders* to `C:\Users\adam\zas\config`, or in a linux dev environment linux, `/home/adam/zas/config`.
+
 
 Edit the config files appropriately for the environments.
 * For development, not much configuration needs to be done, except to enable debugging.
@@ -12,7 +13,7 @@ To start in production, use `sudo docker-compose -f docker-compose.yml -f prod.y
 To start in development, use `docker-compose -f docker-compose.yml -f dev.yml up` for more debugging in the *web* app.
 If the development environment is Linux, then you should change the paths to the config and log files in `dev.yml` to be something more meaningful.
 Also if developing in linux, change the path in `dev.yml` to point to your *web* project folder.
-Even in windows, if you aren't me, change instances of `adam` to your username, though that may require a lot of editing.
+Substitute **adam** for you user name and update `dev.yml` files accordingly.
 
 On production, run the `Let's Encrypt` docker image as described [here](http://letsencrypt.readthedocs.org/en/latest/using.html#running-with-docker).
 Make sure to set it up for the site and for a different subdomain for Mongo-Express.
