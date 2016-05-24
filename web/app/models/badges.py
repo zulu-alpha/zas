@@ -6,6 +6,7 @@ class Skill(db.Document):
     name = db.StringField(min_length=4, max_length=50, unique=True, required=True)
     description = db.StringField(min_length=2, max_length=200, unique=True, required=True)
     uri = db.URLField(required=True)
+    prerequisites = db.ListField(db.ReferenceField('Skill', reverse_delete_rule=4))
 
 
 class Badge(db.Document):
