@@ -94,14 +94,14 @@ class User(db.Document):
         return cls.objects(arma_name=arma_name).first()
 
     @classmethod
-    def by_arma_name_dated(cls, arma_name, datetime):
+    def by_arma_name_dated(cls, arma_name, date_time):
         """Returns the last user that used the given arma_name before the given date
 
         :param arma_name: String that represents the arma_name
-        :param datetime: DateTime object the the name must be older than
+        :param date_time: DateTime object the the name must be older than
         :return: MongoDB Object
         """
-        users = cls.objects(db.Q(arma_names__created__lte=datetime) &
+        users = cls.objects(db.Q(arma_names__created__lte=date_time) &
                             db.Q(arma_names__arma_name=arma_name)).all()
 
         # Now we need to find the user to last use that arma name before the given date
