@@ -10,6 +10,10 @@ WORKDIR /opt/backup
 # Allow the script to be executed
 RUN chmod +x /opt/backup/backup.py
 
+# Install crontab
+RUN apt-get update
+RUN apt-get install cron
+
 # Add the job to the cron
 RUN crontab /opt/backup/backup_cron.txt
 
