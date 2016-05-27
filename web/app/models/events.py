@@ -21,7 +21,7 @@ class Image(db.DynamicEmbeddedDocument):
     caption = db.StringField(min_length=4, max_length=40, required=True)
 
 
-class Warnord(db.DynamicEmbeddedDocument):
+class WARNORD(db.DynamicEmbeddedDocument):
     """Warning Order for the mission"""
     # 1.Situation.A Weather and Lighting
     time = db.DateTimeField(required=True)
@@ -80,6 +80,67 @@ class Warnord(db.DynamicEmbeddedDocument):
     created = db.DateTimeField(default=datetime.utcnow())
 
 
+class FRAGO(db.DynamicEmbeddedDocument):
+    """Changes to WARNORD"""
+    author = db.ReferenceField(User, reverse_delete_rule=1)
+
+    # 1.Situation.A Weather and Lighting
+    time = db.DateTimeField()
+    lighting = db.StringField()
+    weather = db.StringField()
+    situation = db.StringField()
+    situation_images = db.ListField(db.EmbeddedDocumentField(Image))
+
+    # 1.Situation.B Enemy Forces
+    enemy_strengths = db.StringField()
+    enemy_locations = db.StringField()
+    enemy_weapons = db.StringField()
+    enemy_equipment = db.StringField()
+    enemy_obstacles = db.StringField()
+    enemy_defensive_pos = db.StringField()
+    enemy_air = db.StringField()
+    enemy_arty = db.StringField()
+    enemy_reactions = db.StringField()
+    enemy_images = db.ListField(db.EmbeddedDocumentField(Image))
+
+    # 1.Situation.C Friendly Forces
+    friendly_intent = db.StringField()
+    friendly_equipment = db.StringField()
+    friendly_surveillance = db.StringField()
+    friendly_ground = db.StringField()
+    friendly_fixed = db.StringField()
+    friendly_rotary = db.StringField()
+    friendly_naval = db.StringField()
+    friendly_attachments = db.StringField()
+    friendly_other = db.StringField()
+    friendly_images = db.ListField(db.EmbeddedDocumentField(Image))
+
+    # 1.Situation.D Civilian Population
+    civ_numbers = db.StringField()
+    civ_location = db.StringField()
+    civ_vehicles = db.StringField()
+    civ_sympathies = db.StringField()
+    civ_images = db.ListField(db.EmbeddedDocumentField(Image))
+
+    # 2.Mission
+    mission = db.StringField()
+    mission_images = db.ListField(db.EmbeddedDocumentField(Image))
+
+    # 3.Execution
+    execution = db.StringField()
+    execution_images = db.ListField(db.EmbeddedDocumentField(Image))
+
+    # 4.Service and Support
+    sas_units = db.StringField()
+    sas_medical = db.StringField()
+    sas_logistics = db.StringField()
+
+    # 5.Command and Signal
+    command_and_signal = db.StringField()
+
+    created = db.DateTimeField(default=datetime.utcnow())
+
+
 class OPORD(db.DynamicEmbeddedDocument):
     """Operational Order for the mission"""
     # 1.Situation.E Ground Brief Orientation
@@ -117,6 +178,13 @@ class OPORD(db.DynamicEmbeddedDocument):
     created = db.DateTimeField(default=datetime.utcnow())
 
 
+class Flash(db.DynamicEmbeddedDocument):
+    """A flash message, suitable for miscellaneous"""
+    author = db.ReferenceField(User, reverse_delete_rule=1)
+    message = db.StringField(required=True)
+    created = db.DateTimeField(default=datetime.utcnow())
+
+
 class AAR(db.DynamicEmbeddedDocument):
     """AAR that can be written by each member who attended."""
     author = db.ReferenceField(User, reverse_delete_rule=1)
@@ -124,13 +192,6 @@ class AAR(db.DynamicEmbeddedDocument):
     episode = db.StringField(required=True)
     reason = db.StringField(required=True)
     improvement = db.StringField(required=True)
-    created = db.DateTimeField(default=datetime.utcnow())
-
-
-class Flash(db.DynamicEmbeddedDocument):
-    """AAR that can be written by each member who attended."""
-    author = db.ReferenceField(User, reverse_delete_rule=1)
-    message = db.StringField(required=True)
     created = db.DateTimeField(default=datetime.utcnow())
 
 
@@ -319,9 +380,13 @@ class Mission(Event):
     co_east = db.ReferenceField(User, reverse_delete_rule=4)
     co_ind = db.ReferenceField(User, reverse_delete_rule=4)
 
-    warnord_west = db.EmbeddedDocumentField(Warnord)
-    warnord_east = db.EmbeddedDocumentField(Warnord)
-    warnord_ind = db.EmbeddedDocumentField(Warnord)
+    warnord_west = db.EmbeddedDocumentField(WARNORD)
+    warnord_east = db.EmbeddedDocumentField(WARNORD)
+    warnord_ind = db.EmbeddedDocumentField(WARNORD)
+
+    fragos_west = db.ListField(db.EmbeddedDocumentField(FRAGO))
+    fragos_east = db.ListField(db.EmbeddedDocumentField(FRAGO))
+    fragos_ind = db.ListField(db.EmbeddedDocumentField(FRAGO))
 
     opord_west = db.EmbeddedDocumentField(OPORD)
     opord_east = db.EmbeddedDocumentField(OPORD)
