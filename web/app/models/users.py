@@ -3,8 +3,6 @@ from datetime import datetime
 from .. import db, login_manager
 from ..models.ranks import Rank
 from ..models.badges import Skill
-from ..models.events import Event
-from ..models.posts import Comment
 
 
 class ArmaName(db.EmbeddedDocument):
@@ -22,8 +20,8 @@ class TSID(db.EmbeddedDocument):
 class EarnedSkill(db.EmbeddedDocument):
     """Allows to store skills and the date at which they where received"""
     skill = db.ReferenceField(Skill, reverse_delete_rule=1, required=True)
-    event = db.ReferenceField(Event, reverse_delete_rule=1)
-    instructor = db.ReferenceField(User, reverse_delete_rule=1, required=True)
+    event = db.ReferenceField('Event', reverse_delete_rule=1)
+    instructor = db.ReferenceField('User', reverse_delete_rule=1, required=True)
     created = db.DateTimeField(default=datetime.utcnow())
 
 
