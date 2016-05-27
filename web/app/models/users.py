@@ -39,7 +39,7 @@ class User(db.Document):
     rank = db.ReferenceField(Rank)
     xml_display = db.StringField(max_length=25, default='rank', choices=('rank', 'za'))
     skills = db.ListField(db.EmbeddedDocumentField(EarnedSkill))
-    skills_instructs = db.ListField(db.EmbeddedDocumentField(Skill))
+    skills_instructs = db.ListField(db.ReferenceField(Skill, reverse_delete_rule=4))
     is_active = db.BooleanField(required=True)
     is_authenticated = db.BooleanField(required=True)
     is_anonymous = db.BooleanField(default=False, required=True)
