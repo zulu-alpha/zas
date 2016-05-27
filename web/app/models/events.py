@@ -12,7 +12,7 @@ from ..util.helper import strip_tags
 class Interest(db.EmbeddedDocument):
     """For gauging interest for a specific date for an event"""
     datetime = db.DateTimeField(required=True)
-    interested = db.ListField(db.ReferenceField(User, reverse_delete_rule=4))
+    interested = db.ListField(db.ReferenceField(User))
 
 
 class Image(db.DynamicEmbeddedDocument):
@@ -82,7 +82,7 @@ class WARNORD(db.DynamicEmbeddedDocument):
 
 class FRAGO(db.DynamicEmbeddedDocument):
     """Changes to WARNORD"""
-    author = db.ReferenceField(User, reverse_delete_rule=1)
+    author = db.ReferenceField(User)
 
     # 1.Situation.A Weather and Lighting
     time = db.DateTimeField()
@@ -180,14 +180,14 @@ class OPORD(db.DynamicEmbeddedDocument):
 
 class Flash(db.DynamicEmbeddedDocument):
     """A flash message, suitable for miscellaneous"""
-    author = db.ReferenceField(User, reverse_delete_rule=1)
+    author = db.ReferenceField(User)
     message = db.StringField(required=True)
     created = db.DateTimeField(default=datetime.utcnow())
 
 
 class AAR(db.DynamicEmbeddedDocument):
     """AAR that can be written by each member who attended."""
-    author = db.ReferenceField(User, reverse_delete_rule=1)
+    author = db.ReferenceField(User)
     plan = db.StringField(required=True)
     episode = db.StringField(required=True)
     reason = db.StringField(required=True)
@@ -214,7 +214,7 @@ class AttendingUser(db.EmbeddedDocument):
 class Event(db.Document):
     """Base class for events"""
     calendar = ''
-    author = db.ReferenceField(User, reverse_delete_rule=1)
+    author = db.ReferenceField(User)
 
     name = db.StringField(min_length=4, max_length=40, required=True, unique=True)
     description = db.StringField(min_length=2, max_length=200,  required=True)
@@ -369,8 +369,6 @@ class ElectiveEvent:
     min_members = db.IntField()
     min_attending = db.IntField()
 
-    meta = {'allow_inheritance': True}
-
 
 class Mission(Event):
     """General Mission"""
@@ -396,7 +394,7 @@ class Mission(Event):
 class ElectiveMission(Mission, ElectiveEvent):
     """Elective Mission"""
     calendar = CONFIG['CALENDAR_ELECTIVE_MISSIONS']
-    prerequisite_events = db.ListField(db.ReferenceField(Event, reverse_delete_rule=1))
+    prerequisite_events = db.ListField(db.ReferenceField(Event, reverse_delete_rule=4))
 
 
 class Training(Event):
