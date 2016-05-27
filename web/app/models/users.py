@@ -19,9 +19,9 @@ class TSID(db.EmbeddedDocument):
 
 class EarnedSkill(db.EmbeddedDocument):
     """Allows to store skills and the date at which they where received"""
-    skill = db.ReferenceField(Skill, reverse_delete_rule=1, required=True)
-    event = db.ReferenceField('Event', reverse_delete_rule=1)
-    instructor = db.ReferenceField('User', reverse_delete_rule=1, required=True)
+    skill = db.ReferenceField(Skill, required=True)
+    event = db.ReferenceField('Event')
+    instructor = db.ReferenceField('User', required=True)
     created = db.DateTimeField(default=datetime.utcnow())
 
 
