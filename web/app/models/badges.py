@@ -8,6 +8,8 @@ class Skill(db.Document):
     uri = db.URLField(required=True)
     prerequisites = db.ListField(db.ReferenceField('Skill', reverse_delete_rule=4))
 
+    # Todo: Sanitize User.skills on deletion.
+
 
 class Badge(db.Document):
     """A badge that is made up of skills"""
