@@ -11,9 +11,11 @@ class Player(db.EmbeddedDocument):
 class RawAttendance(db.Document):
     """Raw attendance data gathered for later processing. Gathered as snapshots of the server"""
     # server.ger_info()
+    server_addr = db.StringField(required=True)
+    server_port = db.IntField(required=True)
+    server_name = db.StringField(required=True)
     game = db.StringField(required=True)
     map = db.StringField(required=True)
-    server_name = db.StringField(required=True)
 
     # server._get_players()
     players = db.ListField(db.EmbeddedDocumentField(Player), required=True)

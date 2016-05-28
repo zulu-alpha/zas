@@ -297,10 +297,14 @@ class Event(db.Document):
         return num
 
     def generate_attendance(self):
-        """Generate list for attendance field from RawAttendance documents that match event date."""
+        """Generate list for attendance field from RawAttendance documents that match event date,
+        IP and port.
+        """
         event_start = self.datetime
         event_end = self.datetime + timedelta(minutes=self.duration)
-        snapshots = RawAttendance.objects(db.Q(created__gte=event_start) &
+        snapshots = RawAttendance.objects(db.Q(server_addr=self.server_addr) &
+                                          db.Q(server_port=self.server_port) &
+                                          db.Q(created__gte=event_start) &
                                           db.Q(created__lte=event_end)).order_by('created').all()
 
         # Go through all snapshots and generate a map of user ids (or names if anonymous)
