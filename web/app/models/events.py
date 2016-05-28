@@ -216,8 +216,8 @@ class Event(db.Document):
     calendar = ''
     author = db.ReferenceField(User)
 
-    name = db.StringField(min_length=4, max_length=40, required=True, unique=True)
-    description = db.StringField(min_length=2, max_length=200,  required=True)
+    name = db.StringField(min_length=4, max_length=40, required=True)
+    description = db.StringField(min_length=2, max_length=200, required=True)
     datetime = db.DateTimeField()
     duration = db.IntField()
     server_addr = db.StringField(required=True)
