@@ -1,3 +1,4 @@
+from collections import defaultdict
 from datetime import datetime, timedelta
 
 from .. import db, CONFIG
@@ -82,7 +83,7 @@ class WARNORD(db.DynamicEmbeddedDocument):
 
 class FRAGO(db.DynamicEmbeddedDocument):
     """Changes to WARNORD"""
-    author = db.ReferenceField(User)
+    author = db.ReferenceField(User, required=True)
 
     # 1.Situation.A Weather and Lighting
     time = db.DateTimeField()
@@ -187,7 +188,7 @@ class Flash(db.DynamicEmbeddedDocument):
 
 class AAR(db.DynamicEmbeddedDocument):
     """AAR that can be written by each member who attended."""
-    author = db.ReferenceField(User)
+    author = db.ReferenceField(User, required=True)
     plan = db.StringField(required=True)
     episode = db.StringField(required=True)
     reason = db.StringField(required=True)
@@ -211,10 +212,19 @@ class AttendingUser(db.EmbeddedDocument):
     datetime = db.DateTimeField(default=datetime.utcnow())
 
 
+class ActualMission(db.EmbeddedDocument):
+    """Embedded doc that stores the actual mission name and terrain that was played on. To be
+    used as part of a list of all the missions actually played.
+    """
+    mission = db.StringField(required=True)
+    terrain = db.StringField(required=True)
+    time_spent = db.FloatField(required=True)
+
+
 class Event(db.Document):
     """Base class for events"""
     calendar = ''
-    author = db.ReferenceField(User)
+    author = db.ReferenceField(User, required=True)
 
     name = db.StringField(min_length=4, max_length=40, required=True)
     description = db.StringField(min_length=2, max_length=200, required=True)
@@ -238,6 +248,7 @@ class Event(db.Document):
 
     days_before_close = db.IntField(required=True)
     attendances = db.ListField(db.EmbeddedDocumentField(Attendance))
+    actual_missions = db.ListField(db.EmbeddedDcoumentField(ActualMission))
 
     occurred = db.BooleanField(default=False, requreid=True)
     cancelled = db.BooleanField(default=False, requreid=True)
@@ -297,15 +308,10 @@ class Event(db.Document):
         return num
 
     def generate_attendance(self):
-        """Generate list for attendance field from RawAttendance documents that match event date,
-        IP and port.
+        """Generate list for attendance field from RawAttendance documents for the event
         """
-        event_start = self.datetime
-        event_end = self.datetime + timedelta(minutes=self.duration)
-        snapshots = RawAttendance.objects(db.Q(server_addr=self.server_addr) &
-                                          db.Q(server_port=self.server_port) &
-                                          db.Q(created__gte=event_start) &
-                                          db.Q(created__lte=event_end)).order_by('created').all()
+        snapshots = RawAttendance.event_snapshots(self.datetime, self.duration, self.server_addr,
+                                                  self.server_port)
 
         # Go through all snapshots and generate a map of user ids (or names if anonymous)
         # and presence
@@ -350,8 +356,8 @@ class Event(db.Document):
         for player in players:
             time_spent = 0
             for start in players[player]['presences']:
-                # Add presence start time to end time and add to new key 'time_spent'
-                time_spent += start + players[player]['presences'][start]
+                # Add the difference between start and end times and add to counter
+                time_spent += (players[player]['presences'][start] - start)
             # Check to see if name is same as key to determine if there will be a user object.
             user = None
             if not players[player]['name'] == player:
@@ -364,6 +370,52 @@ class Event(db.Document):
         # Save to DB
         self.attendances = attendances
         self.save()
+
+
+    def generate_actual_missions(self):
+        """Generate a list of actual missions and corresponding terrains that where played on the
+        event
+        """
+        snapshots = RawAttendance.event_snapshots(self.datetime, self.duration, self.server_addr,
+                                                  self.server_port)
+
+        # Combine terrain and mission into one key and add all time spans to that key, assuming
+        # that the mission is being played continuously from one time span to the next if both
+        # time spans have that same mission. Then save to ActualMission document.
+        missions = defaultdict(int)
+        last_mission = ()
+        last_time = None
+        for snapshot in snapshots:
+            curr_mission = (snapshot.game, snapshot.map)
+            # If the mission was was never seen before, last time and mission will get filled,
+            # if it was the last mission, will get extended, if a different mission, will wait for
+            # another snapshot of the same mission before adding time.
+
+            # If the last snapshot was the same mission, then append the difference between the
+            # times.
+            curr_time = snapshot.created.timestamp()
+            if last_mission == curr_mission:
+                diff = curr_time - last_time
+                missions[curr_mission] += diff
+            # Make current time and key the last one
+            last_mission = curr_mission
+            last_time = curr_time
+
+        # Convert dic to ActualMission documents and save list to Event object and save to DB.
+        actual_missions = []
+        for mission in missions:
+            actual_mission = ActualMission(
+                mission=mission[0],
+                terrain=mission[1],
+                time_spent=missions[mission]
+            )
+            actual_missions.append(actual_mission)
+
+        # Save to DB
+        self.actual_missions = actual_missions
+        self.save()
+
+
 
 
 class ElectiveEvent:
