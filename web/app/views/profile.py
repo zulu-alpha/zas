@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from flask import render_template, request, flash, redirect, url_for, abort, make_response, \
     send_file
 
@@ -27,7 +29,8 @@ def profile(steam_id):
                            is_owner=is_owner,
                            is_owner_or_org=is_owner_or_org,
                            is_org=is_org,
-                           url_root=CONFIG['URL_ROOT'][:-1])
+                           url_root=CONFIG['URL_ROOT'][:-1],
+                           timedelta=timedelta)
 
 
 MENUS.append({'parent_url': "url_for('office', office_name='Organizational')",
