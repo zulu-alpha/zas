@@ -1,5 +1,6 @@
 import re
 
+
 from wtforms.validators import ValidationError
 
 
@@ -80,4 +81,21 @@ class Extension:
     def __call__(self, form, field):
         filename = field.data.filename
         if filename and not re.search('[\w-].' + self.extension, filename, re.IGNORECASE):
+            raise ValidationError(self.message)
+
+
+class MimeType:
+    """Checks if the given FileField file is one of the given mimetypes"""
+    def __init__(self, types, message="This is the wrong file type"):
+        """
+        :param types: A list of acceptable file types.
+        :param message: Optional message for validation error
+        :return: None
+        """
+        self.types = types
+        self.message = message
+
+    def __call__(self, form, field):
+        file = field.data
+        if file and file.mimetype not in self.types:
             raise ValidationError(self.message)
