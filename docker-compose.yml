@@ -12,7 +12,7 @@ web:
   restart: always
 
 mongo-express:
-  image: knickers/mongo-express
+  image: mongo-express
   links:
     - mongo
   expose:
