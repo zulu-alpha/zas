@@ -8,8 +8,9 @@ Edit the config files appropriately for the environments.
 * For production, change the secrets where they appear, setup the backup FTP, and configure the nginx Config file.
   * Add in the domain name for the server and configure it for SSL, with the help of [this guide](https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-14-04).
   * Do the same for Mongo-Express and have it use a subdomain that goes to port 8081
+  * You can see an example nginx.conf for production in /config/nginx.conf.prod
 
-To start in production, use `sudo docker-compose -f docker-compose.yml -f prod.yml up`
+To start in production, use `sudo docker-compose -f docker-compose.yml -f prod.yml up`.
 To start in development, use `docker-compose -f docker-compose.yml -f dev.yml up` for more debugging in the *web* app.
 If the development environment is Linux, then you should change the paths to the config and log files in `dev.yml` to be something more meaningful.
 Also if developing in linux, change the path in `dev.yml` to point to your *web* project folder.
