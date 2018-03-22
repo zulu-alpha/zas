@@ -29,11 +29,9 @@
 
   <section class="row">
 
-
     <article class="col-lg-12">
       <h3><a href="http://steamcommunity.com/profiles/{{ user.steam_id }}">Steam profile page</a></h3>
     </article>
-
 
     {% if is_owner_or_org and user.rank %}
       <article class="col-lg-12">
@@ -51,7 +49,6 @@
       </article>
     {% endif %}
 
-
     <article class="col-lg-12">
       <h3>Rank</h3>
       {% if user.rank %}
@@ -65,15 +62,13 @@
       <p>{{ edit(is_org, url_for('ranks_assign', steam_id=user.steam_id), "Assign Rank") }}</p>
     </article>
 
-
     <article class="col-lg-12">
       <h3>History of Arma names:</h3>
       {% for arma_name in user.arma_names|sort(attribute='created', reverse=True) %}
-        <p><strong>{{ arma_name.arma_name }}</strong> - ({{ date(arma_name.created, timedelta) }})</p>
+        <p><strong>{{ arma_name.arma_name }}</strong> - ({{ date(arma_name.created, convert_from_utc) }})</p>
       {% endfor %}
       <p>{{ edit(is_owner_or_org, url_for('update_arma_name', steam_id=user.steam_id), "Update Arma name") }}</p>
     </article>
-
 
     {% if is_owner_or_org %}
       <article class="col-lg-12">
@@ -84,7 +79,6 @@
         <p>{{ edit(is_owner_or_org, url_for('update_ts_id', steam_id=user.steam_id), "Add TeamSpeak ID") }}</p>
       </article>
     {% endif %}
-
 
     {% if is_owner_or_org %}
       <article class="col-lg-12">

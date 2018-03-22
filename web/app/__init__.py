@@ -2,9 +2,10 @@ from __future__ import print_function
 import os
 
 from flask import Flask
-import flask.ext.login as flask_login
-from flask.ext.mongoengine import MongoEngine
+import flask_login as flask_login
+from flask_mongoengine import MongoEngine
 from flask_debugtoolbar import DebugToolbarExtension
+
 
 __author__ = 'Adam Piskorski'
 
@@ -36,7 +37,7 @@ login_manager.login_message = 'You need to be logged in to access this page.'
 MENUS = []
 
 # View handlers
-from .views import before_request, login, public, offices, profile, ranks, slack
+from .views import before_request, login, public, offices, profile, ranks, slack, events
 
 # Debugging
 toolbar = DebugToolbarExtension(app)

@@ -1,10 +1,9 @@
-from datetime import timedelta
-
 from flask import render_template, request, flash, redirect, url_for, abort, make_response, \
     send_file
 
 from .. import app, flask_login, CONFIG, MENUS
 from ..util.permission import in_office_dynamic, owns_steam_id_page
+from ..util.helper import convert_from_utc
 
 from ..models.users import User
 from ..models.ranks import Rank
@@ -30,7 +29,7 @@ def profile(steam_id):
                            is_owner_or_org=is_owner_or_org,
                            is_org=is_org,
                            url_root=CONFIG['URL_ROOT'][:-1],
-                           timedelta=timedelta)
+                           convert_from_utc=convert_from_utc)
 
 
 MENUS.append({'parent_url': "url_for('office', office_name='Organizational')",

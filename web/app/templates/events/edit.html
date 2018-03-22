@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+{% block title %}Edit {{ event.name }}{% endblock %}
+
+{% block heading %}Edit {{ url_elective.presentable_name }}{{ event_type.presentable_name }} - {{ event.name }}{% endblock %}
+
+{% block sub_heading %}
+  Edit the {{ url_elective.presentable_name }}{{ event_type.presentable_name }} event {{ event.name }}.
+{% endblock %}
+
+
+{% block main %}
+  {% from "/util/_formhelpers.html" import render_form %}
+
+  <section class="row">
+
+    <article class="col-lg-6">
+
+      <form data-parsley-validate action="{{ url_for("event_edit", type_url=event_type.name, elective=url_elective.name, event_id=event.id) }}" method="post" enctype="multipart/form-data">
+        <fieldset>
+          <legend>Edit event:</legend>
+          {{ render_form(form) }}
+          <button type="submit" class="btn btn-default">Edit Event</button>
+        </fieldset>
+      </form>
+    </article>
+
+  </section>
+{% endblock %}

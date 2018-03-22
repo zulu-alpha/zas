@@ -21,6 +21,21 @@ aside.open {
     transform: translate(0, 0);
 }
 
+.event-section {
+    background-color: #e8e8e8;
+    border-radius: 6px;
+    margin: 16px;
+    padding: 10px;
+}
+
+.event-section-sub {
+    padding-top: 1.5em;
+}
+
+.event-section-title {
+    text-align: center;
+}
+
 .separator {
     padding-top: 2.5em;
 }
@@ -37,9 +52,10 @@ aside.open {
     z-index: 1;
 }
 
-.nav-section{
+.nav-section {
     margin-bottom: 20px;
 }
+
 
 /* Drawer Breakpoint */
 @media screen and (min-width: 768px) {

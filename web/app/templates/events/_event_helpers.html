@@ -1,0 +1,195 @@
+{% macro core(event, convert_from_utc, has_permission, event_type, url_elective, publish_form, cancel_form) %}
+
+  {% from "/util/_datetime.html" import datetime %}
+  {% from "/util/_permissions.html" import edit %}
+  {% from "/util/_linking.html" import display_user %}
+  {% from "/util/_formhelpers.html" import render_form %}
+
+  <section class="row event-section">
+    <h2 class="col-lg-12 event-section-title">Details</h2>
+
+    <section class="col-xs-12">
+
+      <article class="row">
+        {% if not event.published %}
+          <h3 class="col-lg-12">Event not yet published</h3>
+        {% endif %}
+
+        {% if event.cancelled %}
+          <h3 class=col-lg-12">Event Cancelled!</h3>
+        {% endif %}
+
+        {% if event.occurred %}
+          <h3 class=col-lg-12">Event already happened!</h3>
+        {% endif %}
+      </article>
+
+      <article class="row event-section-sub">
+        <div class="col-xs-12 col-md-6">
+          <p>Author: {{ display_user(event.author) }}</p>
+        </div>
+
+        <div class="col-xs-12 col-md-6">
+          {% if event.datetime %}
+            <p>Date: {{ datetime(event.datetime, convert_from_utc) }}</p>
+          {% else %}
+            <p>No date yet</p>
+          {% endif %}
+        </div>
+
+        <div class="col-xs-12 col-md-6">
+          <p>Duration: {{ event.duration }} minutes</p>
+        </div>
+
+        <div class="col-xs-12 col-md-6">
+          <p>Server IP: {{ event.server_addr }}</p>
+        </div>
+
+        <div class="col-xs-12 col-md-6">
+          <p>Server Port: {{ event.server_port }}</p>
+        </div>
+
+        <div class="col-xs-12 col-md-6">
+          {% if event.gcal_id %}
+            <p>Google Calendar ID: {{ event.gcal_id }}</p>
+          {% else %}
+            <p>Not yet linked to Google Calendar</p>
+          {% endif %}
+        </div>
+      </article>
+
+      <article class="row event-section-sub">
+        {% if event.max_west %}
+          <div class="col-xs-12 col-md-6">
+            <p>Maximum west players: {{ event.max_west }}</p>
+          </div>
+        {% endif %}
+
+        {% if event.max_east %}
+          <div class="col-xs-12 col-md-6">
+            <p>Maximum east players: {{ event.max_east }}</p>
+          </div>
+        {% endif %}
+
+        {% if event.max_ind %}
+          <div class="col-xs-12 col-md-6">
+            <p>Maximum independent players: {{ event.max_ind }}</p>
+          </div>
+        {% endif %}
+
+        {% if event.max_civ %}
+          <div class="col-xs-12 col-md-6">
+            <p>Maximum civilian players: {{ event.max_civ }}</p>
+          </div>
+        {% endif %}
+
+        {% if event.max_west %}
+          <div class="col-xs-12 col-md-6">
+            <p>Maximum non member west players: {{ event.max_west }}</p>
+          </div>
+        {% endif %}
+
+        {% if event.max_east %}
+          <div class="col-xs-12 col-md-6">
+            <p>Maximum non member east players: {{ event.max_east }}</p>
+          </div>
+        {% endif %}
+
+        {% if event.max_ind %}
+          <div class="col-xs-12 col-md-6">
+            <p>Maximum non member independent players: {{ event.max_ind }}</p>
+          </div>
+        {% endif %}
+
+        {% if event.max_civ %}
+          <div class="col-xs-12 col-md-6">
+            <p>Maximum non member civilian players: {{ event.max_civ }}</p>
+          </div>
+        {% endif %}
+      </article>
+
+      <article class="row event-section-sub">
+        <div class="col-xs-12 col-md-6">
+          <p>Terrain: {{ event.terrain }}</p>
+        </div>
+
+        <div class="col-xs-12 col-md-6">
+            <p>Hours before event date that sign ups close: {{ event.hours_before_close }}</p>
+        </div>
+
+        <div class="col-xs-12">
+          <p>Mods: {{ event.mods }}</p>
+        </div>
+
+        <div class="col-xs-12">
+          <p>Medical system: {{ event.medical }}</p>
+        </div>
+
+        {% if event.misc %}
+          <div class="col-xs-12">
+            <p>Misc: {{ event.misc }}</p>
+          </div>
+        {% endif %}
+      </article>
+
+      {% if has_permission %}
+
+        <article class="col-xs-4 event-section-sub">
+          {{ edit(has_permission, url_for("event_edit", event_id=event.id, type_url=event_type.name, elective=url_elective.name), "Edit") }}
+        </article>
+
+        {% if event.publishable.is_publishable %}
+          <article class="col-xs-4 event-section-sub">
+            <form data-parsley-validate action="{{ url_for("event_publish", event_id=event.id, type_url=event_type.name, elective=url_elective.name) }}" method="post">
+              <fieldset>
+                  {{ render_form(publish_form) }}
+                <button type="submit" class="btn btn-default">Publish</button>
+              </fieldset>
+            </form>
+          </article>
+        {% endif %}
+
+        {% if event.cancelable.is_cancelable %}
+          <article class="col-xs-4 event-section-sub">
+            <form data-parsley-validate action="{{ url_for("event_cancel", event_id=event.id, type_url=event_type.name, elective=url_elective.name) }}" method="post">
+              <fieldset>
+                  {{ render_form(cancel_form) }}
+                <button type="submit" class="btn btn-default">Cancel</button>
+              </fieldset>
+            </form>
+          </article>
+        {% endif %}
+
+      {% endif %}
+
+    </section>
+
+  </section>
+
+{% endmacro %}
+
+
+{% macro sign_ups(current_user, event, sign_up_modify_form) %}
+
+  {% from "/util/_formhelpers.html" import render_form %}
+
+  {% if current_user.is_authenticated and event.signable.is_signable %}
+
+    <section class="row event-section">
+
+      <h2 class="col-lg-12 event-section-title">Sign up</h2>
+
+      <article class="col-xs-12 col-md-6 event-section-sub">
+        <form data-parsley-validate action="{{ url_for("event_sign_up_modify", event_id=event.id, type_url=event_type.name, elective=url_elective.name) }}" method="post">
+          <fieldset>
+              {{ render_form(sign_up_modify_form) }}
+            <button type="submit" class="btn btn-default">Submit</button>
+          </fieldset>
+        </form>
+      </article>
+
+    </section>
+
+  {% endif %}
+
+{% endmacro %}

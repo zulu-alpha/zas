@@ -1,10 +1,11 @@
-"""Contains functions that directly interact with the db that are to be
-used in the flask app. This is done in order to abstract the DB
-interactions.
+"""Contains misc useful functions.
 """
 import string
 import random
 import re
+from datetime import timedelta
+
+from .. import CONFIG
 
 
 def strip_steam_id(identity_url):
@@ -37,3 +38,23 @@ def strip_tags(name):
     re_tag = '\s\[.+\]$'
     name = re.sub(re_tag, '', name)
     return name.strip()
+
+
+def convert_to_utc(dt):
+    """Converts given datetime from appropriate timezone based on config value.
+    Used to convert user datetime object to UTC time zone
+
+    :param dt: Datetime object to mutate
+    :return: Datetime object corrected for timezone
+    """
+    return dt - timedelta(hours=CONFIG['TIMEZONE'])
+
+
+def convert_from_utc(dt):
+    """Converts given datetime to appropriate timezone based on config value.
+    Used to convert db datetime object to local time zone
+
+    :param dt: Datetime object to mutate
+    :return: Datetime object corrected for timezone
+    """
+    return dt + timedelta(hours=CONFIG['TIMEZONE'])

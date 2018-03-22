@@ -8,6 +8,7 @@ web:
     - /opt/web/app/static/img
   environment:
     - ZAS_CONFIG=/etc/zas/zas.cfg
+    - ZAS_GOOGLE_SECRET=/etc/zas/google_secret.json
   command: --access-logfile "/var/log/web/gunicorn_access.log" --error-logfile "/var/log/web/gunicorn_error.log"
   restart: always
 

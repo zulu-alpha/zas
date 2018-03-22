@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+
+{% block title %}Create Event{% endblock %}
+
+{% block heading %}Create Event{% endblock %}
+
+{% block sub_heading %}
+  Choose a type of event to create
+{% endblock %}
+
+
+{% block main %}
+  {% from "/util/_permissions.html" import edit %}
+
+  <section class="row">
+
+    <article class="col-sm-6 col-md-4">
+      <h3>Mission</h3>
+      <p>The main missions that all members are expected to attend.</p>
+      <a href={{ url_for('event_create', type_url='mission', elective='') }} type="button" class="btn btn-default">Create</a>
+    </article>
+
+    <article class="col-sm-6 col-md-4">
+      <h3>Elective Mission</h3>
+      <p>Missions that are optional. Usually less formal.</p>
+      <a href={{ url_for('event_create', type_url='mission', elective='elective') }} type="button" class="btn btn-default">Create</a>
+    </article>
+
+    <article class="col-sm-6 col-md-4">
+      <h3>Training</h3>
+      <p>Training events that all members are expected to attend.</p>
+      <a href={{ url_for('event_create', type_url='training', elective='') }} type="button" class="btn btn-default">Create</a>
+    </article>
+
+    <article class="col-sm-6 col-md-4">
+      <h3>Elective Training</h3>
+      <p>Optional training events, usually for specialized skills.</p>
+      <a href={{ url_for('event_create', type_url='training', elective='elective') }} type="button" class="btn btn-default">Create</a>
+    </article>
+
+    <article class="col-sm-6 col-md-4">
+      <h3>Selection</h3>
+      <p>Events (I.E: Selection phases) for testing and recruiting new members.</p>
+      <a href={{ url_for('event_create', type_url='selection', elective='') }} type="button" class="btn btn-default">Create</a>
+    </article>
+
+    <article class="col-sm-6 col-md-4">
+      <h3>Miscellaneous</h3>
+      <p>Any other non mandatory scheduled event that doesn't fall into any category or one that is very casual.</p>
+      <a href={{ url_for('event_create', type_url='misc', elective='') }} type="button" class="btn btn-default">Create</a>
+    </article>
+
+  </section>
+
+{% endblock %}

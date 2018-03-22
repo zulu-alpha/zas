@@ -1,6 +1,6 @@
 from functools import wraps
 
-from flask import redirect, url_for, flash
+from flask import redirect, url_for, flash, request
 
 from .. import CONFIG
 
@@ -8,6 +8,11 @@ from .. import flask_login
 
 from ..models.users import User
 from ..models.offices import Office
+
+
+def permissions_redirect():
+    """Redirects the user to last page or home"""
+    return redirect(request.referrer or url_for('home'))
 
 
 def is_bootstraper():
@@ -46,7 +51,7 @@ def msg(member=None, head=None):
 
 def in_office(member=None, head=None):
     """Security decorator that checks if the logged in user is a member of the given office.
-    Note that you can use the magic string 'DYNAMIC' in the member of head parameter lists
+    Note that you can use the magic string 'DYNAMIC' in the member or head parameter lists
     to refer to the office parameter in the URL, as long as that parameter is named `office_name`.
     This allows the decorator to become dynamic.
 
@@ -79,10 +84,9 @@ def in_office(member=None, head=None):
                     if Office.is_head(user, office):
                         return f(*args, **kwargs)
 
-            # If no match is found, return a failure
-
+            # If no match is found, return a failure and redirect to referrer or home
             flash(msg(member, head), 'warning')
-            return redirect(url_for('home'))
+            return permissions_redirect()
 
         return decorated_function
     return decorator
@@ -123,7 +127,7 @@ def in_office_dynamic(member=None, head=None, do_flash=False):
 def owns_steam_id_page(exceptions=None):
     """Decorator that checks to see if the currently logged in user is the owner of the steam_id
     used to render the page or satisfies the exceptions. Make sure that name of the steam_id
-    parameter for the view 'steam_id'.
+    parameter for the view is 'steam_id'.
 
     :param exceptions: Tuple of lists describing offices that are exceptions (ala in_office())
     :return: The view if owner of steam_id, else redirection with a warning
@@ -142,7 +146,7 @@ def owns_steam_id_page(exceptions=None):
 
             # If valid office, allow
             if exceptions:
-                # if was a single argument then likely not a tiple
+                # if was a single argument then likely not a tuple
                 if isinstance(exceptions, list):
                     if in_office_dynamic(member=exceptions):
                         return f(*args, **kwargs)
@@ -153,7 +157,7 @@ def owns_steam_id_page(exceptions=None):
 
             # If no match is found, return a failure
             flash('Only {0} can use this page'.format(q_user.arma_name), 'warning')
-            return redirect(url_for('home'))
+            return permissions_redirect()
 
         return decorated_function
     return decorator

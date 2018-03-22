@@ -1,4 +1,4 @@
-from flask.ext.wtf import Form
+from flask_wtf import Form
 from ..lib.wtformsparsleyjs import StringField, IntegerField, FileField, SelectField
 from wtforms.fields import HiddenField
 from wtforms.validators import InputRequired, Length, Optional
@@ -48,7 +48,7 @@ class Create(Form):
             'Image of the Rank to be displayed on the the site. Must be a PNG file. At least 350x350 is ideal.',
             [
                 InputRequired(),
-                Extension('png', message='The file needs to be a PNG file!')
+                MimeType(['image/png'], message='The file needs to be a PNG file!')
             ])
     image_squad = FileField(
             'Image of the Rank to be used in the Squad XML. Must be a PAA file. 256x256 is ideal.',

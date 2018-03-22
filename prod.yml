@@ -1,6 +1,7 @@
 web:
   volumes:
     - /etc/zas/zas.cfg:/etc/zas/zas.cfg:ro
+    - /etc/zas/google_secret.json:/etc/zas/google_secret.json:ro
     - /var/zas/log/web:/var/log/web
 
 mongo-express:

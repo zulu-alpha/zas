@@ -1,0 +1,10 @@
+{% macro display_user(user) %}
+  <strong>
+    <a href={{ url_for("profile", steam_id=user.steam_id) }}>
+    {% if user.rank %}
+        {{ user.rank.name_short }}
+    {% endif %}
+      {{ user.arma_name }}
+    </a>
+  </strong>
+{% endmacro %}

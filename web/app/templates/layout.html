@@ -1,4 +1,4 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html lang='en'>
   <head>
     <meta charset="utf-8">
@@ -40,6 +40,7 @@
     <aside id="drawer">
       {% from "/util/_nav.html" import nav_active %}
 
+      <!-- Login -->
       <nav class="list-group">
         {% if current_user.is_authenticated %}
           <a class="list-group-item list-group-item-info" href="{{ url_for('profile', steam_id=current_user.steam_id) }}">Your profile</a>

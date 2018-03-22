@@ -3,6 +3,8 @@ web:
   volumes:
   #   - /c/Users/adam/zas/config/zas.cfg:/etc/zas/zas.cfg:ro
      - /home/adam/zas/config/zas.cfg:/etc/zas/zas.cfg:ro
+  #   - /c/Users/adam/zas/config/zas.cfg:/etc/zas/google_secret.json:ro
+     - /home/adam/zas/config/google_secret.json:/etc/zas/google_secret.json:ro
   #   - /c/Users/adam/zas/log/web:/var/log/web
      - /home/adam/zas/log/web:/var/log/web
   #   - /c/Users/adam/Dropbox/Projects/arma/zas/web:/opt/web_dev

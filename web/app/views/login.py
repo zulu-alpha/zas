@@ -1,5 +1,5 @@
 from flask import render_template, session, redirect, flash, url_for
-from flask.ext.openid import OpenID
+from flask_openid import OpenID
 
 from .. import app, flask_login, CONFIG
 from ..util import helper

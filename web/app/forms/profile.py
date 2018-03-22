@@ -1,4 +1,4 @@
-from flask.ext.wtf import Form
+from flask_wtf import Form
 from ..lib.wtformsparsleyjs import StringField, SelectField, Email
 
 from wtforms.fields import HiddenField

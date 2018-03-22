@@ -9,6 +9,7 @@
 
 {% block main %}
   {% from "/util/_permissions.html" import edit %}
+  {% from "/util/_linking.html" import display_user %}
 
   <section class="row">
 
@@ -19,7 +20,7 @@
       <ul>
         {% for member in office.members %}
           <li>
-            {{ member.arma_name }}
+            {{ display_user(member) }}
             {% if member == office.head %}
               <strong>(Head)</strong>
             {% endif %}

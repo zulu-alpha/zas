@@ -1,4 +1,4 @@
-from flask.ext.wtf import Form
+from flask_wtf import Form
 from ..lib.wtformsparsleyjs import StringField
 from wtforms.fields import HiddenField
 from wtforms.validators import InputRequired, Email, Length, Optional, URL

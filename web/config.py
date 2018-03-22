@@ -20,6 +20,8 @@ http://www.computerhope.com/issues/ch000549.htm
 
 Then run the application.
 """
+import os
+
 
 OPENID_FS_STORE_PATH = 'db/openid/'
 OPENID = 'http://steamcommunity.com/openid'
@@ -36,18 +38,19 @@ DEBUG_TB_PANELS = ('flask_debugtoolbar.panels.versions.VersionDebugPanel',
                    'flask_debugtoolbar.panels.request_vars.RequestVarsDebugPanel',
                    'flask_debugtoolbar.panels.config_vars.ConfigVarsDebugPanel',
                    'flask_debugtoolbar.panels.template.TemplateDebugPanel',
-                   'flask.ext.mongoengine.panels.MongoDebugPanel',
+                   'flask_mongoengine.panels.MongoDebugPanel',
                    'flask_debugtoolbar.panels.logger.LoggingPanel',
                    'flask_debugtoolbar.panels.route_list.RouteListDebugPanel',
                    'flask_debugtoolbar.panels.profiler.ProfilerDebugPanel')
 SECRET_KEY = 'Temporary Development Key'
 LOG_PATH = '/var/log/web/flask.log'
 URL_ROOT = 'http://192.168.99.100/'
-BOOTSTRAPPER = ''  # The steam ID of a user who can circumvent the Office permission system.
+BOOTSTRAPPER = ''  #  The steam ID of a user who can circumvent the Office permission system.
+TIMEZONE = 2  #  UTC+<Your value here>
 
 SLACK_TEAM = 'zulu-alpha'
 SLACK_TEAM_ID = ''
-SLACK_CHANNELS = ['']
+SLACK_INVITE_CHANNELS = ['']
 SLACK_CLIENT_ID = ''
 SLACK_CLIENT_SECRET = ''
 SLACK_SCOPES = 'admin read client'
@@ -58,3 +61,6 @@ CALENDAR_TRAINING = '3e2f42jfcjou4v1ag8rhf4qrm0@group.calendar.google.com'
 CALENDAR_ELECTIVE_TESTING = 'au125a4u2tvkbvcaiput27d9l8@group.calendar.google.com'
 CALENDAR_SELECTION = '1g12coo02ao7rdr255u32prd6o@group.calendar.google.com'
 CALENDAR_MISC = 'k7vf7mumjbrsr2eub2njp7i7hc@group.calendar.google.com'
+
+GOOGLE_SCOPES = ['https://www.googleapis.com/auth/calendar']
+GOOGLE_SECRET = os.getenv('ZAS_GOOGLE_SECRET', None)

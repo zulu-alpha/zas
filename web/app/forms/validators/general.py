@@ -1,7 +1,9 @@
 import re
-
+from datetime import datetime
 
 from wtforms.validators import ValidationError
+
+from ...util.helper import convert_to_utc
 
 
 class Unique:
@@ -69,7 +71,7 @@ class ExistsList:
 
 class Extension:
     """Checks if the given FileField file name has the given extension"""
-    def __init__(self, extension, message="This is the wrong file type"):
+    def __init__(self, extension, message='This is the wrong file type'):
         """
         :param extension: The extension to check for (eg: 'png')
         :param message: Optional message for validation error
@@ -86,7 +88,7 @@ class Extension:
 
 class MimeType:
     """Checks if the given FileField file is one of the given mimetypes"""
-    def __init__(self, types, message="This is the wrong file type"):
+    def __init__(self, types, message='This is the wrong file type'):
         """
         :param types: A list of acceptable file types.
         :param message: Optional message for validation error
@@ -98,4 +100,20 @@ class MimeType:
     def __call__(self, form, field):
         file = field.data
         if file and file.mimetype not in self.types:
+            raise ValidationError(self.message)
+
+
+class FutureDateTime:
+    """Checks if the datetime given is in the future"""
+    def __init__(self, message='Your date cannot be in the past!'):
+        """
+        :param message: Optional message for the validation error
+        :return: None
+        """
+        self.message = message
+
+    def __call__(self, form, field):
+        event_dt = convert_to_utc(form.datetime.data)
+        now = datetime.utcnow()
+        if event_dt and event_dt < now:
             raise ValidationError(self.message)
