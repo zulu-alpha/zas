@@ -1,4 +1,0 @@
-backup:
-  volumes:
-    - /etc/zas/backup_config.py:/opt/backup/backup_config.py:ro
-    - /var/zas/log/backup:/var/log/backup

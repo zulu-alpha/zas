@@ -1,7 +1,0 @@
-{% macro date(datetime, convert_from_utc) %}
-  {{ convert_from_utc(datetime).strftime("%b %d %Y") }}
-{% endmacro %}
-
-{% macro datetime(datetime, convert_from_utc) %}
-  {{ convert_from_utc(datetime).strftime("%B %d %Y - %Hh%ML") }}
-{% endmacro %}

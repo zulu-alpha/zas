@@ -1,9 +1,0 @@
-migrate:
-  volumes:
-    - /etc/zas/migrate_config.py:/opt/migrate/migrate_config.py:ro
-    - /var/zas/log/migrate:/var/log/migrate
-
-mongo:
-  volumes:
-    - /etc/zas/mongod.yml:/etc/mongod/mongod.yml:ro
-    - /var/zas/log/mongodb:/var/log/mongodb
