@@ -1,0 +1,12 @@
+# Caches
+__pycache__
+.mypy_cache
+.pytest_cache
+.coverage
+
+# IDEs
+.vscode
+
+# Environment
+.python-version
+zas.egg-info
