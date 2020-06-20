@@ -10,3 +10,4 @@ __pycache__
 # Environment
 .python-version
 zas.egg-info
+.secrets
