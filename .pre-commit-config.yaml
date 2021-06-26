@@ -1,15 +1,31 @@
 repos:
-  - repo: https://github.com/ambv/black
-    rev: stable
+  - repo: local
     hooks:
-      - id: black
-        language_version: python3.8
-  - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v0.761
-    hooks:
-      - id: mypy
-  - repo: https://gitlab.com/pycqa/flake8
-    rev: 3.7.9
-    hooks:
-      - id: flake8
-        additional_dependencies: [flake8-bugbear]
+      ## lib/environment hooks
+
+      - id: lib-environment-black
+        name: black on lib-environment
+        stages: [commit]
+        language: docker_image
+        types: [python]
+        files: ^lib/environment/
+        entry: lib.environment black
+        args: [--config, /srv/app/pyproject.toml]
+
+      - id: lib-environment-flake8
+        name: flake8 on lib-environment
+        stages: [commit]
+        language: docker_image
+        types: [python]
+        files: ^lib/environment/
+        entry: lib.environment flake8
+        args: [--config, /srv/app/.flake8]
+
+      - id: lib-environment-mypy
+        name: Mypy on lib-environment
+        stages: [commit]
+        language: docker_image
+        types: [python]
+        files: ^lib/environment/
+        entry: lib.environment mypy
+        args: [--config-file, /srv/app/mypy.ini]

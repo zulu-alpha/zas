@@ -1,0 +1,8 @@
+[flake8]
+max-line-length = 90
+extend-ignore = W503,E203,E501,E231
+# W503 forbids line break after binary operator
+# E203 forbids whitespace before ":"
+# E501 forbids line length above 79 characters
+# E231 forbids missing whitespace after ',', ';', or ':'
+select = C,E,F,W,B,B9
