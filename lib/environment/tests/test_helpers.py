@@ -21,23 +21,10 @@ class TestGetBoolEnv:
             "yes",
         ],
     )
-    def test_trythy_bools(
-        self,
-        monkeypatch,
-        environment_value,
-    ):
+    def test_trythy_bools(self, monkeypatch, environment_value):
         """Correctly gets the truthy booleans from strings."""
-        monkeypatch.setenv(
-            self.envar_name,
-            environment_value,
-        )
-        assert (
-            get_bool_env(
-                self.envar_name,
-                False,
-            )
-            is True
-        )
+        monkeypatch.setenv(self.envar_name, environment_value)
+        assert get_bool_env(self.envar_name, False) is True
 
     @pytest.mark.parametrize(
         "environment_value",
@@ -49,23 +36,10 @@ class TestGetBoolEnv:
             "no",
         ],
     )
-    def test_falsy_bools(
-        self,
-        monkeypatch,
-        environment_value,
-    ):
+    def test_falsy_bools(self, monkeypatch, environment_value):
         """Correctly gets the falsy booleans from strings."""
-        monkeypatch.setenv(
-            self.envar_name,
-            environment_value,
-        )
-        assert (
-            get_bool_env(
-                self.envar_name,
-                False,
-            )
-            is False
-        )
+        monkeypatch.setenv(self.envar_name, environment_value)
+        assert get_bool_env(self.envar_name, False) is False
 
     @pytest.mark.parametrize(
         "environment_value",
@@ -74,16 +48,9 @@ class TestGetBoolEnv:
             "junk",
         ],
     )
-    def test_invalid(
-        self,
-        monkeypatch,
-        environment_value,
-    ):
+    def test_invalid(self, monkeypatch, environment_value):
         """Test that a value error is raised for non convertable values."""
-        monkeypatch.setenv(
-            self.envar_name,
-            environment_value,
-        )
+        monkeypatch.setenv(self.envar_name, environment_value)
         with pytest.raises(ValueError):
             get_bool_env(self.envar_name)
 
@@ -91,19 +58,9 @@ class TestGetBoolEnv:
         self,
     ):
         """Correctly gives default values if they do not exist."""
+        assert get_bool_env("NOT_EXISTING", True) is True, "Tried setting default to True"
         assert (
-            get_bool_env(
-                "NOT_EXISTING",
-                True,
-            )
-            is True
-        ), "Tried setting default to True"
-        assert (
-            get_bool_env(
-                "NOT_EXISTING",
-                False,
-            )
-            is False
+            get_bool_env("NOT_EXISTING", False) is False
         ), "Tried setting default to False"
         assert (
             get_bool_env("NOT_EXISTING") is False
@@ -118,27 +75,13 @@ class TestGetIntEnv:
     @pytest.mark.parametrize(
         "environment_value, expected_value",
         [
-            (
-                "55",
-                55,
-            ),
-            (
-                "1",
-                1,
-            ),
+            ("55", 55),
+            ("1", 1),
         ],
     )
-    def test_converts_integers(
-        self,
-        monkeypatch,
-        environment_value,
-        expected_value,
-    ):
+    def test_converts_integers(self, monkeypatch, environment_value, expected_value):
         """Test the simple case of a series of numbers."""
-        monkeypatch.setenv(
-            self.envar_name,
-            environment_value,
-        )
+        monkeypatch.setenv(self.envar_name, environment_value)
         assert get_int_env(self.envar_name) == expected_value
 
     def test_non_existent(
@@ -162,16 +105,9 @@ class TestGetstrEnv:
             "With Spaces",
         ],
     )
-    def test_converts_integers(
-        self,
-        monkeypatch,
-        environment_value,
-    ):
+    def test_converts_integers(self, monkeypatch, environment_value):
         """Test the simple case of a series of numbers."""
-        monkeypatch.setenv(
-            self.envar_name,
-            environment_value,
-        )
+        monkeypatch.setenv(self.envar_name, environment_value)
         assert get_str_env(self.envar_name) == environment_value
 
     def test_non_existent(
