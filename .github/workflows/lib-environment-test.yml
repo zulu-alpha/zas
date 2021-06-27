@@ -1,6 +1,6 @@
 name: lib-environment-test
 
-on: [push, pull_request]
+on: [pull_request]
 
 jobs:
   build-test:
@@ -39,14 +39,14 @@ jobs:
           python -m pip install pre-commit
           pre-commit install
 
+      - name: build
+        run: |
+          docker build -t lib.environment --cache-from type=local,src=/tmp/.buildx-cache --cache-to type=local,mode=max,dest=/tmp/.buildx-cache-new lib/environment/.
+
       - name: Run pre-commit
         run: |
           set -e
           make pre-commit-lib-environment
-
-      - name: build
-        run: |
-          docker build -t lib.environment --cache-from type=local,src=/tmp/.buildx-cache --cache-to type=local,mode=max,dest=/tmp/.buildx-cache-new lib/environment/.
 
       - name: test
         run: |
