@@ -1,11 +1,6 @@
 name: lib-environment-test
 
-on:
-  pull_request:
-    branches:
-      - main
-    paths:
-      - "lib/environment/**"
+on: [push, pull_request]
 
 jobs:
   build-test:
