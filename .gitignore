@@ -1,5 +1,6 @@
 .mypy_cache/
 .pytest_cache/
 __pycache__/
-**/.vscode/settings.json
+workspace.code-workspace
 **/.vscode/tasks.json
+**/.vscode/settings.json

@@ -15,6 +15,13 @@ pytest-cov = "^2.12.1"
 black = "^21.6b0"
 pytest = "^6.2.4"
 pytest-xdist = "^2.3.0"
+flake8-comprehensions = "^3.5.0"
+flake8-mutable = "^1.2.0"
+flake8-print = "^4.0.0"
+flake8-simplify = "^0.14.1"
+pre-commit = "^2.13.0"
+bandit = "^1.7.0"
+isort = "^5.9.1"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -23,3 +30,10 @@ build-backend = "poetry.core.masonry.api"
 [tool.black]
 line-length = 90
 target-version = ['py39']
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+line_length = 90
+# known_first_party = []
+# known_third_party = []

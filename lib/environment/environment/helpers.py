@@ -1,10 +1,6 @@
 import os
-from distutils.util import (
-    strtobool,
-)
-from typing import (
-    Optional,
-)
+from distutils.util import strtobool
+from typing import Optional
 
 
 def get_bool_env(
