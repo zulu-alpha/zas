@@ -5,16 +5,16 @@ Various helper methods for extracting data from environemental variables for use
 
 - [@adampiskorski](https://github.com/adampiskorski)
 
-  
+
 ## Badges
 
 [![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/tterb/atomic-design-ui/blob/master/LICENSEs)
 
-## Installation 
+## Installation
 
 Intended to be installed as a [Poetry path dependency](https://python-poetry.org/docs/cli/#add):
 
-```bash 
+```bash
   poetry add ../lib/environment
 ```
 

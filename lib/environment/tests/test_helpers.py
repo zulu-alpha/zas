@@ -1,9 +1,6 @@
 import pytest
-from environment.helpers import (
-    get_bool_env,
-    get_int_env,
-    get_str_env,
-)
+
+from environment.helpers import get_bool_env, get_int_env, get_str_env
 
 
 class TestGetBoolEnv:
