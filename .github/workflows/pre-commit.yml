@@ -35,5 +35,4 @@ jobs:
 
       - name: Run pre-commit
         run: |
-          set -e
           pre-commit run -a
