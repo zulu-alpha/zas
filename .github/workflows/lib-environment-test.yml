@@ -1,3 +1,5 @@
+name: lib-environment-test
+
 on: [pull_request]
 
 defaults:
