@@ -1,0 +1,11 @@
+{
+  "recommendations": [
+    "batisteo.vscode-django",
+    "mikestead.dotenv",
+    "ms-python.vscode-pylance",
+    "ms-python.python",
+    "esbenp.prettier-vscode",
+    "bodil.prettier-toml",
+    "hookyqr.beautify"
+  ]
+}

@@ -3,4 +3,4 @@
 __pycache__/
 workspace.code-workspace
 **/.vscode/tasks.json
-**/.vscode/settings.json
+.env
