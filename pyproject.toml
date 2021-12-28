@@ -6,9 +6,9 @@ authors = ["Adam Piskorski <adam@piskorski.me>"]
 license = "MIT"
 
 [tool.poetry.dependencies]
-python = "3.10.*"
-Django = "4.*"
-environs = { version = "9.*", extras = ["django"] }
+python = "^3.10"
+Django = "^4"
+environs = { version = "*", extras = ["django"] }
 
 [tool.poetry.dev-dependencies]
 black = "^21.9b0"
