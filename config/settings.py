@@ -31,6 +31,15 @@ SECRET_KEY = env.str("DJANGO_SECRET")
 DEBUG = env.bool("DEBUG", default=False)
 
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
+ENVIRONMENT = env.str("ENVIRONMENT")
+if ENVIRONMENT not in ("prod", "dev"):
+    raise ValueError(f"ENVIRONMENT: {ENVIRONMENT}, is a wrong value!")
+
+if ENVIRONMENT == "dev":
+    from rich import pretty, traceback
+
+    pretty.install()
+    traceback.install(show_locals=True)
 
 
 # Application definition
