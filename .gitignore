@@ -3,3 +3,4 @@
 __pycache__/
 workspace.code-workspace
 **/.vscode/tasks.json
+.secret.env
