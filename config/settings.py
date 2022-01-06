@@ -15,7 +15,8 @@ from pathlib import Path
 from environs import Env
 
 env = Env()
-env.read_env()
+env.read_env(".env.dev", recurse=False)  # Default dev environmental variables in VC
+env.read_env(".env.secret", recurse=False)  # Secrets for dev not to be put in VC
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
