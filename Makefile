@@ -12,3 +12,5 @@ mergemigrations:
 	@poetry run python manage.py makemigrations --merge
 initdb:
 	@poetry run python manage.py migrate
+db:
+	@docker-compose -f docker-compose.dev.yml up db

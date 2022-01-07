@@ -1,0 +1,16 @@
+version: "3.9"
+services:
+  db:
+    image: postgres:latest
+    ports:
+      - ${POSTGRES_PORT}:5432
+    volumes:
+      - postgres-dev:/var/lib/postgresql/data:rw
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB_NAME}
+      POSTGRES_USER: ${POSTGRES_DB_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_DB_PASSWORD}
+    command: ["postgres", "-c", "max_connections=500"]
+
+volumes:
+  postgres-dev:
