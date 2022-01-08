@@ -18,11 +18,13 @@ repos:
     rev: 5.10.1
     hooks:
       - id: isort
+        exclude: migrations/
 
   - repo: https://github.com/psf/black
     rev: 21.12b0
     hooks:
       - id: black
+        exclude: migrations/
 
   - repo: https://gitlab.com/pycqa/flake8
     rev: 4.0.1

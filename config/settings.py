@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
-from typing import List
 
 from environs import Env
 
@@ -64,7 +63,7 @@ THIRD_PARTY_APPS = [
     "allauth.socialaccount.providers.steam",
 ]
 
-PROJECT_APPS: List[str] = []
+PROJECT_APPS = ["profiles"]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + PROJECT_APPS
 
@@ -160,6 +159,8 @@ STATIC_URL = "/static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # django-allauth
+
 SITE_ID = 1
 # We don't want to allow signing up with email
 ACCOUNT_EMAIL_REQUIRED = False
+AUTH_USER_MODEL = "profiles.Profile"
