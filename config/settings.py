@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 from environs import Env
@@ -81,8 +82,13 @@ ROOT_URLCONF = "config.urls"
 
 TEMPLATES = [
     {
+        "BACKEND": "django.template.backends.jinja2.Jinja2",
+        "DIRS": [os.path.join(BASE_DIR, "jinjatemplates")],
+        "APP_DIRS": True,
+    },
+    {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [os.path.join(BASE_DIR, "templates")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -164,3 +170,11 @@ SITE_ID = 1
 # We don't want to allow signing up with email
 ACCOUNT_EMAIL_REQUIRED = False
 AUTH_USER_MODEL = "profiles.Profile"
+SOCIALACCOUNT_PROVIDERS = {
+    "discord": {
+        "APP": {
+            "client_id": env.str("DISCORD_OAUTH_CLIENT_ID"),
+            "secret": env.str("DISCORD_OAUTH_CLIENT_SECRET"),
+        }
+    }
+}

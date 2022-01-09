@@ -6,6 +6,7 @@
     "ms-python.python",
     "esbenp.prettier-vscode",
     "bodil.prettier-toml",
-    "hookyqr.beautify"
+    "hookyqr.beautify",
+    "samuelcolvin.jinjahtml"
   ]
 }

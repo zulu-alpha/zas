@@ -13,6 +13,7 @@
   "python.formatting.blackArgs": ["--line-length", "90"],
   "files.associations": {
     "**/*.html": "html",
+    "**/jinja-htmltemplates/**/*.html": "jinja-html",
     "**/templates/**/*.html": "django-html",
     "**/templates/**/*": "django-txt",
     "**/requirements{/**,*}.{txt,in}": "pip-requirements"
@@ -23,12 +24,16 @@
   "[django-html]": {
     "editor.defaultFormatter": "HookyQR.beautify"
   },
+  "[jinja-html]": {
+    "editor.defaultFormatter": "HookyQR.beautify"
+  },
   "html.format.templating": true,
   "emmet.includeLanguages": {
-    "django-html": "html"
+    "django-html": "html",
+    "jinja-html": "html"
   },
   "beautify.language": {
-    "html": ["htm", "html", "django-html"]
+    "html": ["htm", "html", "django-html", "jinja-html"]
   },
   "[python]": {
     "editor.defaultFormatter": "ms-python.python"
