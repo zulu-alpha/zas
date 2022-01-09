@@ -85,6 +85,7 @@ TEMPLATES = [
         "BACKEND": "django.template.backends.jinja2.Jinja2",
         "DIRS": [os.path.join(BASE_DIR, "jinjatemplates")],
         "APP_DIRS": True,
+        "OPTIONS": {"environment": "config.jinja2.environment"},
     },
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
