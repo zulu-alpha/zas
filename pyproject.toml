@@ -39,16 +39,6 @@ profile = "black"
 line-length = 90
 target-version = ['py310']
 
-[tool.mypy]
-#plugins = ["mypy_django_plugin.main", "mypy_drf_plugin.main"]
-python_version = "3.10"
-warn_unused_ignores = true
-warn_redundant_casts = true
-ignore_missing_imports = true
-
-[tool.django-stubs]
-django_settings_module = "config.settings"
-
 [tool.pytest.ini_options]
 junit_family = "xunit1"
 DJANGO_SETTINGS_MODULE = "config.settings"
