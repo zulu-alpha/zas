@@ -62,6 +62,7 @@ THIRD_PARTY_APPS = [
     "allauth.socialaccount",
     "allauth.socialaccount.providers.discord",
     "allauth.socialaccount.providers.steam",
+    "django_extensions",
 ]
 
 PROJECT_APPS = ["profiles"]
@@ -184,3 +185,5 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 ACCOUNT_TEMPLATE_EXTENSION = "j2"
+
+DISCORD_BOOTSTRAP_ADMIN_UID = env.str("DISCORD_BOOTSTRAP_ADMIN_UID", default=None)

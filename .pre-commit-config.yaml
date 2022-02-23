@@ -57,5 +57,6 @@ repos:
             "rich",
             "django-allauth",
             "psycopg2",
+            "django-extensions",
           ]
           # djangorestframework-stubs
