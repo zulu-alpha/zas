@@ -28,6 +28,7 @@
         </nav>
     </header>
     <article>
+        {% set messages = get_messages(request) %}
         {% if messages %}
         <section>
             <strong>Messages:</strong>
