@@ -17,7 +17,7 @@ from environs import Env
 
 env = Env()
 env.read_env(
-    ".secret.env", recurse=False
+    ".secrets.env", recurse=False
 )  # Secrets for dev (external services) not to be put in VC
 # The first file loaded takes precedence
 env.read_env(".env", recurse=False)  # Default dev environmental variables in VC
