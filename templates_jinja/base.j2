@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% set shared_title %}{% block title %}{% endblock %}{% endset %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block extra_head %}{% endblock %}
+    <title>ZA - {{ shared_title }}</title>
+</head>
+
+<body>
+    <header>
+        <hgroup>
+            <h1>Zulu-Alpha</h1>
+            <h2>{{ shared_title }}</h2>
+        </hgroup>
+        <nav>
+            <ul>
+                {% if request.user.is_authenticated %}
+                <li><a href="{{ url('account_logout') }}">Sign Out</a></li>
+                {% else %}
+                <li><a href="{{ url('discord_login') }}">Sign In</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+    <article>
+        {% if messages %}
+        <section>
+            <strong>Messages:</strong>
+            <ul>
+                {% for message in messages %}
+                <li>{{message}}</li>
+                {% endfor %}
+            </ul>
+        </section>
+        {% endif %}
+    </article>
+    <main>{% block main %}{% endblock %}</main>
+    <footer><small>&copy;Zulu-Alpha</small></footer>
+</body>
+
+</html>

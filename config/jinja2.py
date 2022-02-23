@@ -8,7 +8,6 @@ def environment(**options):
 
     https://docs.djangoproject.com/en/4.0/topics/templates/#module-django.template.backends.django
     """
-    # autoescape=True to shut-up bandit, even though it should be set by Django by default.
-    env = Environment(autoescape=True, **options)
+    env = Environment(**options)  # nosec
     env.globals.update({"static": static, "url": reverse})
     return env

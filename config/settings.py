@@ -83,13 +83,13 @@ ROOT_URLCONF = "config.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.jinja2.Jinja2",
-        "DIRS": [os.path.join(BASE_DIR, "jinjatemplates")],
+        "DIRS": [os.path.join(BASE_DIR, "templates_jinja")],
         "APP_DIRS": True,
         "OPTIONS": {"environment": "config.jinja2.environment"},
     },
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [os.path.join(BASE_DIR, "templates")],
+        "DIRS": [os.path.join(BASE_DIR, "templates_django")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -143,14 +143,9 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
-
-LANGUAGE_CODE = "en-us"
-
 TIME_ZONE = env.str("DJANGO_TIMEZONE")
 
-USE_I18N = True
-
-USE_L10N = True
+USE_I18N = False
 
 USE_TZ = True
 
@@ -165,7 +160,16 @@ STATIC_URL = "/static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# django-allauth
+# Default page redirects
+
+LOGIN_REDIRECT_URL = "/"
+
+LOGIN_URL = "/discord/login/"
+
+LOGOUT_REDIRECT_URL = "/"
+
+# Django AllAuth
+# https://django-allauth.readthedocs.io/en/latest/overview.html
 
 SITE_ID = 1
 # We don't want to allow signing up with email
@@ -179,3 +183,4 @@ SOCIALACCOUNT_PROVIDERS = {
         }
     }
 }
+ACCOUNT_TEMPLATE_EXTENSION = "j2"

@@ -13,11 +13,30 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from allauth.account.views import LogoutView
+from allauth.socialaccount.providers.discord import views as discord_views
 from django.contrib import admin
 from django.urls import path
 from django.urls.conf import include
 
-urlpatterns = [
-    path("profiles/", include("profiles.urls")),
-    path("admin/", admin.site.urls),
+from profiles.views import HomeView
+
+allauth = [
+    path("discord/login/", discord_views.oauth2_login, name="discord_login"),
+    path(
+        "discord/login/callback/",
+        discord_views.oauth2_callback,
+        name="discord_callback",
+    ),
+    path("logout/", LogoutView.as_view(), name="account_logout"),
 ]
+
+home_page = [path("", HomeView.as_view())]
+
+
+apps = [
+    path("admin/", admin.site.urls),
+    path("profiles/", include("profiles.urls", "profiles")),
+]
+
+urlpatterns = allauth + home_page + apps

@@ -12,11 +12,13 @@
   "python.formatting.provider": "black",
   "python.formatting.blackArgs": ["--line-length", "90"],
   "files.associations": {
-    "**/*.html": "html",
-    "**/jinja-htmltemplates/**/*.html": "jinja-html",
-    "**/templates/**/*.html": "django-html",
-    "**/templates/**/*": "django-txt",
-    "**/requirements{/**,*}.{txt,in}": "pip-requirements"
+    "**/templates_jinja/**/*.j2": "jinja-html",
+    "**/templates_jinja/**/*.html": "jinja-html",
+    "**/templates_jinja/**/*.txt": "jinja-txt",
+    "**/templates_django/**/*.html": "django-html",
+    "**/templates_django/**/*.txt": "django-txt",
+    "**/requirements{/**,*}.{txt,in}": "pip-requirements",
+    "**/*.html": "html"
   },
   "[html]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"

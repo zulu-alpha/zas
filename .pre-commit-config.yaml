@@ -7,6 +7,7 @@ repos:
         exclude: "[a-zA-Z]*/(cassettes)/(.)*"
       - id: check-ast
       - id: check-case-conflict
+        exclude: "[a-zA-Z]*/(cassettes)/(.)*"
       - id: check-executables-have-shebangs
       - id: check-merge-conflict
       - id: debug-statements
@@ -52,6 +53,9 @@ repos:
         additional_dependencies:
           [
             "django-stubs",
-            "environs"
+            "environs",
+            "rich",
+            "django-allauth",
+            "psycopg2",
           ]
           # djangorestframework-stubs

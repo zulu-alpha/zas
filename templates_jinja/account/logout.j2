@@ -1,0 +1,18 @@
+{% import "common/macros/fields.j2" as fields %}
+{% extends "base.j2" %}
+
+{% block title %}Sign Out{% endblock %}
+
+{% block main %}
+
+<p>Are you sure you want to sign out?</p>
+
+<form method="post" action="{{ url('account_logout') }}">
+    {{ fields.csrf(csrf_token )}}
+    {% if redirect_field_value %}
+    {{ fields.hidden(redirect_field_name, redirect_field_value) }}
+    {% endif %}
+    <button type="submit">Sign Out</button>
+</form>
+
+{% endblock %}
