@@ -30,6 +30,7 @@ Pre-commit is configured to run with the standard method of using remote repos f
 [django-extensions](https://django-extensions.readthedocs.io/en/latest/installation_instructions.html) is installed in the dev environment, and it's options can be accessed with the Makefile commands:
 
 - **make shell**: IPython django shell
+- **make notebook**: Starts a Jupyter notebook
 
 ## Authors
 

@@ -14,3 +14,5 @@ initdb:
 	@poetry run python manage.py migrate
 db:
 	@docker-compose -f docker-compose.dev.yml up db
+down:
+	@docker-compose -f docker-compose.dev.yml up down
