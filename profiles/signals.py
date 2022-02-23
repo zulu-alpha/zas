@@ -11,7 +11,9 @@ from django.dispatch import receiver
 
 @receiver(social_account_updated)
 def make_admin(request: WSGIRequest, sociallogin: "SocialLogin", **kwargs):
-    """"""
+    """Make the user admin if they are logging in via discord, and their discord UID
+    matches the one provided via the environmental variable DISCORD_BOOTSTRAP_ADMIN_UID.
+    """
     if (
         settings.DISCORD_BOOTSTRAP_ADMIN_UID is not None
         and sociallogin.account.provider == "discord"
