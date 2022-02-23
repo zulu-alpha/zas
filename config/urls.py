@@ -31,6 +31,10 @@ allauth = [
     path("logout/", LogoutView.as_view(), name="account_logout"),
 ]
 
+debug_toolbar = [
+    path("__debug__/", include("debug_toolbar.urls")),
+]
+
 home_page = [path("", HomeView.as_view())]
 
 
@@ -39,4 +43,4 @@ apps = [
     path("profiles/", include("profiles.urls", "profiles")),
 ]
 
-urlpatterns = allauth + home_page + apps
+urlpatterns = allauth + debug_toolbar + home_page + apps

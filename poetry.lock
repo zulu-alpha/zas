@@ -321,6 +321,18 @@ optional = false
 python-versions = "*"
 
 [[package]]
+name = "django-debug-toolbar"
+version = "3.2.4"
+description = "A configurable set of panels that display various debug information about the current request/response."
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+Django = ">=2.2"
+sqlparse = ">=0.2.0"
+
+[[package]]
 name = "django-extensions"
 version = "3.1.5"
 description = "Extensions for Django"
@@ -1606,7 +1618,7 @@ notebook = ">=4.4.1"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "4bf90e7de0f12ffc1823eae636cd5a3d7d9813829d050ab26f8830f115a13e5e"
+content-hash = "2fa905822ee4f9d2231b138862dd88f7e24b2bbe02e1e72386d02eb8cf1ff7a5"
 
 [metadata.files]
 appnope = [
@@ -1844,6 +1856,10 @@ django-allauth = [
 django-cache-url = [
     {file = "django-cache-url-3.2.3.tar.gz", hash = "sha256:c1d45626ae8a206267c1263aa7a3461e2e186be2e939bcbd8c660e25851ddac8"},
     {file = "django_cache_url-3.2.3-py2.py3-none-any.whl", hash = "sha256:5514ca3a2075c6b956b3d0a5c540654d32b004e76340d7bdabf6661135b5f218"},
+]
+django-debug-toolbar = [
+    {file = "django-debug-toolbar-3.2.4.tar.gz", hash = "sha256:644bbd5c428d3283aa9115722471769cac1bec189edf3a0c855fd8ff870375a9"},
+    {file = "django_debug_toolbar-3.2.4-py3-none-any.whl", hash = "sha256:6b633b6cfee24f232d73569870f19aa86c819d750e7f3e833f2344a9eb4b4409"},
 ]
 django-extensions = [
     {file = "django-extensions-3.1.5.tar.gz", hash = "sha256:28e1e1bf49f0e00307ba574d645b0af3564c981a6dfc87209d48cb98f77d0b1a"},

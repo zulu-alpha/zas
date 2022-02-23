@@ -10,7 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
+
 import os
+import socket
 from pathlib import Path
 
 from environs import Env
@@ -31,6 +33,8 @@ SECRET_KEY = env.str("DJANGO_SECRET")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool("DEBUG", default=False)
+
+DEBUG_TOOLBAR = env.bool("DEBUG_TOOLBAR", default=True)
 
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
 ENVIRONMENT = env.str("ENVIRONMENT")
@@ -63,13 +67,18 @@ THIRD_PARTY_APPS = [
     "allauth.socialaccount.providers.discord",
     "allauth.socialaccount.providers.steam",
     "django_extensions",
+    "debug_toolbar",
 ]
 
 PROJECT_APPS = ["profiles"]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + PROJECT_APPS
 
-MIDDLEWARE = [
+MIDDLEWARE_DEBUG_TOOLBAR = (
+    ["debug_toolbar.middleware.DebugToolbarMiddleware"] if DEBUG and DEBUG_TOOLBAR else []
+)
+
+MIDDLEWARE_DJANGO = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -78,6 +87,8 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+MIDDLEWARE = MIDDLEWARE_DEBUG_TOOLBAR + MIDDLEWARE_DJANGO
 
 ROOT_URLCONF = "config.urls"
 
@@ -187,3 +198,11 @@ SOCIALACCOUNT_PROVIDERS = {
 ACCOUNT_TEMPLATE_EXTENSION = "j2"
 
 DISCORD_BOOTSTRAP_ADMIN_UID = env.str("DISCORD_BOOTSTRAP_ADMIN_UID", default=None)
+
+
+# Django Debug Toolbar
+# https://django-debug-toolbar.readthedocs.io/en/latest/installation.html
+
+if DEBUG:
+    hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
+    INTERNAL_IPS = [f"{ip[:-1]}1" for ip in ips] + ["127.0.0.1", "10.0.2.2"]

@@ -32,6 +32,12 @@ Pre-commit is configured to run with the standard method of using remote repos f
 - **make shell**: IPython django shell
 - **make notebook**: Starts a Jupyter notebook
 
+### Django Debug Toolbar
+
+[django-debug-toolbar](https://django-debug-toolbar.readthedocs.io/) is installed and enabled by default for development, but can be disabled by setting the following environmental variable to False:
+
+- **DEBUG_TOOLBAR**
+
 ## Authors
 
 - [@adampiskorski](https://github.com/adampiskorski)
