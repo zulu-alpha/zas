@@ -58,6 +58,7 @@ repos:
             "django-allauth",
             "psycopg2",
             "django-extensions",
-            "django-debug-toolbar"
+            "django-debug-toolbar",
+            "djangorestframework-stubs",
+            "djangorestframework"
           ]
-          # djangorestframework-stubs

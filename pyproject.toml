@@ -14,6 +14,9 @@ django-allauth = "^0.47.0"
 Jinja2 = "^3.0.3"
 django-extensions = "^3.1.5"
 django-debug-toolbar = "^3.2.4"
+djangorestframework = "^3.13.1"
+Markdown = "^3.3.6"
+django-filter = "^21.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.5"

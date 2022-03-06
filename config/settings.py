@@ -68,6 +68,7 @@ THIRD_PARTY_APPS = [
     "allauth.socialaccount.providers.steam",
     "django_extensions",
     "debug_toolbar",
+    "rest_framework",
 ]
 
 PROJECT_APPS = ["profiles"]
@@ -206,3 +207,16 @@ DISCORD_BOOTSTRAP_ADMIN_UID = env.str("DISCORD_BOOTSTRAP_ADMIN_UID", default=Non
 if DEBUG and DEBUG_TOOLBAR:
     hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
     INTERNAL_IPS = [f"{ip[:-1]}1" for ip in ips] + ["127.0.0.1", "10.0.2.2"]
+
+
+# Django Rest Framework
+# https://www.django-rest-framework.org/
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.IsAuthenticated"],
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework.authentication.BasicAuthentication",
+    ),
+}
