@@ -8,9 +8,13 @@
   "python.linting.banditEnabled": true,
   "python.linting.flake8Enabled": true,
   "python.languageServer": "Pylance",
-  "python.analysis.typeCheckingMode": "basic",
+  "python.analysis.typeCheckingMode": "off",
   "python.formatting.provider": "black",
   "python.formatting.blackArgs": ["--line-length", "90"],
+  "python.linting.mypyCategorySeverity.error": "Information",
+  "python.linting.banditArgs": ["--configfile", "bandit.yaml"],
+  "python.linting.pydocstyleEnabled": true,
+  "python.linting.pydocstyleArgs": ["--add-ignore=D1"],
   "files.associations": {
     "**/templates_jinja/**/*.j2": "jinja-html",
     "**/templates_jinja/**/*.html": "jinja-html",
@@ -46,6 +50,5 @@
   "[toml]": {
     "editor.defaultFormatter": "bodil.prettier-toml"
   },
-  "jupyter.jupyterServerType": "remote",
   "cSpell.words": []
 }
